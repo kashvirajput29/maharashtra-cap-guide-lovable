@@ -1,11 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { MapPin, Search, ArrowRight } from "lucide-react";
+import { MapPin, Search, ArrowRight, X } from "lucide-react";
 import { getColleges } from "@/lib/cap.functions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+
 import {
   Select,
   SelectContent,
