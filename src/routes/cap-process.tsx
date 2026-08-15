@@ -109,7 +109,7 @@ function CapProcessPage() {
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
           The CAP process, step by step
         </h1>
-        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+        <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
           Centralised Admission Process (CAP) runs in fixed stages. Follow the
           timeline below to understand what you need to do at each step and what
           happens next.
@@ -130,7 +130,7 @@ function CapProcessPage() {
                 {stepNumber}
               </span>
 
-              <Card className="overflow-hidden border-border/80 shadow-sm transition-shadow hover:shadow-md">
+              <Card className="overflow-hidden border-border/80 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
                 <CardContent className="p-5 sm:p-6">
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
                     <div className="flex-1 space-y-4">
