@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CapProcessRouteImport } from './routes/cap-process'
+import { Route as ImportantDatesRouteImport } from './routes/important-dates'
 import { Route as CollegesIndexRouteImport } from './routes/colleges.index'
 import { Route as CollegesCollegeNameRouteImport } from './routes/colleges.$collegeName'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const CapProcessRoute = CapProcessRouteImport.update({
   id: '/cap-process',
   path: '/cap-process',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImportantDatesRoute = ImportantDatesRouteImport.update({
+  id: '/important-dates',
+  path: '/important-dates',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CollegesIndexRoute = CollegesIndexRouteImport.update({
@@ -38,12 +44,14 @@ const CollegesCollegeNameRoute = CollegesCollegeNameRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cap-process': typeof CapProcessRoute
+  '/important-dates': typeof ImportantDatesRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges/': typeof CollegesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cap-process': typeof CapProcessRoute
+  '/important-dates': typeof ImportantDatesRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges': typeof CollegesIndexRoute
 }
@@ -51,21 +59,38 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cap-process': typeof CapProcessRoute
+  '/important-dates': typeof ImportantDatesRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges/': typeof CollegesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cap-process' | '/colleges/$collegeName' | '/colleges/'
+  fullPaths:
+    | '/'
+    | '/cap-process'
+    | '/important-dates'
+    | '/colleges/$collegeName'
+    | '/colleges/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cap-process' | '/colleges/$collegeName' | '/colleges'
+  to:
+    | '/'
+    | '/cap-process'
+    | '/important-dates'
+    | '/colleges/$collegeName'
+    | '/colleges'
   id:
-    '__root__' | '/' | '/cap-process' | '/colleges/$collegeName' | '/colleges/'
+    | '__root__'
+    | '/'
+    | '/cap-process'
+    | '/important-dates'
+    | '/colleges/$collegeName'
+    | '/colleges/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CapProcessRoute: typeof CapProcessRoute
+  ImportantDatesRoute: typeof ImportantDatesRoute
   CollegesCollegeNameRoute: typeof CollegesCollegeNameRoute
   CollegesIndexRoute: typeof CollegesIndexRoute
 }
@@ -84,6 +109,13 @@ declare module '@tanstack/react-router' {
       path: '/cap-process'
       fullPath: '/cap-process'
       preLoaderRoute: typeof CapProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/important-dates': {
+      id: '/important-dates'
+      path: '/important-dates'
+      fullPath: '/important-dates'
+      preLoaderRoute: typeof ImportantDatesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/colleges/': {
@@ -106,6 +138,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CapProcessRoute: CapProcessRoute,
+  ImportantDatesRoute: ImportantDatesRoute,
   CollegesCollegeNameRoute: CollegesCollegeNameRoute,
   CollegesIndexRoute: CollegesIndexRoute,
 }
