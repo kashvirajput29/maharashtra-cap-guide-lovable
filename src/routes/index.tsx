@@ -90,17 +90,17 @@ function Home() {
               to: "/important-dates" as const,
             },
           ].map((item) => (
-            <Card key={item.label} className="border-border/70">
+            <Card key={item.label} className="border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
               <CardContent className="p-6">
                 <p className="text-3xl font-bold tracking-tight text-foreground">
                   {item.value}
                 </p>
-                <p className="mt-1 text-sm text-muted-foreground">{item.label}</p>
+                <p className="mt-1 text-base text-muted-foreground">{item.label}</p>
                 <Link
                   to={item.to}
-                  className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-aqua hover:underline"
+                  className="mt-4 inline-flex items-center gap-1 text-base font-semibold text-aqua hover:underline"
                 >
-                  Explore <ArrowRight className="h-3.5 w-3.5" />
+                  Explore <ArrowRight className="h-4 w-4" />
                 </Link>
               </CardContent>
             </Card>
@@ -127,10 +127,10 @@ function Home() {
               body: "Follow the CAP schedule round by round, with clear Active, Upcoming, Closed and Declared statuses.",
             },
           ].map((card) => (
-            <Card key={card.title} className="border-border/70">
+            <Card key={card.title} className="border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
               <CardContent className="p-6">
                 <h3 className="font-semibold text-foreground">{card.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-2 text-base leading-relaxed text-muted-foreground">
                   {card.body}
                 </p>
               </CardContent>

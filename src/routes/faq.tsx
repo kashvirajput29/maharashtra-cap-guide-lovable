@@ -77,7 +77,7 @@ function FaqPage() {
       <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
         Frequently asked questions
       </h1>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
+      <p className="mt-2 text-base leading-relaxed text-muted-foreground sm:text-lg">
         Simple answers to the questions students and parents ask most about
         Maharashtra MHT-CET CAP counselling.
       </p>

@@ -173,7 +173,7 @@ function CollegeDetail() {
 
 
       <div className="mt-6 grid gap-4 md:grid-cols-3">
-        <Card className="border-border/70 md:col-span-2">
+        <Card className="border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md md:col-span-2">
           <CardContent className="p-6">
             <dl className="grid gap-4 sm:grid-cols-2">
               <div>
@@ -192,7 +192,7 @@ function CollegeDetail() {
               </div>
             </dl>
             {college.short_description ? (
-              <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-5 text-base leading-relaxed text-muted-foreground">
                 {college.short_description}
               </p>
             ) : null}
@@ -214,7 +214,7 @@ function CollegeDetail() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/70">
+        <Card className="border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
           <CardContent className="p-6">
             <p className="text-xs uppercase tracking-wide text-muted-foreground">
               Official website
@@ -315,7 +315,7 @@ function CollegeDetail() {
           {/* Mobile: stacked record cards so no column is hidden */}
           <div className="mt-6 grid gap-3 sm:hidden">
             {filtered.map((c) => (
-              <Card key={c.id} className="border-border/70">
+              <Card key={c.id} className="border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
                 <CardContent className="p-4">
                   <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
                     <p className="min-w-0 text-sm font-semibold leading-snug text-foreground">
@@ -356,7 +356,7 @@ function CollegeDetail() {
           </div>
 
           {/* Tablet and up: full table, horizontally scrollable if needed */}
-          <Card className="mt-6 hidden overflow-hidden border-border/70 sm:block">
+          <Card className="mt-6 hidden overflow-hidden border-border/70 transition-all duration-200 hover:shadow-md sm:block">
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
