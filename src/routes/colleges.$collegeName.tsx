@@ -228,24 +228,28 @@ function CollegeDetail() {
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <FilterSelect
           label="Year"
+          plural="All years"
           value={year}
           onChange={setYear}
           options={options.years}
         />
         <FilterSelect
           label="Branch"
+          plural="All branches"
           value={branch}
           onChange={setBranch}
           options={options.branches}
         />
         <FilterSelect
           label="Category"
+          plural="All categories"
           value={category}
           onChange={setCategory}
           options={options.categories}
         />
         <FilterSelect
           label="Round"
+          plural="All rounds"
           value={round}
           onChange={setRound}
           options={options.rounds}
@@ -296,11 +300,13 @@ function CollegeDetail() {
 
 function FilterSelect({
   label,
+  plural,
   value,
   onChange,
   options,
 }: {
   label: string;
+  plural: string;
   value: string;
   onChange: (v: string) => void;
   options: string[];
@@ -311,7 +317,7 @@ function FilterSelect({
         <SelectValue placeholder={label} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">All {label.toLowerCase()}s</SelectItem>
+        <SelectItem value="all">{plural}</SelectItem>
         {options.map((o) => (
           <SelectItem key={o} value={o}>
             {o}
