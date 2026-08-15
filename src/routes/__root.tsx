@@ -80,17 +80,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Maharashtra CAP Guide" },
+      { title: "Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         name: "description",
         content:
-          "Maharashtra MHT-CET CAP counselling made simple: colleges, cutoffs, process and dates.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
-      { property: "og:title", content: "Maharashtra CAP Guide" },
+      { property: "og:title", content: "Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         property: "og:description",
         content:
-          "Maharashtra MHT-CET CAP counselling made simple: colleges, cutoffs, process and dates.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

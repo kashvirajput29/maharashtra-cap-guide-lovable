@@ -37,15 +37,17 @@ export const Route = createFileRoute("/colleges/$collegeName")({
     const name = decodeURIComponent(params.collegeName);
     return {
       meta: [
-        { title: `${name} — CAP Cutoffs | Maharashtra CAP Guide` },
+        { title: `${name} — CAP Cutoffs | Maharashtra CAP Guide | MHT-CET Counselling Help` },
         {
           name: "description",
-          content: `Details and MHT-CET CAP closing percentiles for ${name}, filterable by year, branch, category and round.`,
+          content:
+            "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
         },
-        { property: "og:title", content: `${name} — CAP Cutoffs` },
+        { property: "og:title", content: `${name} — CAP Cutoffs | Maharashtra CAP Guide | MHT-CET Counselling Help` },
         {
           property: "og:description",
-          content: `Branch-wise CAP cutoff percentiles and college details for ${name}.`,
+          content:
+            "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
         },
       ],
     };
