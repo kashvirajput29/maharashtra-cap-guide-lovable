@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CollegesIndexRouteImport } from './routes/colleges.index'
+import { Route as CollegesCollegeNameRouteImport } from './routes/colleges.$collegeName'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const CollegesIndexRoute = CollegesIndexRouteImport.update({
   path: '/colleges/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CollegesCollegeNameRoute = CollegesCollegeNameRouteImport.update({
+  id: '/colleges/$collegeName',
+  path: '/colleges/$collegeName',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges/': typeof CollegesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges': typeof CollegesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges/': typeof CollegesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/colleges/'
+  fullPaths: '/' | '/colleges/$collegeName' | '/colleges/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/colleges'
-  id: '__root__' | '/' | '/colleges/'
+  to: '/' | '/colleges/$collegeName' | '/colleges'
+  id: '__root__' | '/' | '/colleges/$collegeName' | '/colleges/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CollegesCollegeNameRoute: typeof CollegesCollegeNameRoute
   CollegesIndexRoute: typeof CollegesIndexRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollegesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/colleges/$collegeName': {
+      id: '/colleges/$collegeName'
+      path: '/colleges/$collegeName'
+      fullPath: '/colleges/$collegeName'
+      preLoaderRoute: typeof CollegesCollegeNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CollegesCollegeNameRoute: CollegesCollegeNameRoute,
   CollegesIndexRoute: CollegesIndexRoute,
 }
 export const routeTree = rootRouteImport
