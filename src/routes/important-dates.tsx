@@ -15,17 +15,17 @@ const datesQuery = queryOptions({
 export const Route = createFileRoute("/important-dates")({
   head: () => ({
     meta: [
-      { title: "Important CAP Dates & Deadlines — Maharashtra CAP Guide" },
+      { title: "Important CAP Dates & Deadlines — Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         name: "description",
         content:
-          "Round-wise MHT-CET CAP counselling schedule with start and end dates, live status and official links for every activity.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
-      { property: "og:title", content: "Important CAP Dates & Deadlines" },
+      { property: "og:title", content: "Important CAP Dates & Deadlines — Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         property: "og:description",
         content:
-          "Track registration, verification, choice filling and allotment windows round by round.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
     ],
   }),

@@ -52,17 +52,17 @@ const faqs = [
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "MHT-CET CAP Counselling FAQ — Maharashtra CAP Guide" },
+      { title: "MHT-CET CAP Counselling FAQ — Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         name: "description",
         content:
-          "Answers to 10 common questions about Maharashtra MHT-CET CAP counselling: rounds, merit lists, choice filling, percentiles and categories.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
-      { property: "og:title", content: "MHT-CET CAP Counselling FAQ" },
+      { property: "og:title", content: "MHT-CET CAP Counselling FAQ — Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         property: "og:description",
         content:
-          "Clear beginner-friendly answers on CAP rounds, merit lists, choice filling, closing percentiles and reserved categories.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },

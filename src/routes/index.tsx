@@ -13,20 +13,20 @@ const statsQuery = queryOptions({
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Maharashtra CAP Guide — MHT-CET Counselling Simplified" },
+      { title: "Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         name: "description",
         content:
-          "Understand Maharashtra MHT-CET engineering CAP counselling in one place: colleges, cutoffs, rounds, the CAP process and official dates.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
       {
         property: "og:title",
-        content: "Maharashtra CAP Guide — MHT-CET Counselling Simplified",
+        content: "Maharashtra CAP Guide | MHT-CET Counselling Help",
       },
       {
         property: "og:description",
         content:
-          "Colleges, cutoffs, CAP process steps and important dates for Maharashtra engineering admissions, explained simply.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
     ],
   }),

@@ -26,17 +26,17 @@ const TIERS = ["Top Tier", "Good Tier", "Emerging"];
 export const Route = createFileRoute("/colleges/")({
   head: () => ({
     meta: [
-      { title: "Engineering Colleges — Maharashtra CAP Guide" },
+      { title: "Engineering Colleges — Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         name: "description",
         content:
-          "Browse Maharashtra engineering colleges by city and tier, search by name, and open any college for branch-wise CAP cutoffs.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
-      { property: "og:title", content: "Engineering Colleges — Maharashtra CAP Guide" },
+      { property: "og:title", content: "Engineering Colleges — Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         property: "og:description",
         content:
-          "Search and filter Maharashtra engineering colleges by city and tier, with CAP cutoff data for each college.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
     ],
   }),
