@@ -207,6 +207,8 @@ function CollegesPage() {
           ))}
         </div>
       )}
+
+      <CutoffNote className="mt-8" />
     </div>
   );
 }
