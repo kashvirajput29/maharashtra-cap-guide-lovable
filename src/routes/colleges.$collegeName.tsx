@@ -129,6 +129,14 @@ function CollegeDetail() {
     [cutoffs, year, branch, category, round],
   );
 
+  const hasFilters = year !== "all" || branch !== "all" || category !== "all" || round !== "all";
+  const clearFilters = () => {
+    setYear("all");
+    setBranch("all");
+    setCategory("all");
+    setRound("all");
+  };
+
   const branches = college.branches_offered
     .split(/[,;|]/)
     .map((b) => b.trim())
@@ -222,10 +230,33 @@ function CollegeDetail() {
         </Card>
       </div>
 
-      <h2 className="mt-12 text-2xl font-semibold tracking-tight text-foreground">
-        CAP cutoffs
-      </h2>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-12 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+            CAP cutoffs
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Showing <span className="font-semibold text-foreground">{filtered.length}</span> of{" "}
+            {cutoffs.length} cutoff records
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={clearFilters}
+          disabled={!hasFilters}
+          className="gap-1.5"
+        >
+          <X className="h-3.5 w-3.5" />
+          Clear filters
+        </Button>
+      </div>
+
+      <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+        <Filter className="h-4 w-4" />
+        <span>Filter by:</span>
+      </div>
+      <div className="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <FilterSelect
           label="Year"
           plural="All years"
@@ -258,10 +289,19 @@ function CollegeDetail() {
 
       {filtered.length === 0 ? (
         <Card className="mt-6 border-dashed">
-          <CardContent className="p-10 text-center text-sm text-muted-foreground">
-            {cutoffs.length === 0
-              ? "No cutoff data has been published for this college yet."
-              : "No cutoff rows match these filters."}
+          <CardContent className="p-10 text-center">
+            <p className="text-sm font-medium text-foreground">
+              No cutoff data available for the selected filters.
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Try clearing the filters or selecting different values.
+            </p>
+            {hasFilters && (
+              <Button variant="outline" size="sm" onClick={clearFilters} className="mt-4 gap-1.5">
+                <X className="h-3.5 w-3.5" />
+                Clear filters
+              </Button>
+            )}
           </CardContent>
         </Card>
       ) : (
@@ -269,22 +309,27 @@ function CollegeDetail() {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Year</TableHead>
-                  <TableHead>Branch</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Round</TableHead>
-                  <TableHead className="text-right">Closing percentile</TableHead>
+                <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="w-24 text-foreground">Year</TableHead>
+                  <TableHead className="min-w-[180px] text-foreground">Branch</TableHead>
+                  <TableHead className="text-foreground">Category</TableHead>
+                  <TableHead className="text-foreground">Round</TableHead>
+                  <TableHead className="min-w-[160px] text-right text-foreground">
+                    Closing percentile
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filtered.map((c) => (
-                  <TableRow key={c.id}>
-                    <TableCell className="font-medium">{c.year}</TableCell>
+                {filtered.map((c, index) => (
+                  <TableRow
+                    key={c.id}
+                    className={index % 2 === 1 ? "bg-muted/30" : undefined}
+                  >
+                    <TableCell className="font-medium text-foreground">{c.year}</TableCell>
                     <TableCell>{c.branch}</TableCell>
                     <TableCell>{c.category}</TableCell>
                     <TableCell>{c.round}</TableCell>
-                    <TableCell className="text-right font-semibold text-foreground">
+                    <TableCell className="text-right font-semibold tabular-nums text-foreground">
                       {Number(c.closing_percentile).toFixed(2)}
                     </TableCell>
                   </TableRow>
