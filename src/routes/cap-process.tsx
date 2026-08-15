@@ -77,17 +77,17 @@ const steps: Step[] = [
 export const Route = createFileRoute("/cap-process")({
   head: () => ({
     meta: [
-      { title: "CAP Process Step by Step — Maharashtra CAP Guide" },
+      { title: "CAP Process Step by Step — Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         name: "description",
         content:
-          "Every stage of Maharashtra MHT-CET CAP counselling explained in order: registration, verification, merit lists, choice filling, seat allotment, acceptance, reporting and further rounds.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
-      { property: "og:title", content: "CAP Process Step by Step" },
+      { property: "og:title", content: "CAP Process Step by Step — Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         property: "og:description",
         content:
-          "A simple vertical timeline of the MHT-CET CAP counselling stages, showing what students must do and what happens next.",
+          "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
