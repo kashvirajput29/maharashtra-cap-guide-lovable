@@ -1,3 +1,5 @@
+import { Disclaimer } from "./disclaimer";
+
 export function SiteFooter() {
   return (
     <footer className="mt-20 border-t border-border/70 bg-secondary/40">
@@ -16,7 +18,9 @@ export function SiteFooter() {
         >
           cetcell.mahacet.org
         </a>
+        <Disclaimer className="mt-6 max-w-4xl" />
       </div>
     </footer>
   );
 }
+
