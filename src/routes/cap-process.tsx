@@ -102,7 +102,7 @@ function CapProcessPage() {
       <div className="space-y-3">
         <Badge
           variant="outline"
-          className="border-primary/30 bg-primary/10 text-primary"
+          className="border-teal/30 bg-teal/12 text-teal"
         >
           For first-time MHT-CET students
         </Badge>
@@ -140,7 +140,7 @@ function CapProcessPage() {
                         </h2>
                         <Badge
                           variant="outline"
-                          className="border-primary/25 bg-primary/10 text-primary"
+                          className="border-aqua/35 bg-aqua/12 text-aqua"
                         >
                           Student action
                         </Badge>
@@ -159,7 +159,7 @@ function CapProcessPage() {
 
                         <div className="border-t border-border/60 pt-4">
                           <h3 className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-foreground">
-                            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-teal" />
                             What happens next
                           </h3>
                           <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">

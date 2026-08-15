@@ -3,6 +3,7 @@ import { Menu, GraduationCap } from "lucide-react";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -32,18 +33,21 @@ export function SiteHeader() {
           </span>
         </Link>
 
+        <div className="flex items-center gap-2">
         <nav className="hidden items-center gap-1 md:flex">
           {navItems.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               activeOptions={{ exact: item.to === "/" }}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground data-[status=active]:bg-secondary data-[status=active]:text-foreground"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-secondary-foreground data-[status=active]:bg-primary/10 data-[status=active]:text-primary"
             >
               {item.label}
             </Link>
           ))}
         </nav>
+
+        <ThemeToggle />
 
         <div className="md:hidden">
           <Sheet open={open} onOpenChange={setOpen}>
@@ -60,7 +64,7 @@ export function SiteHeader() {
                     to={item.to}
                     onClick={() => setOpen(false)}
                     activeOptions={{ exact: item.to === "/" }}
-                    className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground data-[status=active]:bg-secondary data-[status=active]:text-foreground"
+                    className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-secondary-foreground data-[status=active]:bg-primary/10 data-[status=active]:text-primary"
                   >
                     {item.label}
                   </Link>
@@ -68,6 +72,7 @@ export function SiteHeader() {
               </nav>
             </SheetContent>
           </Sheet>
+        </div>
         </div>
       </div>
     </header>
