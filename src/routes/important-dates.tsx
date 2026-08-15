@@ -133,7 +133,7 @@ function ImportantDatesPage() {
       <h1 className="text-3xl font-bold tracking-tight text-foreground">
         Important dates
       </h1>
-      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+      <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted-foreground">
         The CAP schedule grouped by round. Activities are sorted by status and
         then chronologically. Always confirm deadlines on the official notice
         before acting.
@@ -200,7 +200,7 @@ function ImportantDatesPage() {
                         className={`absolute -left-[39px] top-1 flex h-5 w-5 items-center justify-center rounded-full ${dotClass(item.status)}`}
                       />
                       <Card
-                        className={`border-border/80 transition-shadow ${
+                        className={`border-border/80 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
                           item.status.toLowerCase().includes("active")
                             ? "shadow-sm ring-1 ring-primary/10"
                             : item.status.toLowerCase().includes("upcoming")

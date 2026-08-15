@@ -91,7 +91,7 @@ function CollegesPage() {
       <h1 className="text-3xl font-bold tracking-tight text-foreground">
         Engineering Colleges
       </h1>
-      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+      <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted-foreground">
         Shortlist colleges by city and tier, then open a college to study its branch-wise
         CAP closing percentiles.
       </p>
@@ -169,7 +169,7 @@ function CollegesPage() {
               params={{ collegeName: c.college_name }}
               className="group"
             >
-              <Card className="h-full border-border/70 transition-colors group-hover:border-primary/40">
+              <Card className="h-full border-border/70 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-primary/40 group-hover:shadow-md">
                 <CardContent className="flex h-full flex-col p-5 sm:p-6">
                   <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
                     <h2 className="min-w-0 break-words text-base font-semibold leading-snug text-foreground">
@@ -193,12 +193,12 @@ function CollegesPage() {
                   </p>
 
                   {c.short_description ? (
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    <p className="mt-3 text-base leading-relaxed text-muted-foreground">
                       {c.short_description}
                     </p>
                   ) : null}
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-aqua">
-                    View cutoffs <ArrowRight className="h-3.5 w-3.5" />
+                  <span className="mt-4 inline-flex items-center gap-1 text-base font-semibold text-aqua">
+                    View cutoffs <ArrowRight className="h-4 w-4" />
                   </span>
                 </CardContent>
               </Card>
