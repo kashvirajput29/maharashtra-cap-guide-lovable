@@ -3,6 +3,7 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ArrowLeft, ExternalLink, MapPin, X, Filter } from "lucide-react";
 import { getCollege } from "@/lib/cap.functions";
+import { CutoffNote } from "@/components/cutoff-note";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -393,6 +394,8 @@ function CollegeDetail() {
           </Card>
         </>
       )}
+
+      <CutoffNote className="mt-8" />
     </div>
   );
 }
