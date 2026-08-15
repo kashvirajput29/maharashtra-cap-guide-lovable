@@ -124,9 +124,23 @@ function CollegesPage() {
         </Select>
       </div>
 
-      <p className="mt-4 text-sm text-muted-foreground">
-        Showing {filtered.length} of {colleges.length} colleges
-      </p>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-muted-foreground">
+          Showing <span className="font-semibold text-foreground">{filtered.length}</span>{" "}
+          of {colleges.length} colleges
+        </p>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={clearFilters}
+          disabled={!hasFilters}
+          className="gap-1.5"
+        >
+          <X className="h-3.5 w-3.5" />
+          Clear filters
+        </Button>
+      </div>
+
 
       {filtered.length === 0 ? (
         <Card className="mt-6 border-dashed">
