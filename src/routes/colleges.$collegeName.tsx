@@ -394,6 +394,8 @@ function CollegeDetail() {
           </Card>
         </>
       )}
+
+      <CutoffNote className="mt-8" />
     </div>
   );
 }
