@@ -5,6 +5,7 @@ import { getImportantDates } from "@/lib/cap.functions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Disclaimer } from "@/components/disclaimer";
 
 const datesQuery = queryOptions({
   queryKey: ["important-dates"],
@@ -261,6 +262,9 @@ function ImportantDatesPage() {
           scheduled. Dates may shift — keep checking the official site.
         </p>
       )}
+
+      <Disclaimer className="mt-10" />
     </div>
+
   );
 }
