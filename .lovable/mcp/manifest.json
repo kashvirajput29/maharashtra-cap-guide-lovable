@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.2",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://bxkemfcbeuubjlqujwng.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "maharashtra-cap-guide",
+      "version": "0.1.0",
+      "title": "Maharashtra CAP Guide"
+    },
+    "tools": [
+      {
+        "name": "search_colleges",
+        "title": "Search colleges",
+        "description": "Search Maharashtra engineering colleges participating in MHT-CET CAP counselling. Optionally filter by name text, city or tier tag (Top Tier, Good Tier, Emerging).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "query": {
+              "description": "Text to match against the college name.",
+              "type": "string"
+            },
+            "city": {
+              "description": "Exact city name, e.g. Mumbai or Pune.",
+              "type": "string"
+            },
+            "tier": {
+              "description": "Tier tag: Top Tier, Good Tier or Emerging.",
+              "type": "string"
+            },
+            "limit": {
+              "description": "Max rows to return (default 25).",
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_cutoffs",
+        "title": "Get cutoffs",
+        "description": "Get MHT-CET CAP closing percentile cutoffs for a college, optionally filtered by year, branch, category or CAP round.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "college_name": {
+              "type": "string",
+              "description": "Exact college name as returned by search_colleges."
+            },
+            "year": {
+              "description": "CAP year, e.g. 2024.",
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "branch": {
+              "description": "Branch name, e.g. Computer Engineering.",
+              "type": "string"
+            },
+            "category": {
+              "description": "Reservation category, e.g. OPEN or OBC.",
+              "type": "string"
+            },
+            "round": {
+              "description": "CAP round, e.g. Round 1.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "college_name"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_important_dates",
+        "title": "Get important dates",
+        "description": "Get the MHT-CET CAP counselling schedule: activities with round, start date, end date, status and official notice link.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "round": {
+              "description": "Filter to one CAP round, e.g. Round 1.",
+              "type": "string"
+            },
+            "status": {
+              "description": "Filter by status, e.g. Active or Upcoming.",
+              "type": "string"
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
