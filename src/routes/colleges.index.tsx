@@ -96,7 +96,8 @@ function CollegesPage() {
         CAP closing percentiles.
       </p>
 
-      <div className="mt-6 grid gap-3 md:grid-cols-[1fr_200px_200px]">
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-[1fr_200px_200px]">
+        <div className="relative sm:col-span-2 md:col-span-1">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
