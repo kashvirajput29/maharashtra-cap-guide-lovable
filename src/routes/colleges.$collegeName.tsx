@@ -223,7 +223,7 @@ function CollegeDetail() {
               href={college.website_link}
               target="_blank"
               rel="noreferrer noopener"
-              className="mt-2 inline-flex items-center gap-1.5 break-all text-sm font-medium text-primary hover:underline"
+              className="mt-2 inline-flex items-center gap-1.5 break-all text-sm font-medium text-aqua hover:underline"
             >
               {college.website_link}
               <ExternalLink className="h-3.5 w-3.5 shrink-0" />

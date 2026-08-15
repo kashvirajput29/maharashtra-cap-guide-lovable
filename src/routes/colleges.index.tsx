@@ -49,8 +49,8 @@ export const Route = createFileRoute("/colleges/")({
 export function tierVariant(tier: string) {
   const t = tier.toLowerCase();
   if (t.includes("top")) return "bg-primary/10 text-primary border-primary/25";
-  if (t.includes("good")) return "bg-accent/15 text-accent-foreground border-accent/30";
-  return "bg-secondary text-secondary-foreground border-border";
+  if (t.includes("good")) return "bg-teal/12 text-teal border-teal/30";
+  return "bg-secondary text-secondary-foreground border-secondary-foreground/20";
 }
 
 function CollegesPage() {
@@ -197,7 +197,7 @@ function CollegesPage() {
                       {c.short_description}
                     </p>
                   ) : null}
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-aqua">
                     View cutoffs <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </CardContent>

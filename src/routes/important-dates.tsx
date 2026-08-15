@@ -68,7 +68,7 @@ function statusClass(status: string) {
   if (s.includes("active"))
     return "border-primary/40 bg-primary/10 text-primary shadow-[0_0_0_1px_var(--color-primary)]";
   if (s.includes("upcoming"))
-    return "border-accent/50 bg-accent/15 text-accent-foreground";
+    return "border-aqua/45 bg-aqua/12 text-aqua";
   if (s.includes("declared"))
     return "border-chart-2/40 bg-chart-2/15 text-foreground";
   return "border-border bg-muted/60 text-muted-foreground";
@@ -77,7 +77,7 @@ function statusClass(status: string) {
 function dotClass(status: string) {
   const s = status.toLowerCase();
   if (s.includes("active")) return "bg-primary ring-4 ring-primary/20";
-  if (s.includes("upcoming")) return "bg-accent ring-4 ring-accent/20";
+  if (s.includes("upcoming")) return "bg-aqua ring-4 ring-aqua/20";
   if (s.includes("declared")) return "bg-chart-2 ring-4 ring-chart-2/20";
   return "bg-muted-foreground ring-4 ring-muted";
 }
@@ -145,7 +145,7 @@ function ImportantDatesPage() {
           Active
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-accent/20" />
+          <span className="h-2.5 w-2.5 rounded-full bg-aqua ring-2 ring-aqua/20" />
           Upcoming
         </span>
         <span className="inline-flex items-center gap-1.5">
@@ -204,7 +204,7 @@ function ImportantDatesPage() {
                           item.status.toLowerCase().includes("active")
                             ? "shadow-sm ring-1 ring-primary/10"
                             : item.status.toLowerCase().includes("upcoming")
-                              ? "shadow-sm ring-1 ring-accent/10"
+                              ? "shadow-sm ring-1 ring-aqua/15"
                               : ""
                         }`}
                       >
@@ -240,7 +240,7 @@ function ImportantDatesPage() {
                             href={item.link}
                             target="_blank"
                             rel="noreferrer noopener"
-                            className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                            className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-aqua hover:underline"
                           >
                             Official notice{" "}
                             <ExternalLink className="h-3.5 w-3.5" />
