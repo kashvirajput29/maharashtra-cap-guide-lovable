@@ -1,11 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { MapPin, Search, ArrowRight } from "lucide-react";
+import { MapPin, Search, ArrowRight, X } from "lucide-react";
 import { getColleges } from "@/lib/cap.functions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+
 import {
   Select,
   SelectContent,
@@ -75,6 +77,15 @@ function CollegesPage() {
     [colleges, search, city, tier],
   );
 
+  const hasFilters = search.trim() !== "" || city !== "all" || tier !== "all";
+  const clearFilters = () => {
+    setSearch("");
+    setCity("all");
+    setTier("all");
+  };
+
+
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="text-3xl font-bold tracking-tight text-foreground">
@@ -124,9 +135,23 @@ function CollegesPage() {
         </Select>
       </div>
 
-      <p className="mt-4 text-sm text-muted-foreground">
-        Showing {filtered.length} of {colleges.length} colleges
-      </p>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-muted-foreground">
+          Showing <span className="font-semibold text-foreground">{filtered.length}</span>{" "}
+          of {colleges.length} colleges
+        </p>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={clearFilters}
+          disabled={!hasFilters}
+          className="gap-1.5"
+        >
+          <X className="h-3.5 w-3.5" />
+          Clear filters
+        </Button>
+      </div>
+
 
       {filtered.length === 0 ? (
         <Card className="mt-6 border-dashed">
