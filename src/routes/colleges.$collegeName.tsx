@@ -143,7 +143,7 @@ function CollegeDetail() {
     .filter(Boolean);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
       <Link
         to="/colleges"
         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
@@ -151,20 +151,26 @@ function CollegeDetail() {
         <ArrowLeft className="h-4 w-4" /> All colleges
       </Link>
 
-      <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="max-w-3xl text-3xl font-bold leading-tight tracking-tight text-foreground">
+      <div className="mt-4 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-4">
+        <div className="min-w-0">
+          <h1 className="max-w-3xl break-words text-2xl font-bold leading-tight tracking-tight text-foreground sm:text-3xl">
             {college.college_name}
           </h1>
           <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4" />
-            {college.city}, {college.district}
+            <MapPin className="h-4 w-4 shrink-0" />
+            <span className="min-w-0 break-words">
+              {college.city}, {college.district}
+            </span>
           </p>
         </div>
-        <Badge variant="outline" className="border-primary/25 bg-primary/10 text-primary">
+        <Badge
+          variant="outline"
+          className="shrink-0 whitespace-nowrap border-primary/25 bg-primary/10 text-primary"
+        >
           {college.tier_tag}
         </Badge>
       </div>
+
 
       <div className="mt-6 grid gap-4 md:grid-cols-3">
         <Card className="border-border/70 md:col-span-2">
@@ -305,39 +311,85 @@ function CollegeDetail() {
           </CardContent>
         </Card>
       ) : (
-        <Card className="mt-6 overflow-hidden border-border/70">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/50 hover:bg-muted/50">
-                  <TableHead className="w-24 text-foreground">Year</TableHead>
-                  <TableHead className="min-w-[180px] text-foreground">Branch</TableHead>
-                  <TableHead className="text-foreground">Category</TableHead>
-                  <TableHead className="text-foreground">Round</TableHead>
-                  <TableHead className="min-w-[160px] text-right text-foreground">
-                    Closing percentile
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filtered.map((c, index) => (
-                  <TableRow
-                    key={c.id}
-                    className={index % 2 === 1 ? "bg-muted/30" : undefined}
-                  >
-                    <TableCell className="font-medium text-foreground">{c.year}</TableCell>
-                    <TableCell>{c.branch}</TableCell>
-                    <TableCell>{c.category}</TableCell>
-                    <TableCell>{c.round}</TableCell>
-                    <TableCell className="text-right font-semibold tabular-nums text-foreground">
-                      {Number(c.closing_percentile).toFixed(2)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+        <>
+          {/* Mobile: stacked record cards so no column is hidden */}
+          <div className="mt-6 grid gap-3 sm:hidden">
+            {filtered.map((c) => (
+              <Card key={c.id} className="border-border/70">
+                <CardContent className="p-4">
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+                    <p className="min-w-0 text-sm font-semibold leading-snug text-foreground">
+                      {c.branch}
+                    </p>
+                    <Badge
+                      variant="outline"
+                      className="shrink-0 whitespace-nowrap border-primary/25 bg-primary/10 text-primary"
+                    >
+                      {c.year}
+                    </Badge>
+                  </div>
+                  <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                    <div className="min-w-0">
+                      <dt className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Category
+                      </dt>
+                      <dd className="mt-0.5 break-words text-foreground">{c.category}</dd>
+                    </div>
+                    <div className="min-w-0">
+                      <dt className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Round
+                      </dt>
+                      <dd className="mt-0.5 break-words text-foreground">{c.round}</dd>
+                    </div>
+                    <div className="col-span-2 border-t border-border/60 pt-2">
+                      <dt className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Closing percentile
+                      </dt>
+                      <dd className="mt-0.5 text-base font-semibold tabular-nums text-foreground">
+                        {Number(c.closing_percentile).toFixed(2)}
+                      </dd>
+                    </div>
+                  </dl>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-        </Card>
+
+          {/* Tablet and up: full table, horizontally scrollable if needed */}
+          <Card className="mt-6 hidden overflow-hidden border-border/70 sm:block">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50 hover:bg-muted/50">
+                    <TableHead className="w-24 text-foreground">Year</TableHead>
+                    <TableHead className="min-w-[180px] text-foreground">Branch</TableHead>
+                    <TableHead className="text-foreground">Category</TableHead>
+                    <TableHead className="text-foreground">Round</TableHead>
+                    <TableHead className="min-w-[160px] text-right text-foreground">
+                      Closing percentile
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filtered.map((c, index) => (
+                    <TableRow
+                      key={c.id}
+                      className={index % 2 === 1 ? "bg-muted/30" : undefined}
+                    >
+                      <TableCell className="font-medium text-foreground">{c.year}</TableCell>
+                      <TableCell>{c.branch}</TableCell>
+                      <TableCell>{c.category}</TableCell>
+                      <TableCell>{c.round}</TableCell>
+                      <TableCell className="text-right font-semibold tabular-nums text-foreground">
+                        {Number(c.closing_percentile).toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </Card>
+        </>
       )}
     </div>
   );

@@ -96,8 +96,8 @@ function CollegesPage() {
         CAP closing percentiles.
       </p>
 
-      <div className="mt-6 grid gap-3 md:grid-cols-[1fr_200px_200px]">
-        <div className="relative">
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-[1fr_200px_200px]">
+        <div className="relative sm:col-span-2 md:col-span-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={search}
@@ -170,22 +170,28 @@ function CollegesPage() {
               className="group"
             >
               <Card className="h-full border-border/70 transition-colors group-hover:border-primary/40">
-                <CardContent className="flex h-full flex-col p-6">
-                  <div className="flex items-start justify-between gap-3">
-                    <h2 className="text-base font-semibold leading-snug text-foreground">
+                <CardContent className="flex h-full flex-col p-5 sm:p-6">
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+                    <h2 className="min-w-0 break-words text-base font-semibold leading-snug text-foreground">
                       {c.college_name}
                     </h2>
-                    <Badge variant="outline" className={tierVariant(c.tier_tag)}>
+                    <Badge
+                      variant="outline"
+                      className={`shrink-0 whitespace-nowrap ${tierVariant(c.tier_tag)}`}
+                    >
                       {c.tier_tag}
                     </Badge>
                   </div>
                   <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
-                    <MapPin className="h-3.5 w-3.5" />
-                    {c.city}, {c.district}
+                    <MapPin className="h-3.5 w-3.5 shrink-0" />
+                    <span className="min-w-0 break-words">
+                      {c.city}, {c.district}
+                    </span>
                   </p>
-                  <p className="mt-1 text-xs uppercase tracking-wide text-muted-foreground">
+                  <p className="mt-1 break-words text-xs uppercase tracking-wide text-muted-foreground">
                     {c.university_affiliation}
                   </p>
+
                   {c.short_description ? (
                     <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                       {c.short_description}
