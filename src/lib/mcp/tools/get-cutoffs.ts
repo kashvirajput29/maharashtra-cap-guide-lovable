@@ -16,6 +16,10 @@ export default defineTool({
     category: z.string().optional().describe("Reservation category, e.g. OPEN or OBC."),
     round: z.string().optional().describe("CAP round, e.g. Round 1."),
   },
+  outputSchema: {
+    count: z.number(),
+    cutoffs: z.array(z.record(z.string(), z.unknown())),
+  },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ college_name, year, branch, category, round }, ctx) => {
     if (!ctx.isAuthenticated())

@@ -16,6 +16,10 @@ export default defineTool({
       .describe("Tier tag: Top Tier, Good Tier or Emerging."),
     limit: z.number().int().optional().describe("Max rows to return (default 25)."),
   },
+  outputSchema: {
+    count: z.number(),
+    colleges: z.array(z.record(z.string(), z.unknown())),
+  },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ query, city, tier, limit }, ctx) => {
     if (!ctx.isAuthenticated())

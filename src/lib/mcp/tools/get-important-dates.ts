@@ -11,6 +11,10 @@ export default defineTool({
     round: z.string().optional().describe("Filter to one CAP round, e.g. Round 1."),
     status: z.string().optional().describe("Filter by status, e.g. Active or Upcoming."),
   },
+  outputSchema: {
+    count: z.number(),
+    dates: z.array(z.record(z.string(), z.unknown())),
+  },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ round, status }, ctx) => {
     if (!ctx.isAuthenticated())
