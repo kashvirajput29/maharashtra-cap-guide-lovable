@@ -88,7 +88,7 @@ function Shell({ title, children }: { title: string; children: React.ReactNode }
       <div className="mt-3">{children}</div>
       <Link
         to="/colleges"
-        className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+        className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-aqua hover:underline"
       >
         <ArrowLeft className="h-4 w-4" /> Back to colleges
       </Link>
@@ -323,7 +323,7 @@ function CollegeDetail() {
                     </p>
                     <Badge
                       variant="outline"
-                      className="shrink-0 whitespace-nowrap border-primary/25 bg-primary/10 text-primary"
+                      className="shrink-0 whitespace-nowrap border-teal/30 bg-teal/12 text-teal"
                     >
                       {c.year}
                     </Badge>

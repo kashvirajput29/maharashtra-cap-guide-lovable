@@ -43,7 +43,7 @@ function Home() {
     <div>
       <section className="border-b border-border/70 bg-gradient-to-b from-secondary/60 to-background">
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-          <span className="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+          <span className="inline-flex items-center rounded-full border border-teal/30 bg-teal/12 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-teal">
             For MHT-CET students &amp; parents
           </span>
           <h1 className="mt-5 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl">
@@ -98,7 +98,7 @@ function Home() {
                 <p className="mt-1 text-sm text-muted-foreground">{item.label}</p>
                 <Link
                   to={item.to}
-                  className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                  className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-aqua hover:underline"
                 >
                   Explore <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
