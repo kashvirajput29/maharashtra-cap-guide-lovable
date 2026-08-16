@@ -16,6 +16,7 @@ import { Route as CompareRouteImport } from './routes/compare'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ImportantDatesRouteImport } from './routes/important-dates'
 import { Route as McpRouteImport } from './routes/mcp'
+import { Route as OptionFormRouteImport } from './routes/option-form'
 import { Route as PostCapRouteImport } from './routes/post-cap'
 import { Route as RecommendRouteImport } from './routes/recommend'
 import { Route as WhatIfRouteImport } from './routes/what-if'
@@ -59,6 +60,11 @@ const ImportantDatesRoute = ImportantDatesRouteImport.update({
 const McpRoute = McpRouteImport.update({
   id: '/mcp',
   path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OptionFormRoute = OptionFormRouteImport.update({
+  id: '/option-form',
+  path: '/option-form',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PostCapRoute = PostCapRouteImport.update({
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
+  '/option-form': typeof OptionFormRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
   '/what-if': typeof WhatIfRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
+  '/option-form': typeof OptionFormRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
   '/what-if': typeof WhatIfRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
+  '/option-form': typeof OptionFormRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
   '/what-if': typeof WhatIfRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/important-dates'
     | '/mcp'
+    | '/option-form'
     | '/post-cap'
     | '/recommend'
     | '/what-if'
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/important-dates'
     | '/mcp'
+    | '/option-form'
     | '/post-cap'
     | '/recommend'
     | '/what-if'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/important-dates'
     | '/mcp'
+    | '/option-form'
     | '/post-cap'
     | '/recommend'
     | '/what-if'
@@ -230,6 +242,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   ImportantDatesRoute: typeof ImportantDatesRoute
   McpRoute: typeof McpRoute
+  OptionFormRoute: typeof OptionFormRoute
   PostCapRoute: typeof PostCapRoute
   RecommendRoute: typeof RecommendRoute
   WhatIfRoute: typeof WhatIfRoute
@@ -290,6 +303,13 @@ declare module '@tanstack/react-router' {
       path: '/mcp'
       fullPath: '/mcp'
       preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/option-form': {
+      id: '/option-form'
+      path: '/option-form'
+      fullPath: '/option-form'
+      preLoaderRoute: typeof OptionFormRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/post-cap': {
@@ -366,6 +386,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   ImportantDatesRoute: ImportantDatesRoute,
   McpRoute: McpRoute,
+  OptionFormRoute: OptionFormRoute,
   PostCapRoute: PostCapRoute,
   RecommendRoute: RecommendRoute,
   WhatIfRoute: WhatIfRoute,
