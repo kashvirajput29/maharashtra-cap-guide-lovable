@@ -1,8 +1,7 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ArrowLeft, ExternalLink, MapPin, X, Filter, ShieldCheck } from "lucide-react";
-import { getOfficialCollege } from "@/lib/cap.functions";
 import { CutoffNote } from "@/components/cutoff-note";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,16 +23,8 @@ import {
 } from "@/components/ui/table";
 import { PageBackground } from "@/components/page-background";
 import pageBg from "@/assets/college-detail-bg.asset.json";
+import { collegeQuery } from "@/lib/college-query";
 
-const collegeQuery = (collegeName: string) =>
-  queryOptions({
-    queryKey: ["college-official-2026", collegeName],
-    queryFn: async () => {
-      const result = await getOfficialCollege({ data: { collegeName } });
-      if (!result.college) throw notFound();
-      return result;
-    },
-  });
 
 export const Route = createFileRoute("/colleges/$collegeName")({
   head: ({ params }) => {

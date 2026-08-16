@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems = [
+  { to: "/recommend", label: "Find Your Colleges" },
   { to: "/post-cap", label: "Post-CAP Process" },
   { to: "/faq", label: "FAQs" },
   { to: "/about", label: "About" },
