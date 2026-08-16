@@ -15,6 +15,7 @@ import { Route as CapProcessRouteImport } from './routes/cap-process'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ImportantDatesRouteImport } from './routes/important-dates'
+import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PostCapRouteImport } from './routes/post-cap'
 import { Route as RecommendRouteImport } from './routes/recommend'
@@ -54,6 +55,11 @@ const FaqRoute = FaqRouteImport.update({
 const ImportantDatesRoute = ImportantDatesRouteImport.update({
   id: '/important-dates',
   path: '/important-dates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/compare': typeof CompareRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
+  '/insights': typeof InsightsRoute
   '/mcp': typeof McpRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByTo {
   '/compare': typeof CompareRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
+  '/insights': typeof InsightsRoute
   '/mcp': typeof McpRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
@@ -154,6 +162,7 @@ export interface FileRoutesById {
   '/compare': typeof CompareRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
+  '/insights': typeof InsightsRoute
   '/mcp': typeof McpRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/faq'
     | '/important-dates'
+    | '/insights'
     | '/mcp'
     | '/post-cap'
     | '/recommend'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/faq'
     | '/important-dates'
+    | '/insights'
     | '/mcp'
     | '/post-cap'
     | '/recommend'
@@ -210,6 +221,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/faq'
     | '/important-dates'
+    | '/insights'
     | '/mcp'
     | '/post-cap'
     | '/recommend'
@@ -229,6 +241,7 @@ export interface RootRouteChildren {
   CompareRoute: typeof CompareRoute
   FaqRoute: typeof FaqRoute
   ImportantDatesRoute: typeof ImportantDatesRoute
+  InsightsRoute: typeof InsightsRoute
   McpRoute: typeof McpRoute
   PostCapRoute: typeof PostCapRoute
   RecommendRoute: typeof RecommendRoute
@@ -283,6 +296,13 @@ declare module '@tanstack/react-router' {
       path: '/important-dates'
       fullPath: '/important-dates'
       preLoaderRoute: typeof ImportantDatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -365,6 +385,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompareRoute: CompareRoute,
   FaqRoute: FaqRoute,
   ImportantDatesRoute: ImportantDatesRoute,
+  InsightsRoute: InsightsRoute,
   McpRoute: McpRoute,
   PostCapRoute: PostCapRoute,
   RecommendRoute: RecommendRoute,
