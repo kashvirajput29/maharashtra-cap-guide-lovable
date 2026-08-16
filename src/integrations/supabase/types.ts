@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      college_classifications_verified: {
+        Row: {
+          classification_status: string
+          college_name: string
+          created_at: string | null
+          id: string
+          indicator_value: string | null
+          last_verified: string | null
+          official_indicator: string | null
+          source_url: string | null
+        }
+        Insert: {
+          classification_status?: string
+          college_name: string
+          created_at?: string | null
+          id?: string
+          indicator_value?: string | null
+          last_verified?: string | null
+          official_indicator?: string | null
+          source_url?: string | null
+        }
+        Update: {
+          classification_status?: string
+          college_name?: string
+          created_at?: string | null
+          id?: string
+          indicator_value?: string | null
+          last_verified?: string | null
+          official_indicator?: string | null
+          source_url?: string | null
+        }
+        Relationships: []
+      }
       colleges: {
         Row: {
           branches_offered: string
@@ -53,6 +86,45 @@ export type Database = {
         }
         Relationships: []
       }
+      colleges_official_2026: {
+        Row: {
+          branches_offered: string | null
+          city: string | null
+          college_name: string
+          created_at: string | null
+          district: string | null
+          id: string
+          last_verified: string | null
+          official_source_url: string | null
+          official_website_url: string | null
+          university_affiliation: string | null
+        }
+        Insert: {
+          branches_offered?: string | null
+          city?: string | null
+          college_name: string
+          created_at?: string | null
+          district?: string | null
+          id?: string
+          last_verified?: string | null
+          official_source_url?: string | null
+          official_website_url?: string | null
+          university_affiliation?: string | null
+        }
+        Update: {
+          branches_offered?: string | null
+          city?: string | null
+          college_name?: string
+          created_at?: string | null
+          district?: string | null
+          id?: string
+          last_verified?: string | null
+          official_source_url?: string | null
+          official_website_url?: string | null
+          university_affiliation?: string | null
+        }
+        Relationships: []
+      }
       cutoffs: {
         Row: {
           branch: string
@@ -86,6 +158,51 @@ export type Database = {
         }
         Relationships: []
       }
+      cutoffs_official_2026: {
+        Row: {
+          academic_year: string
+          branch: string | null
+          candidature_type: string | null
+          cap_round: string | null
+          category: string | null
+          closing_percentile: number | null
+          college_name: string
+          created_at: string | null
+          data_status: string
+          id: string
+          last_verified: string | null
+          source_url: string
+        }
+        Insert: {
+          academic_year: string
+          branch?: string | null
+          candidature_type?: string | null
+          cap_round?: string | null
+          category?: string | null
+          closing_percentile?: number | null
+          college_name: string
+          created_at?: string | null
+          data_status?: string
+          id?: string
+          last_verified?: string | null
+          source_url: string
+        }
+        Update: {
+          academic_year?: string
+          branch?: string | null
+          candidature_type?: string | null
+          cap_round?: string | null
+          category?: string | null
+          closing_percentile?: number | null
+          college_name?: string
+          created_at?: string | null
+          data_status?: string
+          id?: string
+          last_verified?: string | null
+          source_url?: string
+        }
+        Relationships: []
+      }
       important_dates: {
         Row: {
           activity: string
@@ -116,6 +233,42 @@ export type Database = {
           round?: string
           start_date?: string
           status?: string
+        }
+        Relationships: []
+      }
+      post_cap_updates_official: {
+        Row: {
+          college_name: string
+          created_at: string | null
+          id: string
+          last_verified: string | null
+          notice_url: string | null
+          published_date: string | null
+          status: string
+          update_title: string | null
+          update_type: string | null
+        }
+        Insert: {
+          college_name: string
+          created_at?: string | null
+          id?: string
+          last_verified?: string | null
+          notice_url?: string | null
+          published_date?: string | null
+          status?: string
+          update_title?: string | null
+          update_type?: string | null
+        }
+        Update: {
+          college_name?: string
+          created_at?: string | null
+          id?: string
+          last_verified?: string | null
+          notice_url?: string | null
+          published_date?: string | null
+          status?: string
+          update_title?: string | null
+          update_type?: string | null
         }
         Relationships: []
       }
