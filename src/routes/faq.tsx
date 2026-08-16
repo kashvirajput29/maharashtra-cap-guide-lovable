@@ -5,6 +5,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { PageBackground } from "@/components/page-background";
+import pageBg from "@/assets/faqs-bg.asset.json";
 
 const faqs = [
   {
@@ -73,7 +75,8 @@ export const Route = createFileRoute("/faq")({
 
 function FaqPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
+    <div className="theme-accent-coffee mx-auto max-w-3xl px-4 py-10">
+      <PageBackground image={pageBg.url} />
       <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
         Frequently asked questions
       </h1>
