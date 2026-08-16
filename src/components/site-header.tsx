@@ -10,6 +10,7 @@ const navItems = [
   { to: "/colleges", label: "Colleges" },
   { to: "/cap-process", label: "CAP Process" },
   { to: "/important-dates", label: "Important Dates" },
+  { to: "/post-cap", label: "Post-CAP Process" },
   { to: "/faq", label: "FAQ" },
 ] as const;
 
