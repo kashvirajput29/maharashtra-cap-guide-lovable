@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CapProcessRouteImport } from './routes/cap-process'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ImportantDatesRouteImport } from './routes/important-dates'
 import { Route as McpRouteImport } from './routes/mcp'
@@ -30,6 +31,11 @@ const IndexRoute = IndexRouteImport.update({
 const CapProcessRoute = CapProcessRouteImport.update({
   id: '/cap-process',
   path: '/cap-process',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -89,6 +95,7 @@ const Char91DotmcpChar93InvokeToolToolRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cap-process': typeof CapProcessRoute
+  '/compare': typeof CompareRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
@@ -103,6 +110,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cap-process': typeof CapProcessRoute
+  '/compare': typeof CompareRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
@@ -118,6 +126,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cap-process': typeof CapProcessRoute
+  '/compare': typeof CompareRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/cap-process'
+    | '/compare'
     | '/faq'
     | '/important-dates'
     | '/mcp'
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/cap-process'
+    | '/compare'
     | '/faq'
     | '/important-dates'
     | '/mcp'
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/cap-process'
+    | '/compare'
     | '/faq'
     | '/important-dates'
     | '/mcp'
@@ -177,6 +189,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CapProcessRoute: typeof CapProcessRoute
+  CompareRoute: typeof CompareRoute
   FaqRoute: typeof FaqRoute
   ImportantDatesRoute: typeof ImportantDatesRoute
   McpRoute: typeof McpRoute
@@ -203,6 +216,13 @@ declare module '@tanstack/react-router' {
       path: '/cap-process'
       fullPath: '/cap-process'
       preLoaderRoute: typeof CapProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -281,6 +301,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CapProcessRoute: CapProcessRoute,
+  CompareRoute: CompareRoute,
   FaqRoute: FaqRoute,
   ImportantDatesRoute: ImportantDatesRoute,
   McpRoute: McpRoute,
