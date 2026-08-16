@@ -40,8 +40,10 @@ function Home() {
   const { data: stats } = useSuspenseQuery(statsQuery);
 
   return (
-    <div>
-      <section className="border-b border-border/70 bg-gradient-to-b from-secondary/60 to-background">
+    <div className="theme-accent-sunrise">
+      <PageBackground image={homeBg.url} />
+      <section className="border-b border-border/70 bg-gradient-to-b from-secondary/60 to-background/70">
+
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
           <span className="inline-flex items-center rounded-full border border-teal/30 bg-teal/12 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-teal">
             For MHT-CET students &amp; parents
