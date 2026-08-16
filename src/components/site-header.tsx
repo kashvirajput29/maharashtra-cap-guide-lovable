@@ -12,6 +12,7 @@ const navItems = [
   { to: "/important-dates", label: "Important Dates" },
   { to: "/post-cap", label: "Post-CAP Process" },
   { to: "/faq", label: "FAQs" },
+  { to: "/about", label: "About" },
 ] as const;
 
 export function SiteHeader() {
