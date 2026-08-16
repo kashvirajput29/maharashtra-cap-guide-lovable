@@ -219,7 +219,7 @@ function InsightsPage() {
                   dataKey="count"
                   name="Colleges"
                   fill="currentColor"
-                  className="fill-accent"
+                  className="fill-primary"
                   radius={[6, 6, 0, 0]}
                 />
               </BarChart>

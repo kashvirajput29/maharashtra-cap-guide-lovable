@@ -440,7 +440,12 @@ export const getInsights = createServerFn({ method: "GET" })
     const naacSeen = new Set<string>();
     const naacCounts = new Map<string, number>();
     for (const r of classRes.data ?? []) {
-      const value = (r.indicator_value ?? "").trim();
+      const value = (r.indicator_value ?? "")
+        .replace(/\(.*?\)/g, "")
+        .replace(/valid until.*$/i, "")
+        .trim()
+        .replace(/[,;]$/, "")
+        .trim();
       if (!value) continue;
       const key = `${r.college_name}||${value}`;
       if (naacSeen.has(key)) continue;
