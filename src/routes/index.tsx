@@ -4,6 +4,9 @@ import { CalendarDays, ListChecks, School, ArrowRight } from "lucide-react";
 import { getHomeStats } from "@/lib/cap.functions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { PageBackground } from "@/components/page-background";
+import homeBg from "@/assets/home-bg.asset.json";
+
 
 const statsQuery = queryOptions({
   queryKey: ["home-stats"],
