@@ -53,11 +53,11 @@ function CollegesPage() {
   const [district, setDistrict] = useState("all");
 
   const cities = useMemo(
-    () => Array.from(new Set(colleges.map((c) => c.city))).sort(),
+    () => Array.from(new Set(colleges.map((c) => c.city).filter((v): v is string => !!v))).sort(),
     [colleges],
   );
   const districts = useMemo(
-    () => Array.from(new Set(colleges.map((c) => c.district))).sort(),
+    () => Array.from(new Set(colleges.map((c) => c.district).filter((v): v is string => !!v))).sort(),
     [colleges],
   );
 
