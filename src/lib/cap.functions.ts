@@ -77,3 +77,70 @@ export const getHomeStats = createServerFn({ method: "GET" }).handler(async () =
     dates: dates.count ?? 0,
   };
 });
+
+/* ---------- Official 2026 verified data (source of truth) ---------- */
+
+export const getOfficialColleges = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = getPublicClient();
+  const { data, error } = await supabase
+    .from("colleges_official_2026")
+    .select(
+      "id, college_name, city, district, university_affiliation, branches_offered, official_website_url, official_source_url, last_verified",
+    )
+    .order("college_name", { ascending: true });
+  if (error) throw new Error(error.message);
+  return data ?? [];
+});
+
+export const getOfficialCollege = createServerFn({ method: "GET" })
+  .inputValidator((input) => z.object({ collegeName: z.string().min(1) }).parse(input))
+  .handler(async ({ data: input }) => {
+    const supabase = getPublicClient();
+    const [collegeRes, cutoffRes, classRes] = await Promise.all([
+      supabase
+        .from("colleges_official_2026")
+        .select(
+          "id, college_name, city, district, university_affiliation, branches_offered, official_website_url, official_source_url, last_verified",
+        )
+        .eq("college_name", input.collegeName)
+        .maybeSingle(),
+      supabase
+        .from("cutoffs_official_2026")
+        .select(
+          "id, academic_year, cap_round, branch, category, candidature_type, closing_percentile, source_url, last_verified, data_status",
+        )
+        .eq("college_name", input.collegeName)
+        .neq("data_status", "Not published yet")
+        .not("closing_percentile", "is", null)
+        .order("branch", { ascending: true }),
+      supabase
+        .from("college_classifications_verified")
+        .select(
+          "id, official_indicator, indicator_value, source_url, last_verified, classification_status",
+        )
+        .eq("college_name", input.collegeName)
+        .order("official_indicator", { ascending: true }),
+    ]);
+
+    if (collegeRes.error) throw new Error(collegeRes.error.message);
+    if (cutoffRes.error) throw new Error(cutoffRes.error.message);
+    if (classRes.error) throw new Error(classRes.error.message);
+
+    return {
+      college: collegeRes.data,
+      cutoffs: cutoffRes.data ?? [],
+      classifications: classRes.data ?? [],
+    };
+  });
+
+export const getPostCapUpdates = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = getPublicClient();
+  const { data, error } = await supabase
+    .from("post_cap_updates_official")
+    .select(
+      "id, college_name, update_title, update_type, status, published_date, notice_url, last_verified",
+    )
+    .order("college_name", { ascending: true });
+  if (error) throw new Error(error.message);
+  return data ?? [];
+});
