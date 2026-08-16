@@ -17,6 +17,7 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ImportantDatesRouteImport } from './routes/important-dates'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PostCapRouteImport } from './routes/post-cap'
+import { Route as RecommendRouteImport } from './routes/recommend'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as CollegesIndexRouteImport } from './routes/colleges.index'
@@ -64,6 +65,11 @@ const PostCapRoute = PostCapRouteImport.update({
   path: '/post-cap',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RecommendRoute = RecommendRouteImport.update({
+  id: '/recommend',
+  path: '/recommend',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotmcpChar93ListToolsRoute =
   Char91DotmcpChar93ListToolsRouteImport.update({
     id: '/.mcp/list-tools',
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
   '/post-cap': typeof PostCapRoute
+  '/recommend': typeof RecommendRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
   '/post-cap': typeof PostCapRoute
+  '/recommend': typeof RecommendRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
   '/post-cap': typeof PostCapRoute
+  '/recommend': typeof RecommendRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/important-dates'
     | '/mcp'
     | '/post-cap'
+    | '/recommend'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/colleges/$collegeName'
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/important-dates'
     | '/mcp'
     | '/post-cap'
+    | '/recommend'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/colleges/$collegeName'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/important-dates'
     | '/mcp'
     | '/post-cap'
+    | '/recommend'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/colleges/$collegeName'
@@ -207,6 +219,7 @@ export interface RootRouteChildren {
   ImportantDatesRoute: typeof ImportantDatesRoute
   McpRoute: typeof McpRoute
   PostCapRoute: typeof PostCapRoute
+  RecommendRoute: typeof RecommendRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   CollegesCollegeNameRoute: typeof CollegesCollegeNameRoute
@@ -273,6 +286,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostCapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/recommend': {
+      id: '/recommend'
+      path: '/recommend'
+      fullPath: '/recommend'
+      preLoaderRoute: typeof RecommendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.mcp/list-tools': {
       id: '/.mcp/list-tools'
       path: '/.mcp/list-tools'
@@ -327,6 +347,7 @@ const rootRouteChildren: RootRouteChildren = {
   ImportantDatesRoute: ImportantDatesRoute,
   McpRoute: McpRoute,
   PostCapRoute: PostCapRoute,
+  RecommendRoute: RecommendRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
