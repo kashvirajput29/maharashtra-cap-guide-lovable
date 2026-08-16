@@ -280,3 +280,15 @@
   --aqua: oklch(0.80 0.09 232);
   --teal: oklch(0.79 0.10 160);
 }
+
+@media print {
+  header,
+  footer,
+  [data-no-print] {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
