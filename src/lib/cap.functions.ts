@@ -378,3 +378,89 @@ export const getWhatIfScenario = createServerFn({ method: "GET" })
 
     return { counts, topSafe, total: best.size };
   });
+
+/* ---------- Insights (aggregated chart data) ---------- */
+
+export const getInsights = createServerFn({ method: "GET" })
+  .inputValidator((input) =>
+    z.object({ category: z.string().min(1).max(40).default("OPEN") }).parse(input ?? {}),
+  )
+  .handler(async ({ data: input }) => {
+    const supabase = getPublicClient();
+    const [cutoffRes, collegeRes, classRes] = await Promise.all([
+      supabase
+        .from("cutoffs_official_2026")
+        .select("college_name, branch, category, closing_percentile")
+        .ilike("academic_year", "%2026%")
+        .eq("data_status", "Published")
+        .not("closing_percentile", "is", null),
+      supabase.from("colleges_official_2026").select("college_name, district"),
+      supabase
+        .from("college_classifications_verified")
+        .select("college_name, official_indicator, indicator_value")
+        .ilike("official_indicator", "%NAAC%"),
+    ]);
+    if (cutoffRes.error) throw new Error(cutoffRes.error.message);
+    if (collegeRes.error) throw new Error(collegeRes.error.message);
+    if (classRes.error) throw new Error(classRes.error.message);
+
+    const categoryToken = input.category.trim().toUpperCase();
+    const buckets = [
+      { range: "70–75", min: 70, max: 75 },
+      { range: "75–80", min: 75, max: 80 },
+      { range: "80–85", min: 80, max: 85 },
+      { range: "85–90", min: 85, max: 90 },
+      { range: "90–95", min: 90, max: 95 },
+      { range: "95–100", min: 95, max: 100.01 },
+    ];
+    const bestByCollege = new Map<string, number>();
+    for (const row of cutoffRes.data ?? []) {
+      const branch = (row.branch ?? "").toLowerCase();
+      if (!branch.includes("computer")) continue;
+      const rowCategory = (row.category ?? "").toUpperCase();
+      if (categoryToken !== "OTHER" && !rowCategory.includes(categoryToken)) continue;
+      const cp = Number(row.closing_percentile);
+      if (!Number.isFinite(cp)) continue;
+      const prev = bestByCollege.get(row.college_name);
+      if (prev === undefined || cp > prev) bestByCollege.set(row.college_name, cp);
+    }
+    const cutoffDistribution = buckets.map((b) => ({
+      range: b.range,
+      count: Array.from(bestByCollege.values()).filter((v) => v >= b.min && v < b.max)
+        .length,
+    }));
+
+    const districtCounts = new Map<string, number>();
+    for (const c of collegeRes.data ?? []) {
+      const d = (c.district ?? "").trim();
+      if (!d) continue;
+      districtCounts.set(d, (districtCounts.get(d) ?? 0) + 1);
+    }
+
+    const naacSeen = new Set<string>();
+    const naacCounts = new Map<string, number>();
+    for (const r of classRes.data ?? []) {
+      const value = (r.indicator_value ?? "")
+        .replace(/\(.*?\)/g, "")
+        .replace(/valid until.*$/i, "")
+        .trim()
+        .replace(/[,;]$/, "")
+        .trim();
+      if (!value) continue;
+      const key = `${r.college_name}||${value}`;
+      if (naacSeen.has(key)) continue;
+      naacSeen.add(key);
+      naacCounts.set(value, (naacCounts.get(value) ?? 0) + 1);
+    }
+
+    return {
+      cutoffDistribution,
+      cseTotal: bestByCollege.size,
+      districts: Array.from(districtCounts.entries())
+        .map(([district, count]) => ({ district, count }))
+        .sort((a, b) => b.count - a.count || a.district.localeCompare(b.district)),
+      naac: Array.from(naacCounts.entries())
+        .map(([grade, count]) => ({ grade, count }))
+        .sort((a, b) => b.count - a.count || a.grade.localeCompare(b.grade)),
+    };
+  });
