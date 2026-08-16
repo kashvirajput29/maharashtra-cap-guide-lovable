@@ -5,12 +5,12 @@ export function SiteFooter() {
         <p className="font-medium text-foreground">Maharashtra CAP Guide</p>
         <p className="mt-3 max-w-4xl leading-relaxed">
           Disclaimer: Maharashtra CAP Guide is an independent student-built MVP created by
-          Kashvi Rajput for the Outskill AI for Students Bootcamp. It currently includes a
-          curated sample of 50 engineering colleges in Maharashtra. Information is for
-          guidance only and may be incomplete or change. Always verify eligibility,
+          Kashvi Rajput as an Outskill AI for Students Bootcamp Project. It currently
+          includes a curated set of 50 engineering colleges in Maharashtra. Information is
+          for guidance only and may be incomplete or change. Always verify eligibility,
           documents, dates, seat availability, cutoffs, and admission decisions on the{" "}
           <a
-            href="https://fe2026.mahacet.org/"
+            href="https://fe2026.mahacet.org/StaticPages/HomePage"
             target="_blank"
             rel="noreferrer noopener"
             className="font-medium text-aqua underline-offset-4 hover:underline"
