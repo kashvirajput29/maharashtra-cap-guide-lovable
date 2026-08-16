@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { PageBackground } from "@/components/page-background";
-import pageBg from "@/assets/desk-bg.asset.json";
+import pageBg from "@/assets/cap-process-bg.asset.json";
 import {
   MAX_OPTIONS,
   clearOptions,
