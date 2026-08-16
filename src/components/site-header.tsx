@@ -8,6 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 const navItems = [
   { to: "/recommend", label: "Find Your Colleges" },
   { to: "/what-if", label: "What If" },
+  { to: "/option-form", label: "Option Form" },
   { to: "/post-cap", label: "Post-CAP Process" },
   { to: "/faq", label: "FAQs" },
   { to: "/about", label: "About" },
