@@ -393,17 +393,17 @@ function CollegesPage() {
               <Button variant="outline" size="sm" onClick={clearCompare} className="gap-1.5">
                 <X className="h-3.5 w-3.5" /> Clear Comparison
               </Button>
-              <Button size="sm" asChild disabled={selection.length < 2} className="gap-1.5">
-                {selection.length < 2 ? (
-                  <span aria-disabled="true">
-                    <GitCompare className="h-4 w-4" /> Compare
-                  </span>
-                ) : (
+              {selection.length < 2 ? (
+                <Button size="sm" disabled className="gap-1.5">
+                  <GitCompare className="h-4 w-4" /> Compare
+                </Button>
+              ) : (
+                <Button size="sm" asChild className="gap-1.5">
                   <Link to="/compare">
                     <GitCompare className="h-4 w-4" /> Compare
                   </Link>
-                )}
-              </Button>
+                </Button>
+              )}
             </div>
           </div>
         </div>
