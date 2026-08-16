@@ -16,7 +16,7 @@ export function PageBackground({ image, blur = 22 }: PageBackgroundProps) {
         className="absolute -inset-8 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${image})`, filter: `blur(${blur}px)` }}
       />
-      <div className="absolute inset-0 bg-background/82 dark:bg-background/88" />
+      <div className="absolute inset-0 bg-background/76 dark:bg-background/84" />
     </div>
   );
 }
