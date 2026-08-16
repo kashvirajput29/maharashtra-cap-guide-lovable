@@ -6,10 +6,6 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems = [
-  { to: "/", label: "Home" },
-  { to: "/colleges", label: "Colleges" },
-  { to: "/cap-process", label: "CAP Process" },
-  { to: "/important-dates", label: "Important Dates" },
   { to: "/post-cap", label: "Post-CAP Process" },
   { to: "/faq", label: "FAQs" },
   { to: "/about", label: "About" },
@@ -41,7 +37,6 @@ export function SiteHeader() {
             <Link
               key={item.to}
               to={item.to}
-              activeOptions={{ exact: item.to === "/" }}
               className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-secondary-foreground data-[status=active]:bg-primary/10 data-[status=active]:text-primary"
             >
               {item.label}
@@ -65,7 +60,6 @@ export function SiteHeader() {
                     key={item.to}
                     to={item.to}
                     onClick={() => setOpen(false)}
-                    activeOptions={{ exact: item.to === "/" }}
                     className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-secondary-foreground data-[status=active]:bg-primary/10 data-[status=active]:text-primary"
                   >
                     {item.label}
