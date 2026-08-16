@@ -49,7 +49,7 @@ export const Route = createFileRoute("/insights")({
   component: InsightsPage,
 });
 
-function Empty({ label }: { label?: string }) {
+function Empty({ label }: { label?: string | undefined }) {
   return (
     <div className="flex h-[260px] items-center justify-center rounded-lg border border-dashed border-border/70 text-sm text-muted-foreground">
       {label ?? "Insufficient data for this chart"}
