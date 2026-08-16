@@ -143,6 +143,47 @@ function Home() {
           ))}
         </div>
       </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-16">
+        <Card className="border-border/70 bg-muted/40">
+          <CardContent className="p-6 md:p-8">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+              About this guide
+            </h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Maharashtra CAP Guide is a student-built, non-commercial reference
+              tool. It is not affiliated with the Maharashtra State CET Cell, any
+              university, or any college.
+            </p>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              All core data is sourced from official websites and documents,
+              including the Maharashtra State CET Cell FE Engineering Portal (
+              <a
+                href="https://fe2026.mahacet.org"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="font-medium text-aqua underline-offset-4 hover:underline"
+              >
+                fe2026.mahacet.org
+              </a>
+              ) and official college websites. Where official 2026 data is not
+              yet published, the guide explicitly marks it as “Not published
+              yet” rather than using predictions or unofficial numbers.
+            </p>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Users are encouraged to cross-check critical information
+              (especially cutoffs, deadlines, and admission procedures) directly
+              on the CET Cell portal and the official websites of the relevant
+              colleges or universities.
+            </p>
+            <div className="mt-6">
+              <Button asChild variant="outline">
+                <Link to="/about">Read our methodology</Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
     </div>
   );
 }
