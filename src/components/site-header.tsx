@@ -6,10 +6,6 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems = [
-  { to: "/", label: "Home" },
-  { to: "/colleges", label: "Colleges" },
-  { to: "/cap-process", label: "CAP Process" },
-  { to: "/important-dates", label: "Important Dates" },
   { to: "/post-cap", label: "Post-CAP Process" },
   { to: "/faq", label: "FAQs" },
   { to: "/about", label: "About" },
