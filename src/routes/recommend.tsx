@@ -120,8 +120,8 @@ function RecommendPage() {
         },
       });
       setResults(data);
-    } catch (err) {
-      setError(`DEBUG ${(err as Error)?.message}`);
+    } catch {
+      setError("Could not load recommendations. Please try again.");
     } finally {
       setLoading(false);
     }

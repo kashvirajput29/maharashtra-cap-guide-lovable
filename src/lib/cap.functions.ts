@@ -201,7 +201,6 @@ export const getRecommendations = createServerFn({ method: "GET" })
     ]);
     if (cutoffRes.error) throw new Error(cutoffRes.error.message);
     if (collegeRes.error) throw new Error(collegeRes.error.message);
-    console.log("REC_DEBUG", JSON.stringify(input), cutoffRes.data?.length);
 
     const collegeMap = new Map(
       (collegeRes.data ?? []).map((c) => [c.college_name, c] as const),
@@ -222,10 +221,6 @@ export const getRecommendations = createServerFn({ method: "GET" })
     };
 
     const best = new Map<string, Row>();
-    if (wanted[0] === "debugme")
-      throw new Error(
-        `rows=${cutoffRes.data?.length} sample=${JSON.stringify(cutoffRes.data?.[0])}`,
-      );
 
     for (const row of cutoffRes.data ?? []) {
       const branch = (row.branch ?? "").toLowerCase();
