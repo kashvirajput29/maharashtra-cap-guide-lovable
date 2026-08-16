@@ -1,12 +1,29 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
-import { MapPin, Search, ArrowRight, X, ExternalLink } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  MapPin,
+  Search,
+  ArrowRight,
+  X,
+  ExternalLink,
+  Info,
+  ChevronLeft,
+  ChevronRight,
+  GitCompare,
+} from "lucide-react";
 import { getOfficialColleges } from "@/lib/cap.functions";
 import { CutoffNote } from "@/components/cutoff-note";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 import {
   Select,
@@ -17,6 +34,14 @@ import {
 } from "@/components/ui/select";
 import { PageBackground } from "@/components/page-background";
 import pageBg from "@/assets/colleges-bg.asset.json";
+import {
+  MAX_COMPARE,
+  clearCompare,
+  toggleCompare,
+  useCompareSelection,
+} from "@/lib/compare-store";
+
+const PAGE_SIZE = 15;
 
 const collegesQuery = queryOptions({
   queryKey: ["colleges-official-2026"],
@@ -46,11 +71,30 @@ export const Route = createFileRoute("/colleges/")({
   component: CollegesPage,
 });
 
+function pageWindow(current: number, total: number): (number | "gap")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const pages = new Set<number>([1, total, current, current - 1, current + 1]);
+  if (current <= 3) [2, 3, 4].forEach((p) => pages.add(p));
+  if (current >= total - 2) [total - 3, total - 2, total - 1].forEach((p) => pages.add(p));
+  const sorted = Array.from(pages)
+    .filter((p) => p >= 1 && p <= total)
+    .sort((a, b) => a - b);
+  const out: (number | "gap")[] = [];
+  sorted.forEach((p, i) => {
+    if (i > 0 && p - (sorted[i - 1] as number) > 1) out.push("gap");
+    out.push(p);
+  });
+  return out;
+}
+
 function CollegesPage() {
   const { data: colleges } = useSuspenseQuery(collegesQuery);
   const [search, setSearch] = useState("");
   const [city, setCity] = useState("all");
   const [district, setDistrict] = useState("all");
+  const [page, setPage] = useState(1);
+  const listRef = useRef<HTMLDivElement>(null);
+  const selection = useCompareSelection();
 
   const cities = useMemo(
     () => Array.from(new Set(colleges.map((c) => c.city).filter((v): v is string => !!v))).sort(),
@@ -74,6 +118,22 @@ function CollegesPage() {
     [colleges, search, city, district],
   );
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pageItems = filtered.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE,
+  );
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, city, district]);
+
+  const goToPage = (next: number) => {
+    setPage(Math.min(Math.max(1, next), totalPages));
+    listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   const hasFilters = search.trim() !== "" || city !== "all" || district !== "all";
   const clearFilters = () => {
     setSearch("");
@@ -82,157 +142,272 @@ function CollegesPage() {
   };
 
   return (
-    <div className="theme-accent-campus mx-auto max-w-6xl px-4 py-10">
-      <PageBackground image={pageBg.url} />
-      <h1 className="text-3xl font-bold tracking-tight text-foreground">
-        Engineering Colleges
-      </h1>
-      <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted-foreground">
-        Verified official 2026 college records. Open a college to see its official CAP
-        cutoffs and verified classification indicators.
-      </p>
-
-      <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-[1fr_200px_200px]">
-        <div className="relative sm:col-span-2 md:col-span-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by college name"
-            className="pl-9"
-            aria-label="Search by college name"
-          />
-        </div>
-        <Select value={city} onValueChange={setCity}>
-          <SelectTrigger aria-label="Filter by city">
-            <SelectValue placeholder="City" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All cities</SelectItem>
-            {cities.map((c) => (
-              <SelectItem key={c} value={c}>
-                {c}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select value={district} onValueChange={setDistrict}>
-          <SelectTrigger aria-label="Filter by district">
-            <SelectValue placeholder="District" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All districts</SelectItem>
-            {districts.map((d) => (
-              <SelectItem key={d} value={d}>
-                {d}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-muted-foreground">
-          Showing <span className="font-semibold text-foreground">{filtered.length}</span>{" "}
-          of {colleges.length} colleges
-        </p>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={clearFilters}
-          disabled={!hasFilters}
-          className="gap-1.5"
-        >
-          <X className="h-3.5 w-3.5" />
-          Clear filters
-        </Button>
-      </div>
-
-      {filtered.length === 0 ? (
-        <Card className="mt-6 border-dashed">
-          <CardContent className="p-10 text-center text-sm text-muted-foreground">
-            No colleges match these filters. Try clearing the search or choosing another
-            city.
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          {filtered.map((c) => {
-            const branches = (c.branches_offered ?? "")
-              .split(/[,;|]/)
-              .map((b) => b.trim())
-              .filter(Boolean);
-            return (
-              <Card
-                key={c.id}
-                className="h-full border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+    <TooltipProvider delayDuration={150}>
+      <div className="theme-accent-campus mx-auto max-w-6xl px-4 py-10 pb-28">
+        <PageBackground image={pageBg.url} />
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          Engineering Colleges
+        </h1>
+        <p className="mt-2 flex max-w-2xl items-start gap-2 text-base leading-relaxed text-muted-foreground">
+          <span>Verified official 2026 college records.</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span
+                tabIndex={0}
+                role="note"
+                aria-label="About this data"
+                className="mt-1 inline-flex shrink-0 cursor-help text-muted-foreground"
               >
-                <CardContent className="flex h-full flex-col p-5 sm:p-6">
-                  <h2 className="min-w-0 break-words text-base font-semibold leading-snug text-foreground">
-                    {c.college_name}
-                  </h2>
-                  <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
-                    <MapPin className="h-3.5 w-3.5 shrink-0" />
-                    <span className="min-w-0 break-words">
-                      {c.city}, {c.district}
-                    </span>
-                  </p>
-                  <p className="mt-1 break-words text-xs uppercase tracking-wide text-muted-foreground">
-                    {c.university_affiliation}
-                  </p>
+                <Info className="h-4 w-4" />
+              </span>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-xs">
+              Open a college to see its official CAP cutoffs and verified classification
+              indicators. Select up to {MAX_COMPARE} colleges to compare them side by side.
+            </TooltipContent>
+          </Tooltip>
+        </p>
 
-                  {branches.length > 0 ? (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {branches.map((b) => (
-                        <span
-                          key={b}
-                          className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground"
-                        >
-                          {b}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-[1fr_200px_200px]">
+          <div className="relative sm:col-span-2 md:col-span-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by college name"
+              className="pl-9"
+              aria-label="Search by college name"
+            />
+          </div>
+          <Select value={city} onValueChange={setCity}>
+            <SelectTrigger aria-label="Filter by city">
+              <SelectValue placeholder="City" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All cities</SelectItem>
+              {cities.map((c) => (
+                <SelectItem key={c} value={c}>
+                  {c}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={district} onValueChange={setDistrict}>
+            <SelectTrigger aria-label="Filter by district">
+              <SelectValue placeholder="District" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All districts</SelectItem>
+              {districts.map((d) => (
+                <SelectItem key={d} value={d}>
+                  {d}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-                  <div className="mt-4">
-                    {c.official_website_url ? (
-                      <a
-                        href={c.official_website_url}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="inline-flex items-center gap-1.5 break-all text-sm font-medium text-aqua hover:underline"
-                      >
-                        {c.official_website_url}
-                        <ExternalLink className="h-3.5 w-3.5 shrink-0" />
-                      </a>
-                    ) : (
-                      <p className="text-sm text-muted-foreground">
-                        Official website not verified yet
-                      </p>
-                    )}
-                  </div>
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-muted-foreground">
+            Showing{" "}
+            <span className="font-semibold text-foreground">{pageItems.length}</span> of{" "}
+            {filtered.length} matching colleges ({colleges.length} total)
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={clearFilters}
+            disabled={!hasFilters}
+            className="gap-1.5"
+          >
+            <X className="h-3.5 w-3.5" />
+            Clear filters
+          </Button>
+        </div>
 
-                  {c.last_verified ? (
-                    <p className="mt-3 text-xs text-muted-foreground">
-                      Last verified: {c.last_verified}
+        <div ref={listRef} className="scroll-mt-24" />
+
+        {filtered.length === 0 ? (
+          <Card className="mt-6 border-dashed">
+            <CardContent className="p-10 text-center text-sm text-muted-foreground">
+              No colleges match these filters. Try clearing the search or choosing another
+              city.
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {pageItems.map((c) => {
+              const branches = (c.branches_offered ?? "")
+                .split(/[,;|]/)
+                .map((b) => b.trim())
+                .filter(Boolean);
+              const checked = selection.includes(c.college_name);
+              const limitReached = !checked && selection.length >= MAX_COMPARE;
+              return (
+                <Card
+                  key={c.id}
+                  className="h-full border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+                >
+                  <CardContent className="flex h-full flex-col p-5 sm:p-6">
+                    <h2 className="min-w-0 break-words text-base font-semibold leading-snug text-foreground">
+                      {c.college_name}
+                    </h2>
+                    <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <MapPin className="h-3.5 w-3.5 shrink-0" />
+                      <span className="min-w-0 break-words">
+                        {c.city}, {c.district}
+                      </span>
                     </p>
-                  ) : null}
+                    <p className="mt-1 break-words text-xs uppercase tracking-wide text-muted-foreground">
+                      {c.university_affiliation}
+                    </p>
 
-                  <Link
-                    to="/colleges/$collegeName"
-                    params={{ collegeName: c.college_name }}
-                    className="mt-4 inline-flex items-center gap-1 text-base font-semibold text-aqua hover:underline"
-                  >
-                    View cutoffs <ArrowRight className="h-4 w-4" />
+                    {branches.length > 0 ? (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {branches.map((b) => (
+                          <span
+                            key={b}
+                            className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground"
+                          >
+                            {b}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    <div className="mt-4">
+                      {c.official_website_url ? (
+                        <a
+                          href={c.official_website_url}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="inline-flex items-center gap-1.5 break-all text-sm font-medium text-aqua hover:underline"
+                        >
+                          Visit official website
+                          <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                        </a>
+                      ) : (
+                        <p className="text-sm text-muted-foreground">
+                          Official website not verified yet
+                        </p>
+                      )}
+                    </div>
+
+                    {c.last_verified ? (
+                      <p className="mt-3 text-xs text-muted-foreground">
+                        Last verified: {c.last_verified}
+                      </p>
+                    ) : null}
+
+                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                      <Link
+                        to="/colleges/$collegeName"
+                        params={{ collegeName: c.college_name }}
+                        className="inline-flex items-center gap-1 text-base font-semibold text-aqua hover:underline"
+                      >
+                        View details <ArrowRight className="h-4 w-4" />
+                      </Link>
+
+                      <label
+                        className={`inline-flex items-center gap-2 text-sm font-medium ${
+                          limitReached
+                            ? "cursor-not-allowed text-muted-foreground"
+                            : "cursor-pointer text-foreground"
+                        }`}
+                      >
+                        <Checkbox
+                          checked={checked}
+                          disabled={limitReached}
+                          onCheckedChange={() => toggleCompare(c.college_name)}
+                          aria-label={`Compare ${c.college_name}`}
+                        />
+                        Compare
+                      </label>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        )}
+
+        {totalPages > 1 && (
+          <nav
+            aria-label="Colleges pagination"
+            className="mt-8 flex flex-wrap items-center justify-center gap-2"
+          >
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => goToPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="gap-1"
+            >
+              <ChevronLeft className="h-4 w-4" /> Previous
+            </Button>
+            {pageWindow(currentPage, totalPages).map((p, i) =>
+              p === "gap" ? (
+                <span key={`gap-${i}`} className="px-1 text-muted-foreground">
+                  …
+                </span>
+              ) : (
+                <Button
+                  key={p}
+                  variant={p === currentPage ? "default" : "outline"}
+                  size="sm"
+                  aria-current={p === currentPage ? "page" : undefined}
+                  onClick={() => goToPage(p)}
+                  className="min-w-9"
+                >
+                  {p}
+                </Button>
+              ),
+            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => goToPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="gap-1"
+            >
+              Next <ChevronRight className="h-4 w-4" />
+            </Button>
+          </nav>
+        )}
+
+        <CutoffNote className="mt-8" />
+      </div>
+
+      {selection.length > 0 && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border/70 bg-background/95 backdrop-blur">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+            <p className="text-sm font-medium text-foreground">
+              Compare Selected ({selection.length}/{MAX_COMPARE})
+              {selection.length < 2 ? (
+                <span className="ml-2 text-xs font-normal text-muted-foreground">
+                  Select at least 2 colleges
+                </span>
+              ) : null}
+            </p>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" onClick={clearCompare} className="gap-1.5">
+                <X className="h-3.5 w-3.5" /> Clear Comparison
+              </Button>
+              <Button size="sm" asChild disabled={selection.length < 2} className="gap-1.5">
+                {selection.length < 2 ? (
+                  <span aria-disabled="true">
+                    <GitCompare className="h-4 w-4" /> Compare
+                  </span>
+                ) : (
+                  <Link to="/compare">
+                    <GitCompare className="h-4 w-4" /> Compare
                   </Link>
-                </CardContent>
-              </Card>
-            );
-          })}
+                )}
+              </Button>
+            </div>
+          </div>
         </div>
       )}
-
-      <CutoffNote className="mt-8" />
-    </div>
+    </TooltipProvider>
   );
 }
