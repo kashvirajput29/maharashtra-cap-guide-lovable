@@ -271,3 +271,110 @@ export const getRecommendations = createServerFn({ method: "GET" })
       )
       .slice(0, 20);
   });
+
+/* ---------- What-If simulator (two-scenario comparison) ---------- */
+
+export const getWhatIfScenario = createServerFn({ method: "GET" })
+  .inputValidator((input) =>
+    z
+      .object({
+        percentile: z.number().min(0).max(100),
+        category: z.string().min(1).max(40),
+        candidatureType: z.string().min(1).max(80),
+        branches: z.array(z.string().min(1).max(120)).min(1).max(15),
+        districts: z.array(z.string().min(1).max(80)).max(20).default([]),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data: input }) => {
+    const supabase = getPublicClient();
+    const [cutoffRes, collegeRes] = await Promise.all([
+      supabase
+        .from("cutoffs_official_2026")
+        .select(
+          "id, college_name, academic_year, cap_round, branch, category, candidature_type, closing_percentile, source_url",
+        )
+        .ilike("academic_year", "%2026%")
+        .eq("data_status", "Published")
+        .ilike("candidature_type", input.candidatureType)
+        .not("closing_percentile", "is", null),
+      supabase
+        .from("colleges_official_2026")
+        .select("college_name, city, district"),
+    ]);
+    if (cutoffRes.error) throw new Error(cutoffRes.error.message);
+    if (collegeRes.error) throw new Error(collegeRes.error.message);
+
+    const collegeMap = new Map(
+      (collegeRes.data ?? []).map((c) => [c.college_name, c] as const),
+    );
+    const categoryToken = input.category.trim().toUpperCase();
+    const wanted = input.branches.map((b) => b.toLowerCase().trim()).filter(Boolean);
+    const districtSet = new Set(input.districts.map((d) => d.toLowerCase().trim()));
+
+    type Row = {
+      key: string;
+      collegeName: string;
+      city: string | null;
+      district: string | null;
+      branch: string;
+      capRound: string | null;
+      closingPercentile: number;
+      label: "Safe" | "Moderate" | "Ambitious";
+    };
+
+    const best = new Map<string, Row>();
+
+    for (const row of cutoffRes.data ?? []) {
+      const branch = (row.branch ?? "").toLowerCase();
+      if (!branch) continue;
+      const matches = wanted.some((w) => branch.includes(w) || w.includes(branch));
+      if (!matches) continue;
+
+      const rowCategory = (row.category ?? "").toUpperCase();
+      if (categoryToken !== "OTHER" && !rowCategory.includes(categoryToken)) continue;
+
+      const college = collegeMap.get(row.college_name);
+      if (districtSet.size > 0) {
+        const d = (college?.district ?? "").toLowerCase();
+        if (!d || !districtSet.has(d)) continue;
+      }
+
+      const cp = Number(row.closing_percentile);
+      if (!Number.isFinite(cp)) continue;
+
+      const label: Row["label"] =
+        input.percentile >= cp + 1.5
+          ? "Safe"
+          : input.percentile > cp - 1.5
+            ? "Moderate"
+            : "Ambitious";
+
+      const key = `${row.college_name}||${row.branch}`;
+      const existing = best.get(key);
+      if (!existing || cp < existing.closingPercentile) {
+        best.set(key, {
+          key,
+          collegeName: row.college_name,
+          city: college?.city ?? null,
+          district: college?.district ?? null,
+          branch: row.branch!,
+          capRound: row.cap_round ?? null,
+          closingPercentile: cp,
+          label,
+        });
+      }
+    }
+
+    const counts = { Safe: 0, Moderate: 0, Ambitious: 0 };
+    for (const row of best.values()) {
+      counts[row.label]++;
+    }
+
+    const topSafe = Array.from(best.values())
+      .filter((r) => r.label === "Safe")
+      .sort((a, b) => b.closingPercentile - a.closingPercentile)
+      .slice(0, 5);
+
+    return { counts, topSafe, total: best.size };
+  });
