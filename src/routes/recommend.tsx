@@ -1,7 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Sparkles, X, MapPin, Loader2 } from "lucide-react";
+import { Sparkles, X, MapPin, Loader2, ClipboardList } from "lucide-react";
 import { getRecommendOptions, getRecommendations } from "@/lib/cap.functions";
 import { CutoffNote } from "@/components/cutoff-note";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { PageBackground } from "@/components/page-background";
 import pageBg from "@/assets/colleges-bg.asset.json";
+import { addOptions } from "@/lib/option-form-store";
 
 const optionsQuery = queryOptions({
   queryKey: ["recommend-options"],
@@ -73,6 +74,7 @@ function splitList(value: string) {
 
 function RecommendPage() {
   const { data: options } = useSuspenseQuery(optionsQuery);
+  const navigate = useNavigate();
 
   const [percentile, setPercentile] = useState("");
   const [category, setCategory] = useState<string>("OPEN");
@@ -329,9 +331,23 @@ function RecommendPage() {
             </p>
           ) : (
             <>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Showing top {results.length} matches, sorted Safe first.
-              </p>
+              <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+                <p className="text-sm text-muted-foreground">
+                  Showing top {results.length} matches, sorted Safe first.
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded-lg"
+                  onClick={() => {
+                    addOptions(Array.from(new Set(results.map((r) => r.collegeName))));
+                    navigate({ to: "/option-form" });
+                  }}
+                >
+                  <ClipboardList className="mr-2 h-4 w-4" /> Use these colleges in Option
+                  Form
+                </Button>
+              </div>
 
               {/* Mobile cards */}
               <div className="mt-4 grid gap-3 md:hidden">
