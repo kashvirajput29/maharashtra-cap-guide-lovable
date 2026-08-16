@@ -18,6 +18,7 @@ import { Route as ImportantDatesRouteImport } from './routes/important-dates'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PostCapRouteImport } from './routes/post-cap'
 import { Route as RecommendRouteImport } from './routes/recommend'
+import { Route as WhatIfRouteImport } from './routes/what-if'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as CollegesIndexRouteImport } from './routes/colleges.index'
@@ -70,6 +71,11 @@ const RecommendRoute = RecommendRouteImport.update({
   path: '/recommend',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WhatIfRoute = WhatIfRouteImport.update({
+  id: '/what-if',
+  path: '/what-if',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotmcpChar93ListToolsRoute =
   Char91DotmcpChar93ListToolsRouteImport.update({
     id: '/.mcp/list-tools',
@@ -114,6 +120,7 @@ export interface FileRoutesByFullPath {
   '/mcp': typeof McpRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
+  '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
@@ -131,6 +138,7 @@ export interface FileRoutesByTo {
   '/mcp': typeof McpRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
+  '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
@@ -149,6 +157,7 @@ export interface FileRoutesById {
   '/mcp': typeof McpRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
+  '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
@@ -168,6 +177,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/post-cap'
     | '/recommend'
+    | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/colleges/$collegeName'
@@ -185,6 +195,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/post-cap'
     | '/recommend'
+    | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/colleges/$collegeName'
@@ -202,6 +213,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/post-cap'
     | '/recommend'
+    | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/colleges/$collegeName'
@@ -220,6 +232,7 @@ export interface RootRouteChildren {
   McpRoute: typeof McpRoute
   PostCapRoute: typeof PostCapRoute
   RecommendRoute: typeof RecommendRoute
+  WhatIfRoute: typeof WhatIfRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   CollegesCollegeNameRoute: typeof CollegesCollegeNameRoute
@@ -293,6 +306,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecommendRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/what-if': {
+      id: '/what-if'
+      path: '/what-if'
+      fullPath: '/what-if'
+      preLoaderRoute: typeof WhatIfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.mcp/list-tools': {
       id: '/.mcp/list-tools'
       path: '/.mcp/list-tools'
@@ -348,6 +368,7 @@ const rootRouteChildren: RootRouteChildren = {
   McpRoute: McpRoute,
   PostCapRoute: PostCapRoute,
   RecommendRoute: RecommendRoute,
+  WhatIfRoute: WhatIfRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
