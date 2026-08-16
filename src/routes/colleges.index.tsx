@@ -16,6 +16,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PageBackground } from "@/components/page-background";
+import pageBg from "@/assets/colleges-bg.asset.json";
 
 const collegesQuery = queryOptions({
   queryKey: ["colleges"],
@@ -88,7 +90,8 @@ function CollegesPage() {
 
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
+    <div className="theme-accent-campus mx-auto max-w-6xl px-4 py-10">
+      <PageBackground image={pageBg.url} />
       <h1 className="text-3xl font-bold tracking-tight text-foreground">
         Engineering Colleges
       </h1>

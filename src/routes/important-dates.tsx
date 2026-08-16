@@ -6,6 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Disclaimer } from "@/components/disclaimer";
+import { PageBackground } from "@/components/page-background";
+import pageBg from "@/assets/important-dates-bg.asset.json";
 
 const datesQuery = queryOptions({
   queryKey: ["important-dates"],
@@ -129,7 +131,8 @@ function ImportantDatesPage() {
   ).length;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
+    <div className="theme-accent-night mx-auto max-w-4xl px-4 py-10">
+      <PageBackground image={pageBg.url} />
       <h1 className="text-3xl font-bold tracking-tight text-foreground">
         Important dates
       </h1>

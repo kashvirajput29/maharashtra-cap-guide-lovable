@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { PageBackground } from "@/components/page-background";
+import pageBg from "@/assets/cap-process-bg.asset.json";
 
 type Step = {
   title: string;
@@ -98,7 +100,8 @@ export const Route = createFileRoute("/cap-process")({
 
 function CapProcessPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
+    <div className="theme-accent-desk mx-auto max-w-4xl px-4 py-10">
+      <PageBackground image={pageBg.url} />
       <div className="space-y-3">
         <Badge
           variant="outline"

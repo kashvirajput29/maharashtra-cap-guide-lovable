@@ -157,14 +157,16 @@
 
   html {
     font-size: 17px;
+    background-color: var(--color-background);
   }
 
   body {
-    background-color: var(--color-background);
+    background-color: transparent;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
+
 
   h1,
   h2,
@@ -181,4 +183,100 @@
   html.dark {
     color-scheme: dark;
   }
+}
+
+/*
+ * Page accent themes. Each page-specific background image gets a matching,
+ * accessible accent palette. Only accents change — background, card and
+ * foreground tokens stay neutral so body text remains dark in light mode
+ * and off-white in dark mode.
+ */
+.theme-accent-sunrise {
+  --primary: oklch(0.52 0.135 62);
+  --primary-foreground: oklch(0.99 0.005 80);
+  --ring: oklch(0.52 0.135 62);
+  --aqua: oklch(0.52 0.11 45);
+  --teal: oklch(0.50 0.10 130);
+}
+.dark .theme-accent-sunrise {
+  --primary: oklch(0.80 0.13 78);
+  --primary-foreground: oklch(0.20 0.04 70);
+  --ring: oklch(0.80 0.13 78);
+  --aqua: oklch(0.82 0.11 60);
+  --teal: oklch(0.79 0.11 135);
+}
+
+.theme-accent-campus {
+  --primary: oklch(0.47 0.11 150);
+  --primary-foreground: oklch(0.99 0.005 150);
+  --ring: oklch(0.47 0.11 150);
+  --aqua: oklch(0.48 0.09 190);
+  --teal: oklch(0.47 0.10 165);
+}
+.dark .theme-accent-campus {
+  --primary: oklch(0.78 0.13 150);
+  --primary-foreground: oklch(0.19 0.04 150);
+  --ring: oklch(0.78 0.13 150);
+  --aqua: oklch(0.80 0.10 190);
+  --teal: oklch(0.79 0.11 165);
+}
+
+.theme-accent-library {
+  --primary: oklch(0.46 0.09 50);
+  --primary-foreground: oklch(0.99 0.005 60);
+  --ring: oklch(0.46 0.09 50);
+  --aqua: oklch(0.47 0.08 210);
+  --teal: oklch(0.48 0.09 155);
+}
+.dark .theme-accent-library {
+  --primary: oklch(0.79 0.10 66);
+  --primary-foreground: oklch(0.19 0.03 60);
+  --ring: oklch(0.79 0.10 66);
+  --aqua: oklch(0.80 0.08 210);
+  --teal: oklch(0.79 0.10 155);
+}
+
+.theme-accent-desk {
+  --primary: oklch(0.47 0.10 112);
+  --primary-foreground: oklch(0.99 0.005 110);
+  --ring: oklch(0.47 0.10 112);
+  --aqua: oklch(0.48 0.09 175);
+  --teal: oklch(0.47 0.10 140);
+}
+.dark .theme-accent-desk {
+  --primary: oklch(0.80 0.12 115);
+  --primary-foreground: oklch(0.19 0.04 110);
+  --ring: oklch(0.80 0.12 115);
+  --aqua: oklch(0.80 0.10 175);
+  --teal: oklch(0.79 0.11 140);
+}
+
+.theme-accent-night {
+  --primary: oklch(0.47 0.16 258);
+  --primary-foreground: oklch(0.99 0.004 260);
+  --ring: oklch(0.47 0.16 258);
+  --aqua: oklch(0.50 0.12 225);
+  --teal: oklch(0.49 0.10 195);
+}
+.dark .theme-accent-night {
+  --primary: oklch(0.76 0.14 258);
+  --primary-foreground: oklch(0.18 0.04 258);
+  --ring: oklch(0.76 0.14 258);
+  --aqua: oklch(0.80 0.11 225);
+  --teal: oklch(0.79 0.10 195);
+}
+
+.theme-accent-coffee {
+  --primary: oklch(0.45 0.10 42);
+  --primary-foreground: oklch(0.99 0.005 60);
+  --ring: oklch(0.45 0.10 42);
+  --aqua: oklch(0.47 0.09 232);
+  --teal: oklch(0.48 0.09 160);
+}
+.dark .theme-accent-coffee {
+  --primary: oklch(0.80 0.12 62);
+  --primary-foreground: oklch(0.19 0.04 55);
+  --ring: oklch(0.80 0.12 62);
+  --aqua: oklch(0.80 0.09 232);
+  --teal: oklch(0.79 0.10 160);
 }

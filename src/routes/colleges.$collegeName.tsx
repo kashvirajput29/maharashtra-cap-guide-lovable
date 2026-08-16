@@ -22,6 +22,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { PageBackground } from "@/components/page-background";
+import pageBg from "@/assets/college-detail-bg.asset.json";
 
 const collegeQuery = (collegeName: string) =>
   queryOptions({
@@ -146,7 +148,8 @@ function CollegeDetail() {
     .filter(Boolean);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
+    <div className="theme-accent-library mx-auto max-w-6xl px-4 py-8 sm:py-10">
+      <PageBackground image={pageBg.url} />
       <Link
         to="/colleges"
         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
