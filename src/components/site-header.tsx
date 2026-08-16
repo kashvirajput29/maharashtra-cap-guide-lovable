@@ -60,7 +60,6 @@ export function SiteHeader() {
                     key={item.to}
                     to={item.to}
                     onClick={() => setOpen(false)}
-                    activeOptions={{ exact: item.to === "/" }}
                     className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-secondary-foreground data-[status=active]:bg-primary/10 data-[status=active]:text-primary"
                   >
                     {item.label}
