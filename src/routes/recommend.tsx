@@ -31,9 +31,9 @@ const CANDIDATURE = [
   "Other Than Home University",
 ] as const;
 
-const TITLE = "Find Your Colleges — Maharashtra CAP Guide | MHT-CET Counselling Help";
+const TITLE = "College Matchmaker — Maharashtra CAP Guide | MHT-CET Counselling Help";
 const DESC =
-  "Enter your MHT-CET percentile, category and preferred branches to see Maharashtra engineering colleges ranked as Safe, Moderate or Ambitious using official 2026 CAP cutoffs.";
+  "Enter your MHT-CET percentile, category and preferred branches to see Maharashtra engineering colleges ranked as Safe, Moderate or Ambitious using official 2026 CAP cutoffs."
 
 export const Route = createFileRoute("/recommend")({
   head: () => ({
