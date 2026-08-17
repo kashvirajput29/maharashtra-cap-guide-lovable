@@ -267,7 +267,7 @@ function OptionFormPage() {
               <Button
                 type="button"
                 size="lg"
-                className="mt-5 rounded-lg"
+                className="mt-5 w-full rounded-lg sm:w-auto"
                 disabled={selected.length === 0}
                 onClick={() => window.print()}
               >
