@@ -141,7 +141,7 @@ function OptionFormPage() {
                   return (
                     <li
                       key={c.id}
-                      className="flex items-start justify-between gap-3 p-3 text-sm"
+                      className="flex flex-col gap-2 p-3 text-sm sm:flex-row sm:items-start sm:justify-between sm:gap-3"
                     >
                       <div className="min-w-0">
                         <p className="break-words font-medium text-foreground">
@@ -155,7 +155,7 @@ function OptionFormPage() {
                         type="button"
                         size="sm"
                         variant={isSelected ? "secondary" : "outline"}
-                        className="shrink-0 rounded-lg"
+                        className="shrink-0 self-start rounded-lg"
                         onClick={() => toggleOption(c.college_name)}
                         disabled={!isSelected && selected.length >= MAX_OPTIONS}
                       >
@@ -168,6 +168,7 @@ function OptionFormPage() {
                         )}
                       </Button>
                     </li>
+
                   );
                 })}
                 {filtered.length === 0 && (
@@ -211,21 +212,24 @@ function OptionFormPage() {
                     return (
                       <li
                         key={name}
-                        className="flex items-start gap-3 rounded-xl border border-border bg-card/80 p-3"
+                        className="flex flex-col gap-3 rounded-xl border border-border bg-card/80 p-3 sm:flex-row sm:items-start"
                       >
-                        <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-                          {index + 1}
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <p className="break-words text-sm font-medium text-foreground">
-                            {name}
-                          </p>
-                          <p className="mt-0.5 text-xs text-muted-foreground">
-                            {[college?.city, college?.district].filter(Boolean).join(", ") ||
-                              "—"}
-                          </p>
+                        <div className="flex min-w-0 flex-1 items-start gap-3">
+                          <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                            {index + 1}
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <p className="break-words text-sm font-medium text-foreground">
+                              {name}
+                            </p>
+                            <p className="mt-0.5 text-xs text-muted-foreground">
+                              {[college?.city, college?.district]
+                                .filter(Boolean)
+                                .join(", ") || "—"}
+                            </p>
+                          </div>
                         </div>
-                        <div className="flex shrink-0 gap-1">
+                        <div className="flex shrink-0 justify-end gap-1">
                           <Button
                             variant="outline"
                             size="icon"
@@ -254,6 +258,7 @@ function OptionFormPage() {
                           </Button>
                         </div>
                       </li>
+
                     );
                   })}
                 </ol>
@@ -262,7 +267,7 @@ function OptionFormPage() {
               <Button
                 type="button"
                 size="lg"
-                className="mt-5 rounded-lg"
+                className="mt-5 w-full rounded-lg sm:w-auto"
                 disabled={selected.length === 0}
                 onClick={() => window.print()}
               >
