@@ -31,9 +31,9 @@ const collegesQuery = queryOptions({
   queryFn: () => getOfficialColleges(),
 });
 
-const TITLE = "Smart Option Form — Maharashtra CAP Guide | MHT-CET Counselling Help";
+const TITLE = "Download My Options — Maharashtra CAP Guide | MHT-CET Counselling Help";
 const DESC =
-  "Build and order a sample Maharashtra CAP option form from official 2026 college records, then print it or save it as a PDF for reference.";
+  "Build and order a sample Maharashtra CAP option form from official 2026 college records, then print it or save it as a PDF for reference."
 
 export const Route = createFileRoute("/option-form")({
   head: () => ({

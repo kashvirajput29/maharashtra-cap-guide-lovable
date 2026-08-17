@@ -29,9 +29,9 @@ const CANDIDATURE = [
   "Other Than Home University",
 ] as const;
 
-const TITLE = "What If Simulator — Maharashtra CAP Guide | MHT-CET Counselling Help";
+const TITLE = "Compare Scenarios — Maharashtra CAP Guide | MHT-CET Counselling Help";
 const DESC =
-  "Compare two MHT-CET CAP scenarios side-by-side. Change percentile, category or candidature type to see how your Safe, Moderate and Ambitious college options change.";
+  "Compare two MHT-CET CAP scenarios side-by-side. Change percentile, category or candidature type to see how your Safe, Moderate and Ambitious college options change."
 
 export const Route = createFileRoute("/what-if")({
   head: () => ({
