@@ -144,6 +144,27 @@ export const getPostCapUpdates = createServerFn({ method: "GET" }).handler(async
   return data ?? [];
 });
 
+export const getPostCapUpdatesPage = createServerFn({ method: "GET" })
+  .inputValidator((input) =>
+    z
+      .object({ page: z.number().int().min(1).default(1), pageSize: z.number().int().min(1).max(50).default(10) })
+      .parse(input ?? {}),
+  )
+  .handler(async ({ data: input }) => {
+    const supabase = getPublicClient();
+    const from = (input.page - 1) * input.pageSize;
+    const { data, error, count } = await supabase
+      .from("post_cap_updates_official")
+      .select(
+        "id, college_name, update_title, update_type, status, published_date, notice_url, last_verified",
+        { count: "exact" },
+      )
+      .order("college_name", { ascending: true })
+      .range(from, from + input.pageSize - 1);
+    if (error) throw new Error(error.message);
+    return { rows: data ?? [], total: count ?? 0, page: input.page, pageSize: input.pageSize };
+});
+
 /* ---------- College recommendation (rule-based) ---------- */
 
 export const getRecommendOptions = createServerFn({ method: "GET" }).handler(async () => {
