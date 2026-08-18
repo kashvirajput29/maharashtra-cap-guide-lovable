@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as CapProcessRouteImport } from './routes/cap-process'
 import { Route as CompareRouteImport } from './routes/compare'
+import { Route as CutoffsRouteImport } from './routes/cutoffs'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ImportantDatesRouteImport } from './routes/important-dates'
 import { Route as McpRouteImport } from './routes/mcp'
@@ -45,6 +46,11 @@ const CapProcessRoute = CapProcessRouteImport.update({
 const CompareRoute = CompareRouteImport.update({
   id: '/compare',
   path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CutoffsRoute = CutoffsRouteImport.update({
+  id: '/cutoffs',
+  path: '/cutoffs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/cap-process': typeof CapProcessRoute
   '/compare': typeof CompareRoute
+  '/cutoffs': typeof CutoffsRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
@@ -140,6 +147,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/cap-process': typeof CapProcessRoute
   '/compare': typeof CompareRoute
+  '/cutoffs': typeof CutoffsRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/cap-process': typeof CapProcessRoute
   '/compare': typeof CompareRoute
+  '/cutoffs': typeof CutoffsRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/cap-process'
     | '/compare'
+    | '/cutoffs'
     | '/faq'
     | '/important-dates'
     | '/mcp'
@@ -200,6 +210,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/cap-process'
     | '/compare'
+    | '/cutoffs'
     | '/faq'
     | '/important-dates'
     | '/mcp'
@@ -219,6 +230,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/cap-process'
     | '/compare'
+    | '/cutoffs'
     | '/faq'
     | '/important-dates'
     | '/mcp'
@@ -239,6 +251,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CapProcessRoute: typeof CapProcessRoute
   CompareRoute: typeof CompareRoute
+  CutoffsRoute: typeof CutoffsRoute
   FaqRoute: typeof FaqRoute
   ImportantDatesRoute: typeof ImportantDatesRoute
   McpRoute: typeof McpRoute
@@ -282,6 +295,13 @@ declare module '@tanstack/react-router' {
       path: '/compare'
       fullPath: '/compare'
       preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cutoffs': {
+      id: '/cutoffs'
+      path: '/cutoffs'
+      fullPath: '/cutoffs'
+      preLoaderRoute: typeof CutoffsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -383,6 +403,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CapProcessRoute: CapProcessRoute,
   CompareRoute: CompareRoute,
+  CutoffsRoute: CutoffsRoute,
   FaqRoute: FaqRoute,
   ImportantDatesRoute: ImportantDatesRoute,
   McpRoute: McpRoute,
