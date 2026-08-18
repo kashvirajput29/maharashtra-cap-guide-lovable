@@ -20,6 +20,7 @@ import { Route as McpRouteImport } from './routes/mcp'
 import { Route as OptionFormRouteImport } from './routes/option-form'
 import { Route as PostCapRouteImport } from './routes/post-cap'
 import { Route as RecommendRouteImport } from './routes/recommend'
+import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as WhatIfRouteImport } from './routes/what-if'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
@@ -83,6 +84,11 @@ const RecommendRoute = RecommendRouteImport.update({
   path: '/recommend',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScheduleRoute = ScheduleRouteImport.update({
+  id: '/schedule',
+  path: '/schedule',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WhatIfRoute = WhatIfRouteImport.update({
   id: '/what-if',
   path: '/what-if',
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/option-form': typeof OptionFormRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
+  '/schedule': typeof ScheduleRoute
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/option-form': typeof OptionFormRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
+  '/schedule': typeof ScheduleRoute
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/option-form': typeof OptionFormRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
+  '/schedule': typeof ScheduleRoute
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/option-form'
     | '/post-cap'
     | '/recommend'
+    | '/schedule'
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -217,6 +227,7 @@ export interface FileRouteTypes {
     | '/option-form'
     | '/post-cap'
     | '/recommend'
+    | '/schedule'
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -237,6 +248,7 @@ export interface FileRouteTypes {
     | '/option-form'
     | '/post-cap'
     | '/recommend'
+    | '/schedule'
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -258,6 +270,7 @@ export interface RootRouteChildren {
   OptionFormRoute: typeof OptionFormRoute
   PostCapRoute: typeof PostCapRoute
   RecommendRoute: typeof RecommendRoute
+  ScheduleRoute: typeof ScheduleRoute
   WhatIfRoute: typeof WhatIfRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -346,6 +359,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecommendRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/schedule': {
+      id: '/schedule'
+      path: '/schedule'
+      fullPath: '/schedule'
+      preLoaderRoute: typeof ScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/what-if': {
       id: '/what-if'
       path: '/what-if'
@@ -410,6 +430,7 @@ const rootRouteChildren: RootRouteChildren = {
   OptionFormRoute: OptionFormRoute,
   PostCapRoute: PostCapRoute,
   RecommendRoute: RecommendRoute,
+  ScheduleRoute: ScheduleRoute,
   WhatIfRoute: WhatIfRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
