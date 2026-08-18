@@ -13,12 +13,14 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as CapProcessRouteImport } from './routes/cap-process'
 import { Route as CompareRouteImport } from './routes/compare'
+import { Route as CutoffsRouteImport } from './routes/cutoffs'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ImportantDatesRouteImport } from './routes/important-dates'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as OptionFormRouteImport } from './routes/option-form'
 import { Route as PostCapRouteImport } from './routes/post-cap'
 import { Route as RecommendRouteImport } from './routes/recommend'
+import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as WhatIfRouteImport } from './routes/what-if'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
@@ -45,6 +47,11 @@ const CapProcessRoute = CapProcessRouteImport.update({
 const CompareRoute = CompareRouteImport.update({
   id: '/compare',
   path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CutoffsRoute = CutoffsRouteImport.update({
+  id: '/cutoffs',
+  path: '/cutoffs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -75,6 +82,11 @@ const PostCapRoute = PostCapRouteImport.update({
 const RecommendRoute = RecommendRouteImport.update({
   id: '/recommend',
   path: '/recommend',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScheduleRoute = ScheduleRouteImport.update({
+  id: '/schedule',
+  path: '/schedule',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WhatIfRoute = WhatIfRouteImport.update({
@@ -121,12 +133,14 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/cap-process': typeof CapProcessRoute
   '/compare': typeof CompareRoute
+  '/cutoffs': typeof CutoffsRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
   '/option-form': typeof OptionFormRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
+  '/schedule': typeof ScheduleRoute
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -140,12 +154,14 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/cap-process': typeof CapProcessRoute
   '/compare': typeof CompareRoute
+  '/cutoffs': typeof CutoffsRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
   '/option-form': typeof OptionFormRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
+  '/schedule': typeof ScheduleRoute
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -160,12 +176,14 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/cap-process': typeof CapProcessRoute
   '/compare': typeof CompareRoute
+  '/cutoffs': typeof CutoffsRoute
   '/faq': typeof FaqRoute
   '/important-dates': typeof ImportantDatesRoute
   '/mcp': typeof McpRoute
   '/option-form': typeof OptionFormRoute
   '/post-cap': typeof PostCapRoute
   '/recommend': typeof RecommendRoute
+  '/schedule': typeof ScheduleRoute
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -181,12 +199,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/cap-process'
     | '/compare'
+    | '/cutoffs'
     | '/faq'
     | '/important-dates'
     | '/mcp'
     | '/option-form'
     | '/post-cap'
     | '/recommend'
+    | '/schedule'
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -200,12 +220,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/cap-process'
     | '/compare'
+    | '/cutoffs'
     | '/faq'
     | '/important-dates'
     | '/mcp'
     | '/option-form'
     | '/post-cap'
     | '/recommend'
+    | '/schedule'
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -219,12 +241,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/cap-process'
     | '/compare'
+    | '/cutoffs'
     | '/faq'
     | '/important-dates'
     | '/mcp'
     | '/option-form'
     | '/post-cap'
     | '/recommend'
+    | '/schedule'
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -239,12 +263,14 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CapProcessRoute: typeof CapProcessRoute
   CompareRoute: typeof CompareRoute
+  CutoffsRoute: typeof CutoffsRoute
   FaqRoute: typeof FaqRoute
   ImportantDatesRoute: typeof ImportantDatesRoute
   McpRoute: typeof McpRoute
   OptionFormRoute: typeof OptionFormRoute
   PostCapRoute: typeof PostCapRoute
   RecommendRoute: typeof RecommendRoute
+  ScheduleRoute: typeof ScheduleRoute
   WhatIfRoute: typeof WhatIfRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -282,6 +308,13 @@ declare module '@tanstack/react-router' {
       path: '/compare'
       fullPath: '/compare'
       preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cutoffs': {
+      id: '/cutoffs'
+      path: '/cutoffs'
+      fullPath: '/cutoffs'
+      preLoaderRoute: typeof CutoffsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -324,6 +357,13 @@ declare module '@tanstack/react-router' {
       path: '/recommend'
       fullPath: '/recommend'
       preLoaderRoute: typeof RecommendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/schedule': {
+      id: '/schedule'
+      path: '/schedule'
+      fullPath: '/schedule'
+      preLoaderRoute: typeof ScheduleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/what-if': {
@@ -383,12 +423,14 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CapProcessRoute: CapProcessRoute,
   CompareRoute: CompareRoute,
+  CutoffsRoute: CutoffsRoute,
   FaqRoute: FaqRoute,
   ImportantDatesRoute: ImportantDatesRoute,
   McpRoute: McpRoute,
   OptionFormRoute: OptionFormRoute,
   PostCapRoute: PostCapRoute,
   RecommendRoute: RecommendRoute,
+  ScheduleRoute: ScheduleRoute,
   WhatIfRoute: WhatIfRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:

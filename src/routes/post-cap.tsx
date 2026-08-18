@@ -1,17 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { AlertTriangle, ExternalLink, FileText } from "lucide-react";
-import { getPostCapUpdates } from "@/lib/cap.functions";
+import { keepPreviousData, queryOptions, useQuery } from "@tanstack/react-query";
+import { useRef, useState } from "react";
+import { AlertTriangle, ExternalLink, FileText, Loader2 } from "lucide-react";
+import { getPostCapUpdatesPage } from "@/lib/cap.functions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PageBackground } from "@/components/page-background";
 import pageBg from "@/assets/post-cap-bg.asset.json";
 
-const updatesQuery = queryOptions({
-  queryKey: ["post-cap-updates-official"],
-  queryFn: () => getPostCapUpdates(),
-});
+const PAGE_SIZE = 10;
+
+const updatesQuery = (page: number) =>
+  queryOptions({
+    queryKey: ["post-cap-updates-official", page, PAGE_SIZE],
+    queryFn: () => getPostCapUpdatesPage({ data: { page, pageSize: PAGE_SIZE } }),
+    placeholderData: keepPreviousData,
+  });
 
 const TITLE = "Post-CAP Process — Maharashtra CAP Guide | MHT-CET Counselling Help";
 const DESCRIPTION =
@@ -29,13 +34,33 @@ export const Route = createFileRoute("/post-cap")({
     ],
   }),
   loader: ({ context }) => {
-    context.queryClient.ensureQueryData(updatesQuery);
+    context.queryClient.ensureQueryData(updatesQuery(1));
   },
   component: PostCapPage,
 });
 
+function pageNumbers(current: number, total: number) {
+  const pages: number[] = [];
+  const start = Math.max(1, Math.min(current - 2, total - 4));
+  for (let p = Math.max(1, start); p <= Math.min(total, Math.max(1, start) + 4); p++) {
+    pages.push(p);
+  }
+  return pages;
+}
+
 function PostCapPage() {
-  const { data: updates } = useSuspenseQuery(updatesQuery);
+  const [page, setPage] = useState(1);
+  const listRef = useRef<HTMLDivElement>(null);
+  const { data, isFetching } = useQuery(updatesQuery(page));
+
+  const updates = data?.rows ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+  const goTo = (p: number) => {
+    setPage(Math.min(Math.max(1, p), totalPages));
+    listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <div className="theme-accent-desk mx-auto max-w-6xl px-4 py-10">
@@ -56,14 +81,25 @@ function PostCapPage() {
         </p>
       </div>
 
+      <div ref={listRef} className="mt-8 flex items-center justify-between gap-3">
+        <p className="text-sm text-muted-foreground">
+          {total} official update{total === 1 ? "" : "s"}
+        </p>
+        {isFetching ? (
+          <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" /> Loading…
+          </span>
+        ) : null}
+      </div>
+
       {updates.length === 0 ? (
-        <Card className="mt-6 border-dashed">
+        <Card className="mt-4 border-dashed">
           <CardContent className="p-10 text-center text-sm text-muted-foreground">
             No official post-CAP updates are available yet.
           </CardContent>
         </Card>
       ) : (
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
           {updates.map((u) => (
             <Card
               key={u.id}
@@ -130,6 +166,46 @@ function PostCapPage() {
           ))}
         </div>
       )}
+
+      {totalPages > 1 ? (
+        <nav
+          aria-label="Post-CAP updates pagination"
+          className="mt-8 flex flex-col items-center gap-3"
+        >
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => goTo(page - 1)}
+              disabled={page === 1}
+            >
+              Previous
+            </Button>
+            {pageNumbers(page, totalPages).map((p) => (
+              <Button
+                key={p}
+                size="sm"
+                variant={p === page ? "default" : "outline"}
+                aria-current={p === page ? "page" : undefined}
+                onClick={() => goTo(p)}
+              >
+                {p}
+              </Button>
+            ))}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => goTo(page + 1)}
+              disabled={page === totalPages}
+            >
+              Next
+            </Button>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Page {page} of {totalPages}
+          </p>
+        </nav>
+      ) : null}
     </div>
   );
 }

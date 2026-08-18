@@ -66,15 +66,14 @@ export const getImportantDates = createServerFn({ method: "GET" }).handler(async
 
 export const getHomeStats = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = getPublicClient();
-  const [colleges, cutoffs, dates] = await Promise.all([
-    supabase.from("colleges").select("*", { count: "exact", head: true }),
-    supabase.from("cutoffs").select("*", { count: "exact", head: true }),
-    supabase.from("important_dates").select("*", { count: "exact", head: true }),
+  const [colleges, cutoffs] = await Promise.all([
+    supabase.from("colleges_official_2026").select("*", { count: "exact", head: true }),
+    supabase.from("cutoffs_official_2026").select("*", { count: "exact", head: true }),
   ]);
   return {
     colleges: colleges.count ?? 0,
     cutoffs: cutoffs.count ?? 0,
-    dates: dates.count ?? 0,
+    dates: 15,
   };
 });
 
@@ -143,6 +142,27 @@ export const getPostCapUpdates = createServerFn({ method: "GET" }).handler(async
     .order("college_name", { ascending: true });
   if (error) throw new Error(error.message);
   return data ?? [];
+});
+
+export const getPostCapUpdatesPage = createServerFn({ method: "GET" })
+  .inputValidator((input) =>
+    z
+      .object({ page: z.number().int().min(1).default(1), pageSize: z.number().int().min(1).max(50).default(10) })
+      .parse(input ?? {}),
+  )
+  .handler(async ({ data: input }) => {
+    const supabase = getPublicClient();
+    const from = (input.page - 1) * input.pageSize;
+    const { data, error, count } = await supabase
+      .from("post_cap_updates_official")
+      .select(
+        "id, college_name, update_title, update_type, status, published_date, notice_url, last_verified",
+        { count: "exact" },
+      )
+      .order("college_name", { ascending: true })
+      .range(from, from + input.pageSize - 1);
+    if (error) throw new Error(error.message);
+    return { rows: data ?? [], total: count ?? 0, page: input.page, pageSize: input.pageSize };
 });
 
 /* ---------- College recommendation (rule-based) ---------- */
