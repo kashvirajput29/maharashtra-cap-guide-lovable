@@ -106,7 +106,7 @@ function OptionFormPage() {
         <PageBackground image={pageBg.url} />
 
         <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Smart Option Form
+          Download My Options
         </h1>
         <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted-foreground">
           Build a sample CAP option form by selecting and ordering colleges. You can print

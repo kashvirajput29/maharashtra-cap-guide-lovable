@@ -137,7 +137,7 @@ function RecommendPage() {
       <PageBackground image={pageBg.url} />
 
       <h1 className="text-3xl font-bold tracking-tight text-foreground">
-        Find Your Colleges
+        College Matchmaker
       </h1>
       <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted-foreground">
         Enter your exam details and preferences to see colleges ranked by how realistic

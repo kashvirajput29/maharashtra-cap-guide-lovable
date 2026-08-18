@@ -66,15 +66,14 @@ export const getImportantDates = createServerFn({ method: "GET" }).handler(async
 
 export const getHomeStats = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = getPublicClient();
-  const [colleges, cutoffs, dates] = await Promise.all([
-    supabase.from("colleges").select("*", { count: "exact", head: true }),
-    supabase.from("cutoffs").select("*", { count: "exact", head: true }),
-    supabase.from("important_dates").select("*", { count: "exact", head: true }),
+  const [colleges, cutoffs] = await Promise.all([
+    supabase.from("colleges_official_2026").select("*", { count: "exact", head: true }),
+    supabase.from("cutoffs_official_2026").select("*", { count: "exact", head: true }),
   ]);
   return {
     colleges: colleges.count ?? 0,
     cutoffs: cutoffs.count ?? 0,
-    dates: dates.count ?? 0,
+    dates: 15,
   };
 });
 
