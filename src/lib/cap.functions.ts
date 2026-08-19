@@ -132,6 +132,21 @@ export const getOfficialCollege = createServerFn({ method: "GET" })
     };
   });
 
+export const getOfficialCutoffs = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = getPublicClient();
+  const { data, error } = await supabase
+    .from("cutoffs_official_2026")
+    .select(
+      "id, college_name, academic_year, cap_round, branch, category, candidature_type, closing_percentile, source_url, last_verified",
+    )
+    .eq("data_status", "Published")
+    .not("closing_percentile", "is", null)
+    .order("closing_percentile", { ascending: false })
+    .limit(2000);
+  if (error) throw new Error(error.message);
+  return data ?? [];
+});
+
 export const getPostCapUpdates = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = getPublicClient();
   const { data, error } = await supabase
