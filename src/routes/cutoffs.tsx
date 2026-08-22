@@ -15,6 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PageBackground } from "@/components/page-background";
+import { PageHero } from "@/components/page-hero";
+import pageHero from "@/assets/hero-modern-lab.png.asset.json";
 import pageBg from "@/assets/colleges-bg.asset.json";
 
 const cutoffsQuery = queryOptions({
@@ -113,13 +115,12 @@ function CutoffsPage() {
     <div className="theme-accent-desk mx-auto max-w-6xl px-4 py-10">
       <PageBackground image={pageBg.url} />
 
-      <h1 className="text-3xl font-bold tracking-tight text-foreground">
-        Official CAP Cutoffs
-      </h1>
-      <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted-foreground">
-        Published closing percentiles from the official CAP cutoff documents. Filter by
-        branch, category, candidature type and CAP round.
-      </p>
+      <PageHero
+        className="-mt-10 mb-8"
+        image={pageHero.url}
+        title="Official CAP Cutoffs"
+        subtitle="Published closing percentiles from the official CAP cutoff documents — filter by branch, category, candidature type and CAP round."
+      />
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <div className="relative sm:col-span-2 lg:col-span-1">

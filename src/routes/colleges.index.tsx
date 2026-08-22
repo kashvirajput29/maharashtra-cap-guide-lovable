@@ -33,6 +33,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PageBackground } from "@/components/page-background";
+import { PageHero } from "@/components/page-hero";
+import pageHero from "@/assets/hero-gothic-cloister.png.asset.json";
 import pageBg from "@/assets/colleges-bg.asset.json";
 import {
   MAX_COMPARE,
@@ -145,9 +147,12 @@ function CollegesPage() {
     <TooltipProvider delayDuration={150}>
       <div className="theme-accent-campus mx-auto max-w-6xl px-4 py-10 pb-28">
         <PageBackground image={pageBg.url} />
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Engineering Colleges
-        </h1>
+        <PageHero
+          className="-mt-10 mb-8"
+          image={pageHero.url}
+          title="Engineering Colleges"
+          subtitle="Browse official 2026 engineering college records across Maharashtra."
+        />
         <p className="mt-2 flex max-w-2xl items-start gap-2 text-base leading-relaxed text-muted-foreground">
           <span>Verified official 2026 college records.</span>
           <Tooltip>
