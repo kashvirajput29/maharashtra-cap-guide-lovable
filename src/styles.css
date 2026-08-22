@@ -292,3 +292,8 @@
     color: #000 !important;
   }
 }
+
+html,
+body {
+  overflow-x: hidden;
+}
