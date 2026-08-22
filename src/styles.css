@@ -297,3 +297,54 @@ html,
 body {
   overflow-x: hidden;
 }
+
+/*
+ * Global micro-interaction utilities.
+ * Use on ad-hoc cards/buttons that don't go through the shared Card/Button
+ * components. The components already apply these effects by default.
+ */
+@utility card-hover {
+  cursor: pointer;
+  transition: transform 200ms ease-in-out, box-shadow 200ms ease-in-out;
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: var(--tw-shadow, 0 25px 50px -12px oklch(0 0 0 / 0.25));
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+@utility btn-primary {
+  background-image: linear-gradient(to right, oklch(0.55 0.22 265), oklch(0.58 0.25 300));
+  color: #fff;
+  cursor: pointer;
+  transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 0 20px 35px -10px oklch(0.58 0.25 300 / 0.5);
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@utility btn-secondary {
+  cursor: pointer;
+  transition: transform 150ms ease-in-out, background-color 150ms ease-in-out;
+  &:hover {
+    background-color: color-mix(in oklch, var(--primary) 10%, transparent);
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
