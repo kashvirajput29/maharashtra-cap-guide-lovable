@@ -5,6 +5,8 @@ import { getHomeStats } from "@/lib/cap.functions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PageBackground } from "@/components/page-background";
+import { PageHero } from "@/components/page-hero";
+import heroHome from "@/assets/hero-campus-greenery.asset.json";
 import homeBg from "@/assets/home-bg.asset.json";
 
 

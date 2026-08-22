@@ -15,6 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PageBackground } from "@/components/page-background";
+import { PageHero } from "@/components/page-hero";
+import pageHero from "@/assets/hero-modern-lab.png.asset.json";
 import pageBg from "@/assets/colleges-bg.asset.json";
 
 const cutoffsQuery = queryOptions({

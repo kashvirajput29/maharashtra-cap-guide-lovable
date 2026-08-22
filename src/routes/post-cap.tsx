@@ -7,6 +7,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PageBackground } from "@/components/page-background";
+import { PageHero } from "@/components/page-hero";
+import pageHero from "@/assets/hero-rainy-oxford.png.asset.json";
 import pageBg from "@/assets/post-cap-bg.asset.json";
 
 const PAGE_SIZE = 10;
