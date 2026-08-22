@@ -192,9 +192,9 @@ function ImportantDatesPage() {
         />
 
         <div className="flex items-start gap-2">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            CAP date tracker
-          </h1>
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+            Schedule
+          </h2>
           <Tooltip>
             <TooltipTrigger asChild>
               <span
