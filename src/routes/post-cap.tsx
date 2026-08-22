@@ -67,13 +67,12 @@ function PostCapPage() {
   return (
     <div className="theme-accent-desk mx-auto max-w-6xl px-4 py-10">
       <PageBackground image={pageBg.url} />
-      <h1 className="text-3xl font-bold tracking-tight text-foreground">
-        Post-CAP Process
-      </h1>
-      <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted-foreground">
-        Official institute notices published after the CAP rounds — including ACAP/ILS
-        admissions against vacancy seats.
-      </p>
+      <PageHero
+        className="-mt-10 mb-8"
+        image={pageHero.url}
+        title="Post-CAP Process"
+        subtitle="Official institute notices published after the CAP rounds, including ACAP/ILS admissions against vacancy seats."
+      />
 
       <div className="mt-6 flex gap-3 rounded-lg border border-border/70 bg-secondary/30 p-4 text-sm text-muted-foreground">
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-aqua" />

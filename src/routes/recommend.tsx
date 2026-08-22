@@ -138,13 +138,12 @@ function RecommendPage() {
     <div className="theme-accent-campus mx-auto max-w-6xl px-4 py-10">
       <PageBackground image={pageBg.url} />
 
-      <h1 className="text-3xl font-bold tracking-tight text-foreground">
-        College Matchmaker
-      </h1>
-      <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted-foreground">
-        Enter your exam details and preferences to see colleges ranked by how realistic
-        they are, based on published official 2026 CAP closing percentiles.
-      </p>
+      <PageHero
+        className="-mt-10 mb-8"
+        image={pageHero.url}
+        title="College Matchmaker"
+        subtitle="See colleges ranked by how realistic they are, based on published official 2026 CAP closing percentiles."
+      />
 
       <Card className="mt-6 border-border/70">
         <CardContent className="pt-6">

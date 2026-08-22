@@ -184,6 +184,12 @@ function ImportantDatesPage() {
     <TooltipProvider delayDuration={150}>
       <div className="theme-accent-night mx-auto max-w-4xl px-4 py-10">
         <PageBackground image={pageBg.url} />
+        <PageHero
+          className="-mt-10 mb-8"
+          image={pageHero.url}
+          title="CAP date tracker"
+          subtitle="Follow the CAP schedule with clear Ongoing, Upcoming and Completed statuses."
+        />
 
         <div className="flex items-start gap-2">
           <h1 className="text-3xl font-bold tracking-tight text-foreground">

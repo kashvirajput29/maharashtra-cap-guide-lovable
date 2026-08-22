@@ -414,13 +414,12 @@ function WhatIfPage() {
     <div className="theme-accent-campus mx-auto max-w-6xl px-4 py-10">
       <PageBackground image={pageBg.url} />
 
-      <h1 className="text-3xl font-bold tracking-tight text-foreground">
-        Compare Scenarios
-      </h1>
-      <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted-foreground">
-        Compare two MHT-CET CAP scenarios side-by-side. Change your percentile,
-        category or candidature type to see how your college options change.
-      </p>
+      <PageHero
+        className="-mt-10 mb-8"
+        image={pageHero.url}
+        title="Compare Scenarios"
+        subtitle="Change your percentile, category or candidature type to see how your college options change."
+      />
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <ScenarioPanel title="Scenario A" scenario={scenarioA} options={options} />

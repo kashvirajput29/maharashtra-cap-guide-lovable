@@ -107,13 +107,12 @@ function OptionFormPage() {
       >
         <PageBackground image={pageBg.url} />
 
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Download My Options
-        </h1>
-        <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted-foreground">
-          Build a sample CAP option form by selecting and ordering colleges. You can print
-          or save this as a PDF to use as a reference while filling your actual CAP form.
-        </p>
+        <PageHero
+          className="-mt-10 mb-8"
+          image={pageHero.url}
+          title="Download My Options"
+          subtitle="Build a printable sample CAP option form by selecting and ordering colleges."
+        />
 
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
           {/* Selection */}
