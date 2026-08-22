@@ -99,20 +99,18 @@ function Home() {
   return (
     <div className="theme-accent-sunrise">
       <PageBackground image={homeBg.url} />
+      <PageHero
+        image={heroHome.url}
+        title="Your One-Stop Guide to Navigate Maharashtra CAP Admissions with Clarity and Confidence"
+        subtitle="Find the right college, understand your cutoffs, and never miss a deadline — all in one place."
+      />
       <section className="border-b border-border/70 bg-gradient-to-b from-secondary/25 to-transparent">
 
-        <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
+        <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
           <span className="inline-flex items-center rounded-full border border-teal/30 bg-teal/12 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-teal">
             For Every MHT-CET Aspirant, Parent, and Counsellor
           </span>
-          <h1 className="mt-5 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl">
-            Your One-Stop Guide to Navigate Maharashtra CAP Admissions with Clarity and
-            Confidence
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            Find the right college, understand your cutoffs, and never miss a deadline —
-            all in one place.
-          </p>
+
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">
