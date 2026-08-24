@@ -15,7 +15,7 @@ import {
 import { Disclaimer } from "@/components/disclaimer";
 import { PageBackground } from "@/components/page-background";
 import { PageHero } from "@/components/page-hero";
-import pageHero from "@/assets/hero-train-journey.webp.asset.json";
+import pageHero from "@/assets/hero-sunrise-study-by-lake.asset.json";
 import pageBg from "@/assets/important-dates-bg.asset.json";
 
 const datesQuery = queryOptions({

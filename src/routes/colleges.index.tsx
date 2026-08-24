@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/select";
 import { PageBackground } from "@/components/page-background";
 import { PageHero } from "@/components/page-hero";
-import pageHero from "@/assets/hero-gothic-cloister.png.asset.json";
+import pageHero from "@/assets/hero-library-reading-nook.asset.json";
 import pageBg from "@/assets/colleges-bg.asset.json";
 import {
   MAX_COMPARE,

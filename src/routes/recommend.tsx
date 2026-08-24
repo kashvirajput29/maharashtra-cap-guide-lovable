@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { PageBackground } from "@/components/page-background";
 import { PageHero } from "@/components/page-hero";
-import pageHero from "@/assets/hero-library-reading-nook.asset.json";
+import pageHero from "@/assets/hero-sunlit-forest-trail-study-nook.asset.json";
 import pageBg from "@/assets/colleges-bg.asset.json";
 import { addOptions } from "@/lib/option-form-store";
 
