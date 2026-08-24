@@ -41,6 +41,8 @@ export function useInView<T extends HTMLElement = HTMLDivElement>(
       setInView(true);
       return;
     }
+    const init: IntersectionObserverInit = { threshold };
+    if (rootMargin !== undefined) init.rootMargin = rootMargin;
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
@@ -49,7 +51,7 @@ export function useInView<T extends HTMLElement = HTMLDivElement>(
           if (once) observer.disconnect();
         }
       },
-      { threshold, rootMargin },
+      init,
     );
     observer.observe(el);
     return () => observer.disconnect();
