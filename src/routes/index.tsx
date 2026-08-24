@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PageBackground } from "@/components/page-background";
 import { PageHero } from "@/components/page-hero";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { CountUp } from "@/components/count-up";
 import heroHome from "@/assets/hero-campus-greenery.asset.json";
 import homeBg from "@/assets/home-bg.asset.json";
 
