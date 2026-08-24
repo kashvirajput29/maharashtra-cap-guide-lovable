@@ -18,7 +18,7 @@ export function PageHero({ image, title, subtitle, className }: PageHeroProps) {
   return (
     <section
       className={cn(
-        "relative left-1/2 h-[200px] w-screen max-w-[100vw] -translate-x-1/2 overflow-hidden md:h-[280px]",
+        "hero-fade-in relative left-1/2 h-[200px] w-screen max-w-[100vw] -translate-x-1/2 overflow-hidden md:h-[280px]",
         className,
       )}
     >
