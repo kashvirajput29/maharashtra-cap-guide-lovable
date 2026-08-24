@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PageBackground } from "@/components/page-background";
 import { PageHero } from "@/components/page-hero";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { CountUp } from "@/components/count-up";
 import heroHome from "@/assets/hero-campus-greenery.asset.json";
 import homeBg from "@/assets/home-bg.asset.json";
 
@@ -139,46 +141,52 @@ function Home() {
 
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-4 sm:grid-cols-3">
-          {statCards.map((item) => (
-            <Card key={item.label} className="border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
-              <CardContent className="p-6">
-                <p className="text-3xl font-bold tracking-tight text-foreground">
-                  {item.value}
-                </p>
-                <p className="mt-1 text-base font-medium text-foreground">{item.label}</p>
-                <p className="mt-0.5 text-sm text-muted-foreground">{item.sub}</p>
-                <Link
-                  to={item.to}
-                  className="mt-4 inline-flex items-center gap-1 text-base font-semibold text-aqua hover:underline"
-                >
-                  Explore <ArrowRight className="h-4 w-4" />
-                </Link>
-              </CardContent>
-            </Card>
+          {statCards.map((item, i) => (
+            <ScrollReveal key={item.label} variant="fade-up" delay={(i % 3) * 100}>
+              <Card className="h-full border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+                <CardContent className="p-6">
+                  <p className="text-3xl font-bold tracking-tight text-foreground">
+                    <CountUp value={item.value} />
+                  </p>
+                  <p className="mt-1 text-base font-medium text-foreground">{item.label}</p>
+                  <p className="mt-0.5 text-sm text-muted-foreground">{item.sub}</p>
+                  <Link
+                    to={item.to}
+                    className="mt-4 inline-flex items-center gap-1 text-base font-semibold text-aqua hover:underline"
+                  >
+                    Explore <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </CardContent>
+              </Card>
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-8">
-        <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-          What you can do here
-        </h2>
+        <ScrollReveal variant="slide-left">
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+            What you can do here
+          </h2>
+        </ScrollReveal>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((card) => (
-            <Card key={card.title} className="border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
-              <CardContent className="flex h-full flex-col p-6">
-                <h3 className="font-semibold text-foreground">{card.title}</h3>
-                <p className="mt-2 flex-1 text-base leading-relaxed text-muted-foreground">
-                  {card.body}
-                </p>
-                <Link
-                  to={card.to}
-                  className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-aqua hover:underline"
-                >
-                  Open <ArrowRight className="h-4 w-4" />
-                </Link>
-              </CardContent>
-            </Card>
+          {features.map((card, i) => (
+            <ScrollReveal key={card.title} variant="fade-up" delay={(i % 3) * 100} className="h-full">
+              <Card className="h-full border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+                <CardContent className="flex h-full flex-col p-6">
+                  <h3 className="font-semibold text-foreground">{card.title}</h3>
+                  <p className="mt-2 flex-1 text-base leading-relaxed text-muted-foreground">
+                    {card.body}
+                  </p>
+                  <Link
+                    to={card.to}
+                    className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-aqua hover:underline"
+                  >
+                    Open <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </CardContent>
+              </Card>
+            </ScrollReveal>
           ))}
         </div>
       </section>
@@ -187,9 +195,11 @@ function Home() {
       <section className="mx-auto max-w-6xl px-4 pb-16">
         <Card className="border-border/70 bg-muted/40">
           <CardContent className="p-6 md:p-8">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-              About this guide
-            </h2>
+            <ScrollReveal variant="slide-left">
+              <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+                About this guide
+              </h2>
+            </ScrollReveal>
             <p className="mt-4 leading-relaxed text-muted-foreground">
               Maharashtra CAP Guide is a student-built, non-commercial reference
               tool. It is not affiliated with the Maharashtra State CET Cell, any
