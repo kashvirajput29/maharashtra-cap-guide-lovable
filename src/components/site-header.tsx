@@ -1,6 +1,6 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, GraduationCap, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/colleges", label: "Colleges" },
@@ -30,10 +31,36 @@ const secondaryItems = [
 ] as const;
 
 const linkClass =
-  "rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-secondary-foreground data-[status=active]:bg-primary/10 data-[status=active]:text-primary";
+  "nav-underline relative rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-secondary-foreground data-[status=active]:bg-primary/10 data-[status=active]:text-primary";
+
+const mobileLinkClass =
+  "rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-secondary-foreground data-[status=active]:bg-primary/10 data-[status=active]:text-primary";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const toolsActive = smartTools.some((t) => pathname.startsWith(t.to));
+
+  useEffect(() => {
+    if (toolsActive) setMobileToolsOpen(true);
+  }, [toolsActive]);
+
+  useEffect(() => () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+  }, []);
+
+  const openWithDelay = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setToolsOpen(true), 200);
+  };
+  const closeWithDelay = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setToolsOpen(false), 150);
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur">
@@ -60,20 +87,53 @@ export function SiteHeader() {
               </Link>
             ))}
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className={`${linkClass} inline-flex items-center gap-1`}>
-                  Smart Tools <ChevronDown className="h-4 w-4" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                {smartTools.map((item) => (
-                  <DropdownMenuItem key={item.to} asChild>
-                    <Link to={item.to}>{item.label}</Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div
+              onMouseEnter={openWithDelay}
+              onMouseLeave={closeWithDelay}
+              className="relative"
+            >
+              <DropdownMenu open={toolsOpen} onOpenChange={setToolsOpen}>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={cn(
+                      linkClass,
+                      "inline-flex items-center gap-1",
+                      toolsActive && "bg-primary/10 text-primary",
+                    )}
+                  >
+                    Smart Tools
+                    <ChevronDown
+                      className={cn(
+                        "h-4 w-4 transition-transform duration-200",
+                        toolsOpen && "rotate-180",
+                      )}
+                    />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  sideOffset={8}
+                  className="w-60 rounded-xl border-border/70 bg-popover p-1.5 shadow-xl duration-200"
+                >
+                  {smartTools.map((item) => {
+                    const active = pathname.startsWith(item.to);
+                    return (
+                      <DropdownMenuItem key={item.to} asChild>
+                        <Link
+                          to={item.to}
+                          className={cn(
+                            "nav-underline relative cursor-pointer rounded-lg px-3 py-2 text-sm font-medium",
+                            active && "bg-primary/10 text-primary",
+                          )}
+                        >
+                          {item.label}
+                        </Link>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
 
             {secondaryItems.map((item) => (
               <Link key={item.to} to={item.to} className={linkClass}>
@@ -91,32 +151,61 @@ export function SiteHeader() {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-72 overflow-y-auto">
+              <SheetContent
+                side="right"
+                overlayClassName="bg-background/40 backdrop-blur-sm"
+                className="w-72 overflow-y-auto"
+              >
                 <nav className="mt-10 flex flex-col gap-1">
                   {navItems.map((item) => (
                     <Link
                       key={item.to}
                       to={item.to}
                       onClick={() => setOpen(false)}
-                      className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-secondary-foreground data-[status=active]:bg-primary/10 data-[status=active]:text-primary"
+                      className={mobileLinkClass}
                     >
                       {item.label}
                     </Link>
                   ))}
 
-                  <p className="mt-4 px-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+                  <button
+                    type="button"
+                    aria-expanded={mobileToolsOpen}
+                    onClick={() => setMobileToolsOpen((v) => !v)}
+                    className={cn(
+                      "mt-3 flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors hover:bg-secondary",
+                      toolsActive ? "bg-primary/10 text-primary" : "text-foreground",
+                    )}
+                  >
                     Smart Tools
-                  </p>
-                  {smartTools.map((item) => (
-                    <Link
-                      key={item.to}
-                      to={item.to}
-                      onClick={() => setOpen(false)}
-                      className="rounded-lg px-3 py-2.5 pl-5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-secondary-foreground data-[status=active]:bg-primary/10 data-[status=active]:text-primary"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
+                    <ChevronDown
+                      className={cn(
+                        "h-4 w-4 transition-transform duration-200",
+                        mobileToolsOpen && "rotate-180",
+                      )}
+                    />
+                  </button>
+                  <div
+                    className={cn(
+                      "grid overflow-hidden transition-all duration-200 ease-out",
+                      mobileToolsOpen
+                        ? "grid-rows-[1fr] opacity-100"
+                        : "grid-rows-[0fr] opacity-0",
+                    )}
+                  >
+                    <div className="flex min-h-0 flex-col gap-1">
+                      {smartTools.map((item) => (
+                        <Link
+                          key={item.to}
+                          to={item.to}
+                          onClick={() => setOpen(false)}
+                          className={cn(mobileLinkClass, "pl-5")}
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
 
                   <div className="my-3 h-px bg-border" />
                   {secondaryItems.map((item) => (
@@ -124,7 +213,7 @@ export function SiteHeader() {
                       key={item.to}
                       to={item.to}
                       onClick={() => setOpen(false)}
-                      className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-secondary-foreground data-[status=active]:bg-primary/10 data-[status=active]:text-primary"
+                      className={mobileLinkClass}
                     >
                       {item.label}
                     </Link>
