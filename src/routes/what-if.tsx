@@ -70,17 +70,6 @@ const initialScenario: ScenarioState = {
   districtText: "",
 };
 
-const badgeClass: Record<"Safe" | "Moderate" | "Ambitious", string> = {
-  Safe: "border-emerald-500/40 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
-  Moderate:
-    "border-amber-500/40 bg-amber-500/15 text-amber-700 dark:text-amber-300",
-  Ambitious: "border-red-500/40 bg-red-500/15 text-red-700 dark:text-red-300",
-};
-const badgeEmoji: Record<"Safe" | "Moderate" | "Ambitious", string> = {
-  Safe: "🟢",
-  Moderate: "🟡",
-  Ambitious: "🔴",
-};
 
 function splitList(value: string) {
   return value
@@ -313,11 +302,16 @@ function ScenarioPanel({
           <div>
             <Button onClick={run} size="lg" disabled={loading} className="rounded-lg">
               {loading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Loading…
+                </>
               ) : (
-                <GitCompare className="mr-2 h-4 w-4" />
+                <>
+                  <GitCompare className="mr-2 h-4 w-4" />
+                  Run {title}
+                </>
               )}
-              Run {title}
             </Button>
           </div>
         </div>
