@@ -3,6 +3,7 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Sparkles, X, MapPin, Loader2, ClipboardList } from "lucide-react";
 import { getRecommendOptions, getRecommendations } from "@/lib/cap.functions";
+import { RiskBadge } from "@/components/status-badge";
 import { CutoffNote } from "@/components/cutoff-note";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -56,16 +57,6 @@ export const Route = createFileRoute("/recommend")({
 
 type Rec = Awaited<ReturnType<typeof getRecommendations>>[number];
 
-const badgeClass: Record<Rec["label"], string> = {
-  Safe: "border-emerald-500/40 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
-  Moderate: "border-amber-500/40 bg-amber-500/15 text-amber-700 dark:text-amber-300",
-  Ambitious: "border-red-500/40 bg-red-500/15 text-red-700 dark:text-red-300",
-};
-const badgeEmoji: Record<Rec["label"], string> = {
-  Safe: "🟢",
-  Moderate: "🟡",
-  Ambitious: "🔴",
-};
 
 function splitList(value: string) {
   return value
@@ -305,11 +296,16 @@ function RecommendPage() {
             <div>
               <Button type="submit" size="lg" disabled={loading} className="rounded-lg">
                 {loading ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Loading…
+                  </>
                 ) : (
-                  <Sparkles className="mr-2 h-4 w-4" />
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Find Colleges
+                  </>
                 )}
-                Find Colleges
               </Button>
             </div>
           </form>
@@ -363,11 +359,7 @@ function RecommendPage() {
                         >
                           {r.collegeName}
                         </Link>
-                        <span
-                          className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${badgeClass[r.label]}`}
-                        >
-                          {badgeEmoji[r.label]} {r.label}
-                        </span>
+                        <RiskBadge label={r.label} className="shrink-0" />
                       </div>
                       <p className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
                         <MapPin className="h-3.5 w-3.5" />
@@ -418,11 +410,7 @@ function RecommendPage() {
                           {r.closingPercentile}
                         </td>
                         <td className="px-4 py-3">
-                          <span
-                            className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${badgeClass[r.label]}`}
-                          >
-                            {badgeEmoji[r.label]} {r.label}
-                          </span>
+                          <RiskBadge label={r.label} />
                         </td>
                       </tr>
                     ))}

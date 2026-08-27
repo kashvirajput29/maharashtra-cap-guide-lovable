@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { getOfficialColleges } from "@/lib/cap.functions";
 import { CutoffNote } from "@/components/cutoff-note";
+import { ListPageSkeleton } from "@/components/skeletons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -71,6 +72,8 @@ export const Route = createFileRoute("/colleges/")({
     context.queryClient.ensureQueryData(collegesQuery);
   },
   component: CollegesPage,
+  pendingMs: 200,
+  pendingComponent: () => <ListPageSkeleton variant="cards" />,
 });
 
 function pageWindow(current: number, total: number): (number | "gap")[] {

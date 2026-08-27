@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Disclaimer } from "@/components/disclaimer";
+import { StatusBadge } from "@/components/status-badge";
 import { PageBackground } from "@/components/page-background";
 import { PageHero } from "@/components/page-hero";
 import pageHero from "@/assets/hero-sunrise-study-by-lake.asset.json";
@@ -277,15 +278,19 @@ function ImportantDatesPage() {
                               </p>
                             </div>
                             <div className="flex shrink-0 flex-wrap items-center gap-2">
-                              <Badge variant="outline" className={badgeClass(phase, urgent)}>
-                                {urgent ? (
+                              {urgent ? (
+                                <Badge
+                                  variant="outline"
+                                  className={badgeClass(phase, urgent)}
+                                >
                                   <span className="inline-flex items-center gap-1">
-                                    <AlertTriangle className="h-3 w-3" /> Closing soon
+                                    <AlertTriangle className="h-3 w-3 status-pulse" />{" "}
+                                    Closing soon
                                   </span>
-                                ) : (
-                                  phaseLabel[phase]
-                                )}
-                              </Badge>
+                                </Badge>
+                              ) : (
+                                <StatusBadge status={phaseLabel[phase]} />
+                              )}
                               {item.status ? (
                                 <Tooltip>
                                   <TooltipTrigger asChild>

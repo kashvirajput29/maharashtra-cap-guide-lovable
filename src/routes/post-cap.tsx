@@ -5,6 +5,8 @@ import { AlertTriangle, ExternalLink, FileText, Loader2 } from "lucide-react";
 import { getPostCapUpdatesPage } from "@/lib/cap.functions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/status-badge";
+import { CardListSkeleton } from "@/components/skeletons";
 import { Button } from "@/components/ui/button";
 import { PageBackground } from "@/components/page-background";
 import { PageHero } from "@/components/page-hero";
@@ -93,7 +95,9 @@ function PostCapPage() {
         ) : null}
       </div>
 
-      {updates.length === 0 ? (
+      {isFetching && updates.length === 0 ? (
+        <CardListSkeleton className="mt-4" count={4} />
+      ) : updates.length === 0 ? (
         <Card className="mt-4 border-dashed">
           <CardContent className="p-10 text-center text-sm text-muted-foreground">
             No official post-CAP updates are available yet.
@@ -126,13 +130,12 @@ function PostCapPage() {
                   <span className="min-w-0">{u.update_title}</span>
                 </p>
 
-                {u.status ? (
-                  <p className="mt-3">
-                    <span className="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-                      {u.status}
-                    </span>
-                  </p>
-                ) : null}
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  {u.status ? <StatusBadge status={u.status} /> : null}
+                  <StatusBadge
+                    status={u.published_date ? "Published" : "Not published yet"}
+                  />
+                </div>
 
                 <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-muted-foreground">
                   <div>
