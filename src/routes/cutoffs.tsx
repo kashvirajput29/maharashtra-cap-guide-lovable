@@ -5,6 +5,7 @@ import { ExternalLink, Search } from "lucide-react";
 import { getOfficialCutoffs } from "@/lib/cap.functions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ListPageSkeleton } from "@/components/skeletons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -43,6 +44,8 @@ export const Route = createFileRoute("/cutoffs")({
     context.queryClient.ensureQueryData(cutoffsQuery);
   },
   component: CutoffsPage,
+  pendingMs: 200,
+  pendingComponent: () => <ListPageSkeleton variant="table" />,
 });
 
 const ALL = "__all__";

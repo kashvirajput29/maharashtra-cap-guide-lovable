@@ -71,6 +71,8 @@ export const Route = createFileRoute("/colleges/")({
     context.queryClient.ensureQueryData(collegesQuery);
   },
   component: CollegesPage,
+  pendingMs: 200,
+  pendingComponent: () => <ListPageSkeleton variant="cards" />,
 });
 
 function pageWindow(current: number, total: number): (number | "gap")[] {
