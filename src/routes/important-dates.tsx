@@ -277,15 +277,19 @@ function ImportantDatesPage() {
                               </p>
                             </div>
                             <div className="flex shrink-0 flex-wrap items-center gap-2">
-                              <Badge variant="outline" className={badgeClass(phase, urgent)}>
-                                {urgent ? (
+                              {urgent ? (
+                                <Badge
+                                  variant="outline"
+                                  className={badgeClass(phase, urgent)}
+                                >
                                   <span className="inline-flex items-center gap-1">
-                                    <AlertTriangle className="h-3 w-3" /> Closing soon
+                                    <AlertTriangle className="h-3 w-3 status-pulse" />{" "}
+                                    Closing soon
                                   </span>
-                                ) : (
-                                  phaseLabel[phase]
-                                )}
-                              </Badge>
+                                </Badge>
+                              ) : (
+                                <StatusBadge status={phaseLabel[phase]} />
+                              )}
                               {item.status ? (
                                 <Tooltip>
                                   <TooltipTrigger asChild>
