@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Disclaimer } from "@/components/disclaimer";
+import { StatusBadge } from "@/components/status-badge";
 import { PageBackground } from "@/components/page-background";
 import { PageHero } from "@/components/page-hero";
 import pageHero from "@/assets/hero-sunrise-study-by-lake.asset.json";
