@@ -64,31 +64,92 @@ export const getImportantDates = createServerFn({ method: "GET" }).handler(async
   return data ?? [];
 });
 
+/**
+ * Single source of truth for the headline counts shown across the site.
+ * Every number is read live from the official tables — nothing is hard-coded.
+ */
 export const getHomeStats = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = getPublicClient();
-  const [colleges, cutoffs] = await Promise.all([
+  const [colleges, verified, cutoffs, dates] = await Promise.all([
     supabase.from("colleges_official_2026").select("*", { count: "exact", head: true }),
-    supabase.from("cutoffs_official_2026").select("*", { count: "exact", head: true }),
+    supabase
+      .from("colleges_official_2026")
+      .select("*", { count: "exact", head: true })
+      .eq("data_status", "Verified"),
+    supabase
+      .from("cutoffs_official_2026")
+      .select("*", { count: "exact", head: true })
+      .eq("data_status", "Published")
+      .not("closing_percentile", "is", null),
+    supabase.from("important_dates").select("*", { count: "exact", head: true }),
   ]);
+  if (colleges.error) throw new Error(colleges.error.message);
+  if (cutoffs.error) throw new Error(cutoffs.error.message);
+  if (dates.error) throw new Error(dates.error.message);
   return {
     colleges: colleges.count ?? 0,
+    verifiedColleges: verified.count ?? 0,
     cutoffs: cutoffs.count ?? 0,
-    dates: 15,
+    dates: dates.count ?? 0,
   };
 });
 
 /* ---------- Official 2026 verified data (source of truth) ---------- */
 
+const COLLEGE_COLUMNS =
+  "id, institute_code, college_name, city, district, university_affiliation, branches_offered, official_website_url, official_source_url, last_verified, data_status";
+
+const CUTOFF_COLUMNS =
+  "id, institute_code, college_name, academic_year, cap_round, branch, category, candidature_type, closing_percentile, source_url, last_verified, data_status";
+
+/** Defensive de-duplication so a stray duplicate row can never surface twice. */
+function dedupeBy<T>(rows: T[], key: (row: T) => string): T[] {
+  const seen = new Set<string>();
+  const out: T[] = [];
+  for (const row of rows) {
+    const k = key(row);
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(row);
+  }
+  return out;
+}
+
+/** Unique identity of a college: official institute code when known, else name. */
+export function collegeKey(row: { institute_code?: string | null; college_name: string }) {
+  return (row.institute_code?.trim() || row.college_name.trim()).toLowerCase();
+}
+
+/** Unique identity of a cutoff record (official CAP key). */
+export function cutoffKey(row: {
+  institute_code?: string | null;
+  college_name: string;
+  branch?: string | null;
+  academic_year?: string | null;
+  cap_round?: string | null;
+  category?: string | null;
+  candidature_type?: string | null;
+}) {
+  return [
+    row.institute_code?.trim() || row.college_name.trim(),
+    row.branch ?? "",
+    row.academic_year ?? "",
+    row.cap_round ?? "",
+    row.category ?? "",
+    row.candidature_type ?? "",
+  ]
+    .join("||")
+    .toLowerCase();
+}
+
 export const getOfficialColleges = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = getPublicClient();
   const { data, error } = await supabase
     .from("colleges_official_2026")
-    .select(
-      "id, college_name, city, district, university_affiliation, branches_offered, official_website_url, official_source_url, last_verified",
-    )
+    .select(COLLEGE_COLUMNS)
     .order("college_name", { ascending: true });
   if (error) throw new Error(error.message);
-  return data ?? [];
+  return dedupeBy(data ?? [], collegeKey);
 });
 
 export const getOfficialCollege = createServerFn({ method: "GET" })
@@ -98,16 +159,13 @@ export const getOfficialCollege = createServerFn({ method: "GET" })
     const [collegeRes, cutoffRes, classRes] = await Promise.all([
       supabase
         .from("colleges_official_2026")
-        .select(
-          "id, college_name, city, district, university_affiliation, branches_offered, official_website_url, official_source_url, last_verified",
-        )
+        .select(COLLEGE_COLUMNS)
         .eq("college_name", input.collegeName)
+        .limit(1)
         .maybeSingle(),
       supabase
         .from("cutoffs_official_2026")
-        .select(
-          "id, academic_year, cap_round, branch, category, candidature_type, closing_percentile, source_url, last_verified, data_status",
-        )
+        .select(CUTOFF_COLUMNS)
         .eq("college_name", input.collegeName)
         .neq("data_status", "Not published yet")
         .not("closing_percentile", "is", null)
@@ -127,8 +185,11 @@ export const getOfficialCollege = createServerFn({ method: "GET" })
 
     return {
       college: collegeRes.data,
-      cutoffs: cutoffRes.data ?? [],
-      classifications: classRes.data ?? [],
+      cutoffs: dedupeBy(cutoffRes.data ?? [], cutoffKey),
+      classifications: dedupeBy(
+        classRes.data ?? [],
+        (r) => `${r.official_indicator ?? ""}||${r.indicator_value ?? ""}`.toLowerCase(),
+      ),
     };
   });
 
@@ -136,15 +197,13 @@ export const getOfficialCutoffs = createServerFn({ method: "GET" }).handler(asyn
   const supabase = getPublicClient();
   const { data, error } = await supabase
     .from("cutoffs_official_2026")
-    .select(
-      "id, college_name, academic_year, cap_round, branch, category, candidature_type, closing_percentile, source_url, last_verified",
-    )
+    .select(CUTOFF_COLUMNS)
     .eq("data_status", "Published")
     .not("closing_percentile", "is", null)
     .order("closing_percentile", { ascending: false })
     .limit(2000);
   if (error) throw new Error(error.message);
-  return data ?? [];
+  return dedupeBy(data ?? [], cutoffKey);
 });
 
 export const getPostCapUpdates = createServerFn({ method: "GET" }).handler(async () => {

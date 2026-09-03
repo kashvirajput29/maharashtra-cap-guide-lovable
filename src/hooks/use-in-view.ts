@@ -54,7 +54,14 @@ export function useInView<T extends HTMLElement = HTMLDivElement>(
       init,
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    // Safety net: in embedded/hidden containers (preview iframes, background
+    // tabs) the observer may never fire, which would leave content invisible
+    // and counters stuck at 0. Reveal the final state after a short delay.
+    const fallback = setTimeout(() => setInView(true), 1500);
+    return () => {
+      clearTimeout(fallback);
+      observer.disconnect();
+    };
   }, [threshold, once, rootMargin, inView]);
 
   return { ref, inView };
