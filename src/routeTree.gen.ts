@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CapProcessRouteImport } from './routes/cap-process'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CutoffsRouteImport } from './routes/cutoffs'
@@ -24,6 +26,7 @@ import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as WhatIfRouteImport } from './routes/what-if'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as AuthenticatedDataQualityRouteImport } from './routes/_authenticated/data-quality'
 import { Route as CollegesIndexRouteImport } from './routes/colleges.index'
 import { Route as CollegesCollegeNameRouteImport } from './routes/colleges.$collegeName'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
@@ -34,9 +37,18 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CapProcessRoute = CapProcessRouteImport.update({
@@ -106,6 +118,12 @@ const Char91DotwellKnownChar93OauthProtectedResourceRoute =
     path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedDataQualityRoute =
+  AuthenticatedDataQualityRouteImport.update({
+    id: '/data-quality',
+    path: '/data-quality',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const CollegesIndexRoute = CollegesIndexRouteImport.update({
   id: '/colleges/',
   path: '/colleges/',
@@ -131,6 +149,7 @@ const Char91DotmcpChar93InvokeToolToolRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/cap-process': typeof CapProcessRoute
   '/compare': typeof CompareRoute
   '/cutoffs': typeof CutoffsRoute
@@ -144,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/data-quality': typeof AuthenticatedDataQualityRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges/': typeof CollegesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -152,6 +172,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/cap-process': typeof CapProcessRoute
   '/compare': typeof CompareRoute
   '/cutoffs': typeof CutoffsRoute
@@ -165,6 +186,7 @@ export interface FileRoutesByTo {
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/data-quality': typeof AuthenticatedDataQualityRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges': typeof CollegesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -173,7 +195,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/cap-process': typeof CapProcessRoute
   '/compare': typeof CompareRoute
   '/cutoffs': typeof CutoffsRoute
@@ -187,6 +211,7 @@ export interface FileRoutesById {
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/_authenticated/data-quality': typeof AuthenticatedDataQualityRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges/': typeof CollegesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -197,6 +222,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/auth'
     | '/cap-process'
     | '/compare'
     | '/cutoffs'
@@ -210,6 +236,7 @@ export interface FileRouteTypes {
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/data-quality'
     | '/colleges/$collegeName'
     | '/colleges/'
     | '/.lovable/oauth/consent'
@@ -218,6 +245,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/auth'
     | '/cap-process'
     | '/compare'
     | '/cutoffs'
@@ -231,6 +259,7 @@ export interface FileRouteTypes {
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/data-quality'
     | '/colleges/$collegeName'
     | '/colleges'
     | '/.lovable/oauth/consent'
@@ -238,7 +267,9 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
+    | '/auth'
     | '/cap-process'
     | '/compare'
     | '/cutoffs'
@@ -252,6 +283,7 @@ export interface FileRouteTypes {
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/_authenticated/data-quality'
     | '/colleges/$collegeName'
     | '/colleges/'
     | '/.lovable/oauth/consent'
@@ -260,7 +292,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AuthRoute: typeof AuthRoute
   CapProcessRoute: typeof CapProcessRoute
   CompareRoute: typeof CompareRoute
   CutoffsRoute: typeof CutoffsRoute
@@ -289,11 +323,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cap-process': {
@@ -387,6 +435,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/data-quality': {
+      id: '/_authenticated/data-quality'
+      path: '/data-quality'
+      fullPath: '/data-quality'
+      preLoaderRoute: typeof AuthenticatedDataQualityRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/colleges/': {
       id: '/colleges/'
       path: '/colleges'
@@ -418,9 +473,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDataQualityRoute: typeof AuthenticatedDataQualityRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDataQualityRoute: AuthenticatedDataQualityRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  AuthRoute: AuthRoute,
   CapProcessRoute: CapProcessRoute,
   CompareRoute: CompareRoute,
   CutoffsRoute: CutoffsRoute,
