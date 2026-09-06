@@ -13,7 +13,7 @@ function normalizeStatus(status?: string | null): Allowed | null {
   return null;
 }
 
-export function DataStatusBadge({ status }: { status?: string | null }) {
+export function DataStatusBadge({ status }: { status: string | null | undefined }) {
   const value = normalizeStatus(status);
   if (!value) {
     return (
@@ -43,10 +43,10 @@ export function DataMeta({
   sourceUrl,
   className = "",
 }: {
-  instituteCode?: string | null;
-  status?: string | null;
-  lastVerified?: string | null;
-  sourceUrl?: string | null;
+  instituteCode: string | null | undefined;
+  status: string | null | undefined;
+  lastVerified: string | null | undefined;
+  sourceUrl: string | null | undefined;
   className?: string;
 }) {
   return (
