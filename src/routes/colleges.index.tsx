@@ -301,11 +301,14 @@ function CollegesPage() {
                       )}
                     </div>
 
-                    {c.last_verified ? (
-                      <p className="mt-3 text-xs text-muted-foreground">
-                        Last verified: {c.last_verified}
-                      </p>
-                    ) : null}
+                    <DataMeta
+                      className="mt-3"
+                      instituteCode={c.institute_code}
+                      status={c.data_status}
+                      lastVerified={c.last_verified}
+                      sourceUrl={c.official_source_url}
+                    />
+
 
                     <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                       <Link

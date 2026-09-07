@@ -246,16 +246,14 @@ function CutoffsPage() {
                       {Number(r.closing_percentile).toFixed(4)}
                     </span>
                   </p>
-                  {r.source_url ? (
-                    <a
-                      href={r.source_url}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-                    >
-                      Official source <ExternalLink className="h-3 w-3" />
-                    </a>
-                  ) : null}
+                  <DataMeta
+                    className="mt-3"
+                    instituteCode={r.institute_code}
+                    status={r.data_status}
+                    lastVerified={r.last_verified}
+                    sourceUrl={r.source_url}
+                  />
+
                 </CardContent>
               </Card>
             ))}

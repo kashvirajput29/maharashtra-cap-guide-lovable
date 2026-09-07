@@ -168,11 +168,14 @@ function CollegeDetail() {
             {college.city}, {college.district}
           </span>
         </p>
-        {college.last_verified ? (
-          <p className="mt-2 text-xs text-muted-foreground">
-            Last verified: {college.last_verified}
-          </p>
-        ) : null}
+        <DataMeta
+          className="mt-3"
+          instituteCode={college.institute_code}
+          status={college.data_status}
+          lastVerified={college.last_verified}
+          sourceUrl={college.official_source_url}
+        />
+
       </div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-3">
