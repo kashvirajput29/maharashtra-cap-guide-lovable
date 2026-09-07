@@ -44,7 +44,11 @@ export const Route = createFileRoute("/about")({
 });
 
 function AboutPage() {
+  const { data: stats } = useQuery(statsQuery);
+  const collegeCount = stats?.colleges;
+
   return (
+
     <div className="theme-accent-library">
       <PageBackground image={homeBg.url} />
 
