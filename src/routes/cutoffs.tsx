@@ -271,7 +271,7 @@ function CutoffsPage() {
                   <th className="px-4 py-3 font-semibold">Candidature</th>
                   <th className="px-4 py-3 font-semibold">Round</th>
                   <th className="px-4 py-3 text-right font-semibold">Closing %ile</th>
-                  <th className="px-4 py-3 font-semibold">Source</th>
+                  <th className="px-4 py-3 font-semibold">Data &amp; source</th>
                 </tr>
               </thead>
               <tbody>
@@ -296,19 +296,14 @@ function CutoffsPage() {
                       {Number(r.closing_percentile).toFixed(4)}
                     </td>
                     <td className="px-4 py-3">
-                      {r.source_url ? (
-                        <a
-                          href={r.source_url}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                          className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-                        >
-                          PDF <ExternalLink className="h-3 w-3" />
-                        </a>
-                      ) : (
-                        <span className="text-xs text-muted-foreground">—</span>
-                      )}
+                      <DataMeta
+                        instituteCode={r.institute_code}
+                        status={r.data_status}
+                        lastVerified={r.last_verified}
+                        sourceUrl={r.source_url}
+                      />
                     </td>
+
                   </tr>
                 ))}
               </tbody>
