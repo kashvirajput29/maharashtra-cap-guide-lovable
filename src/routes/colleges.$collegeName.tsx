@@ -3,6 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ArrowLeft, ExternalLink, MapPin, X, Filter, ShieldCheck } from "lucide-react";
 import { CutoffNote } from "@/components/cutoff-note";
+import { DataMeta } from "@/components/data-meta";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -168,11 +169,14 @@ function CollegeDetail() {
             {college.city}, {college.district}
           </span>
         </p>
-        {college.last_verified ? (
-          <p className="mt-2 text-xs text-muted-foreground">
-            Last verified: {college.last_verified}
-          </p>
-        ) : null}
+        <DataMeta
+          className="mt-3"
+          instituteCode={college.institute_code}
+          status={college.data_status}
+          lastVerified={college.last_verified}
+          sourceUrl={college.official_source_url}
+        />
+
       </div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-3">

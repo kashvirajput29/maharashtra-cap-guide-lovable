@@ -75,7 +75,7 @@ function Home() {
     },
     {
       title: "Compare Colleges",
-      body: "Browse 50+ engineering colleges across Maharashtra with city, district, and affiliation.",
+      body: `Browse ${stats.colleges} engineering colleges across Maharashtra with city, district, and affiliation.`,
       to: "/colleges" as const,
     },
     {

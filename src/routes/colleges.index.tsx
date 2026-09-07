@@ -15,6 +15,7 @@ import {
 import { getOfficialColleges } from "@/lib/cap.functions";
 import { CutoffNote } from "@/components/cutoff-note";
 import { ListPageSkeleton } from "@/components/skeletons";
+import { DataMeta } from "@/components/data-meta";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -301,11 +302,14 @@ function CollegesPage() {
                       )}
                     </div>
 
-                    {c.last_verified ? (
-                      <p className="mt-3 text-xs text-muted-foreground">
-                        Last verified: {c.last_verified}
-                      </p>
-                    ) : null}
+                    <DataMeta
+                      className="mt-3"
+                      instituteCode={c.institute_code}
+                      status={c.data_status}
+                      lastVerified={c.last_verified}
+                      sourceUrl={c.official_source_url}
+                    />
+
 
                     <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                       <Link

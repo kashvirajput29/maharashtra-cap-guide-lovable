@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { statsQuery } from "@/lib/stats-query";
 import { PageBackground } from "@/components/page-background";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -42,7 +44,11 @@ export const Route = createFileRoute("/about")({
 });
 
 function AboutPage() {
+  const { data: stats } = useQuery(statsQuery);
+  const collegeCount = stats?.colleges;
+
   return (
+
     <div className="theme-accent-library">
       <PageBackground image={homeBg.url} />
 
@@ -248,7 +254,8 @@ function AboutPage() {
               <p className="mt-4 leading-relaxed text-muted-foreground">
                 At launch, this guide includes{" "}
                 <strong className="text-foreground">
-                  50 engineering colleges across Maharashtra
+                  {collegeCount === undefined ? "the" : collegeCount} engineering colleges
+                  across Maharashtra
                 </strong>
                 , covering major regions such as:
               </p>
@@ -393,7 +400,9 @@ function AboutPage() {
               </p>
               <ul className="mt-4 list-disc space-y-2 pl-5 text-muted-foreground">
                 <li>
-                  Expanding beyond 50 colleges to cover more engineering
+                  Expanding beyond the current
+                  {collegeCount === undefined ? "" : ` ${collegeCount}`} colleges to cover
+                  more engineering
                   institutes participating in CAP.
                 </li>
                 <li>
