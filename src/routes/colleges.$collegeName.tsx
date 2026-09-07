@@ -3,6 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ArrowLeft, ExternalLink, MapPin, X, Filter, ShieldCheck } from "lucide-react";
 import { CutoffNote } from "@/components/cutoff-note";
+import { DataMeta } from "@/components/data-meta";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

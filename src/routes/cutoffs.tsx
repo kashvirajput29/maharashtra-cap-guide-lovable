@@ -6,6 +6,7 @@ import { getOfficialCutoffs } from "@/lib/cap.functions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ListPageSkeleton } from "@/components/skeletons";
+import { DataMeta } from "@/components/data-meta";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
