@@ -115,6 +115,10 @@ function ImportantDatesPage() {
                     <div><dt className="text-muted-foreground">End date</dt><dd className="mt-0.5 font-medium text-foreground">{formatScheduleDate(item.end_date)}</dd></div>
                     <div><dt className="text-muted-foreground">Last checked</dt><dd className="mt-0.5 font-medium text-foreground">{formatScheduleDate(item.last_checked)}</dd></div>
                   </dl>
+                  <div className="mt-3 text-sm">
+                    <p className="text-muted-foreground">Official source URL</p>
+                    <a href={item.link} target="_blank" rel="noreferrer noopener" className="mt-0.5 block break-all font-medium text-aqua underline-offset-4 hover:underline">{item.link}</a>
+                  </div>
                   <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                     <Button asChild size="sm" variant="outline" className="w-full sm:w-auto"><a href={item.link} target="_blank" rel="noreferrer noopener"><ExternalLink className="h-4 w-4" />Official source</a></Button>
                     {calendarEnabled ? <Button type="button" size="sm" variant="secondary" className="w-full sm:w-auto" onClick={() => downloadCalendarEvent(item)}><Download className="h-4 w-4" />Add to calendar</Button> : null}
