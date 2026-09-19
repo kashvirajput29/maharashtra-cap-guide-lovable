@@ -115,7 +115,7 @@ function dedupeBy<T>(rows: T[], key: (row: T) => string): T[] {
   return out;
 }
 
-/** Unique identity of a college: official institute code when known, else name. */
+/** Institute code is the authoritative identifier. College name is used only as a temporary fallback until official codes are populated. */
 export function collegeKey(row: { institute_code?: string | null; college_name: string }) {
   return (row.institute_code?.trim() || row.college_name.trim()).toLowerCase();
 }
@@ -153,33 +153,48 @@ export const getOfficialColleges = createServerFn({ method: "GET" }).handler(asy
 });
 
 export const getOfficialCollege = createServerFn({ method: "GET" })
-  .inputValidator((input) => z.object({ collegeName: z.string().min(1) }).parse(input))
+  .inputValidator((input) => z.object({ collegeIdentifier: z.string().min(1) }).parse(input))
   .handler(async ({ data: input }) => {
     const supabase = getPublicClient();
-    const [collegeRes, cutoffRes, classRes] = await Promise.all([
-      supabase
+    const identifier = input.collegeIdentifier.trim();
+    const byCode = await supabase
+      .from("colleges_official_2026")
+      .select(COLLEGE_COLUMNS)
+      .eq("institute_code", identifier)
+      .limit(1)
+      .maybeSingle();
+    if (byCode.error) throw new Error(byCode.error.message);
+
+    const collegeRes = byCode.data
+      ? { data: byCode.data, error: null }
+      : await supabase
         .from("colleges_official_2026")
         .select(COLLEGE_COLUMNS)
-        .eq("college_name", input.collegeName)
+        .eq("college_name", identifier)
         .limit(1)
-        .maybeSingle(),
-      supabase
-        .from("cutoffs_official_2026")
-        .select(CUTOFF_COLUMNS)
-        .eq("college_name", input.collegeName)
-        .neq("data_status", "Not published yet")
-        .not("closing_percentile", "is", null)
-        .order("branch", { ascending: true }),
-      supabase
-        .from("college_classifications_verified")
-        .select(
-          "id, official_indicator, indicator_value, source_url, last_verified, classification_status",
-        )
-        .eq("college_name", input.collegeName)
-        .order("official_indicator", { ascending: true }),
-    ]);
-
+        .maybeSingle();
     if (collegeRes.error) throw new Error(collegeRes.error.message);
+    if (!collegeRes.data) {
+      return { college: null, cutoffs: [], classifications: [] };
+    }
+
+    const cutoffQuery = supabase
+      .from("cutoffs_official_2026")
+      .select(CUTOFF_COLUMNS)
+      .neq("data_status", "Not published yet")
+      .not("closing_percentile", "is", null)
+      .order("branch", { ascending: true });
+    const cutoffRes = collegeRes.data.institute_code?.trim()
+      ? await cutoffQuery.eq("institute_code", collegeRes.data.institute_code.trim())
+      : await cutoffQuery.eq("college_name", collegeRes.data.college_name);
+    const classRes = await supabase
+      .from("college_classifications_verified")
+      .select(
+        "id, official_indicator, indicator_value, source_url, last_verified, classification_status",
+      )
+      .eq("college_name", collegeRes.data.college_name)
+      .order("official_indicator", { ascending: true });
+
     if (cutoffRes.error) throw new Error(cutoffRes.error.message);
     if (classRes.error) throw new Error(classRes.error.message);
 

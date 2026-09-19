@@ -12,7 +12,7 @@ import {
   ChevronRight,
   GitCompare,
 } from "lucide-react";
-import { getOfficialColleges } from "@/lib/cap.functions";
+import { collegeKey, getOfficialColleges } from "@/lib/cap.functions";
 import { CutoffNote } from "@/components/cutoff-note";
 import { ListPageSkeleton } from "@/components/skeletons";
 import { DataMeta } from "@/components/data-meta";
@@ -250,7 +250,8 @@ function CollegesPage() {
                 .split(/[,;|]/)
                 .map((b) => b.trim())
                 .filter(Boolean);
-              const checked = selection.includes(c.college_name);
+              const identifier = collegeKey(c);
+              const checked = selection.includes(identifier);
               const limitReached = !checked && selection.length >= MAX_COMPARE;
               return (
                 <Card
@@ -314,7 +315,7 @@ function CollegesPage() {
                     <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                       <Link
                         to="/colleges/$collegeName"
-                        params={{ collegeName: c.college_name }}
+                        params={{ collegeName: identifier }}
                         className="inline-flex items-center gap-1 text-base font-semibold text-aqua hover:underline"
                       >
                         View details <ArrowRight className="h-4 w-4" />
@@ -330,7 +331,7 @@ function CollegesPage() {
                         <Checkbox
                           checked={checked}
                           disabled={limitReached}
-                          onCheckedChange={() => toggleCompare(c.college_name)}
+                          onCheckedChange={() => toggleCompare(identifier)}
                           aria-label={`Compare ${c.college_name}`}
                         />
                         Compare
