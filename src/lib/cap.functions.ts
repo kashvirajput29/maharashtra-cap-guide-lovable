@@ -58,7 +58,7 @@ export const getImportantDates = createServerFn({ method: "GET" }).handler(async
   const supabase = getPublicClient();
   const { data, error } = await supabase
     .from("important_dates")
-    .select("id, activity, round, start_date, end_date, status, link")
+    .select("id, activity, round, start_date, end_date, link, last_checked")
     .order("start_date", { ascending: true });
   if (error) throw new Error(error.message);
   return data ?? [];
