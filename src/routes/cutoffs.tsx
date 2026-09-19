@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
-import { getOfficialCutoffs } from "@/lib/cap.functions";
+import { collegeKey, getOfficialCutoffs } from "@/lib/cap.functions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ListPageSkeleton } from "@/components/skeletons";
@@ -228,7 +228,7 @@ function CutoffsPage() {
                 <CardContent className="p-4">
                   <Link
                     to="/colleges/$collegeName"
-                    params={{ collegeName: r.college_name }}
+                    params={{ collegeName: collegeKey(r) }}
                     className="break-words text-sm font-semibold text-primary underline-offset-4 hover:underline"
                   >
                     {r.college_name}
@@ -280,7 +280,7 @@ function CutoffsPage() {
                     <td className="px-4 py-3">
                       <Link
                         to="/colleges/$collegeName"
-                        params={{ collegeName: r.college_name }}
+                        params={{ collegeName: collegeKey(r) }}
                         className="font-medium text-primary underline-offset-4 hover:underline"
                       >
                         {r.college_name}

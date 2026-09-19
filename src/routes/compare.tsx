@@ -42,9 +42,9 @@ function ComparePage() {
   const selection = useCompareSelection();
 
   const results = useQueries({
-    queries: selection.map((name) => ({
-      queryKey: ["college-official-2026", name],
-      queryFn: () => getOfficialCollege({ data: { collegeName: name } }),
+    queries: selection.map((identifier) => ({
+      queryKey: ["college-official-2026", identifier],
+      queryFn: () => getOfficialCollege({ data: { collegeIdentifier: identifier } }),
     })),
   });
 
@@ -105,7 +105,7 @@ function ComparePage() {
                 <CardContent className="flex h-full flex-col p-5">
                   <div className="flex items-start justify-between gap-2">
                     <h2 className="min-w-0 break-words text-base font-semibold leading-snug text-foreground">
-                      {name}
+                      {college?.college_name ?? name}
                     </h2>
                     <Button
                       variant="ghost"

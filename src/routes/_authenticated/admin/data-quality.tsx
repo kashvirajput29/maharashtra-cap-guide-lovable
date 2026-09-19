@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const TITLE = "Data Quality (Admin) | Maharashtra CAP Guide";
 
-export const Route = createFileRoute("/_authenticated/data-quality")({
+export const Route = createFileRoute("/_authenticated/admin/data-quality")({
   head: () => ({
     meta: [
       { title: TITLE },
@@ -74,18 +74,18 @@ function DataQualityPage() {
 
       {isPending ? (
         <p className="mt-8 text-sm text-muted-foreground">Running live checks…</p>
-      ) : error ? (
+      ) : error || !data?.authorized ? (
         <Card className="mt-8 border-destructive/40">
           <CardContent className="p-6">
             <p className="text-sm font-semibold text-destructive">
-              You do not have access to this page.
+              Access denied.
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
               Only signed-in maintainers with the admin role can view data-quality checks.
             </p>
           </CardContent>
         </Card>
-      ) : data ? (
+      ) : data.authorized ? (
         <>
           <div className="mt-6 grid gap-3 sm:grid-cols-4">
             {[
@@ -133,8 +133,8 @@ function DataQualityPage() {
                         <p className="mt-1 text-sm text-muted-foreground">{check.detail}</p>
                         {check.samples.length > 0 ? (
                           <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-                            {check.samples.map((s) => (
-                              <li key={s} className="break-words">
+                            {check.samples.map((s, index) => (
+                              <li key={`${s}-${index}`} className="break-words">
                                 {s}
                               </li>
                             ))}

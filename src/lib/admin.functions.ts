@@ -29,7 +29,7 @@ export const getDataQualityReport = createServerFn({ method: "GET" })
       .limit(1);
     if (roleError) throw new Error(roleError.message);
     if (!roleRows || roleRows.length === 0) {
-      throw new Response("Forbidden", { status: 403 });
+      return { authorized: false as const };
     }
 
     const [collegesRes, cutoffsRes, datesRes] = await Promise.all([
@@ -177,6 +177,7 @@ export const getDataQualityReport = createServerFn({ method: "GET" })
     ];
 
     return {
+      authorized: true as const,
       generatedAt: new Date().toISOString(),
       totals: {
         colleges: colleges.length,

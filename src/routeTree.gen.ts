@@ -26,11 +26,11 @@ import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as WhatIfRouteImport } from './routes/what-if'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
-import { Route as AuthenticatedDataQualityRouteImport } from './routes/_authenticated/data-quality'
 import { Route as CollegesIndexRouteImport } from './routes/colleges.index'
 import { Route as CollegesCollegeNameRouteImport } from './routes/colleges.$collegeName'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as AuthenticatedAdminDataQualityRouteImport } from './routes/_authenticated/admin/data-quality'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -118,12 +118,6 @@ const Char91DotwellKnownChar93OauthProtectedResourceRoute =
     path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedDataQualityRoute =
-  AuthenticatedDataQualityRouteImport.update({
-    id: '/data-quality',
-    path: '/data-quality',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const CollegesIndexRoute = CollegesIndexRouteImport.update({
   id: '/colleges/',
   path: '/colleges/',
@@ -145,6 +139,12 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedAdminDataQualityRoute =
+  AuthenticatedAdminDataQualityRouteImport.update({
+    id: '/admin/data-quality',
+    path: '/admin/data-quality',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -163,11 +163,11 @@ export interface FileRoutesByFullPath {
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
-  '/data-quality': typeof AuthenticatedDataQualityRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges/': typeof CollegesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/admin/data-quality': typeof AuthenticatedAdminDataQualityRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -186,11 +186,11 @@ export interface FileRoutesByTo {
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
-  '/data-quality': typeof AuthenticatedDataQualityRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges': typeof CollegesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/admin/data-quality': typeof AuthenticatedAdminDataQualityRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -211,11 +211,11 @@ export interface FileRoutesById {
   '/what-if': typeof WhatIfRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
-  '/_authenticated/data-quality': typeof AuthenticatedDataQualityRoute
   '/colleges/$collegeName': typeof CollegesCollegeNameRoute
   '/colleges/': typeof CollegesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/_authenticated/admin/data-quality': typeof AuthenticatedAdminDataQualityRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -236,11 +236,11 @@ export interface FileRouteTypes {
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
-    | '/data-quality'
     | '/colleges/$collegeName'
     | '/colleges/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/admin/data-quality'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -259,11 +259,11 @@ export interface FileRouteTypes {
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
-    | '/data-quality'
     | '/colleges/$collegeName'
     | '/colleges'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/admin/data-quality'
   id:
     | '__root__'
     | '/'
@@ -283,11 +283,11 @@ export interface FileRouteTypes {
     | '/what-if'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
-    | '/_authenticated/data-quality'
     | '/colleges/$collegeName'
     | '/colleges/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/_authenticated/admin/data-quality'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -435,13 +435,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/data-quality': {
-      id: '/_authenticated/data-quality'
-      path: '/data-quality'
-      fullPath: '/data-quality'
-      preLoaderRoute: typeof AuthenticatedDataQualityRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/colleges/': {
       id: '/colleges/'
       path: '/colleges'
@@ -470,15 +463,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/data-quality': {
+      id: '/_authenticated/admin/data-quality'
+      path: '/admin/data-quality'
+      fullPath: '/admin/data-quality'
+      preLoaderRoute: typeof AuthenticatedAdminDataQualityRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedDataQualityRoute: typeof AuthenticatedDataQualityRoute
+  AuthenticatedAdminDataQualityRoute: typeof AuthenticatedAdminDataQualityRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedDataQualityRoute: AuthenticatedDataQualityRoute,
+  AuthenticatedAdminDataQualityRoute: AuthenticatedAdminDataQualityRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
