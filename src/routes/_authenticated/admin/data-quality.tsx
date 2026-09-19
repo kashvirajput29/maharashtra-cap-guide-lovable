@@ -78,7 +78,7 @@ function DataQualityPage() {
         <Card className="mt-8 border-destructive/40">
           <CardContent className="p-6">
             <p className="text-sm font-semibold text-destructive">
-              You do not have access to this page.
+              Access denied.
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
               Only signed-in maintainers with the admin role can view data-quality checks.
