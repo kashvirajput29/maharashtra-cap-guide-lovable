@@ -113,7 +113,7 @@ function ImportantDatesPage() {
                   <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
                     <div><dt className="text-muted-foreground">Start date</dt><dd className="mt-0.5 font-medium text-foreground">{formatScheduleDate(item.start_date)}</dd></div>
                     <div><dt className="text-muted-foreground">End date</dt><dd className="mt-0.5 font-medium text-foreground">{formatScheduleDate(item.end_date)}</dd></div>
-                    <div><dt className="text-muted-foreground">Last checked</dt><dd className="mt-0.5 font-medium text-foreground">{formatScheduleDate(item.last_checked)}</dd></div>
+                    <div><dt className="text-muted-foreground">Last checked</dt><dd className="mt-0.5 font-medium text-foreground">{isPublishedDate(item.last_checked) ? formatScheduleDate(item.last_checked) : "Not checked yet"}</dd></div>
                   </dl>
                   <div className="mt-3 text-sm">
                     <p className="text-muted-foreground">Official source URL</p>
