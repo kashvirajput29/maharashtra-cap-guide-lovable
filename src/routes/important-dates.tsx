@@ -119,7 +119,7 @@ function ImportantDatesPage() {
                     <Button asChild size="sm" variant="outline" className="w-full sm:w-auto"><a href={item.link} target="_blank" rel="noreferrer noopener"><ExternalLink className="h-4 w-4" />Official source</a></Button>
                     {calendarEnabled ? <Button type="button" size="sm" variant="secondary" className="w-full sm:w-auto" onClick={() => downloadCalendarEvent(item)}><Download className="h-4 w-4" />Add to calendar</Button> : null}
                   </div>
-                </Card>;
+                </CardContent></Card>;
               })}
             </div></section>)}
           </div>

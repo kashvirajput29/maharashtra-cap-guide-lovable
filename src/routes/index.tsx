@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { CalendarDays, ListChecks, School, ArrowRight } from "lucide-react";
-import { getHomeStats } from "@/lib/cap.functions";
+import { CalendarDays, ListChecks, School, ArrowRight, ExternalLink } from "lucide-react";
+import { getHomeStats, getImportantDates } from "@/lib/cap.functions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PageBackground } from "@/components/page-background";
@@ -10,11 +10,17 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { CountUp } from "@/components/count-up";
 import heroHome from "@/assets/hero-campus-greenery.asset.json";
 import homeBg from "@/assets/home-bg.asset.json";
+import { formatScheduleDate, getScheduleStatus, isPublishedDate, type ScheduleEvent } from "@/lib/schedule";
 
 
 const statsQuery = queryOptions({
   queryKey: ["home-stats"],
   queryFn: () => getHomeStats(),
+});
+
+const homeScheduleQuery = queryOptions({
+  queryKey: ["important-dates"],
+  queryFn: () => getImportantDates(),
 });
 
 export const Route = createFileRoute("/")({
@@ -37,14 +43,26 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
-  loader: ({ context }) => {
-    context.queryClient.ensureQueryData(statsQuery);
-  },
+  loader: ({ context }) => Promise.all([
+    context.queryClient.ensureQueryData(statsQuery),
+    context.queryClient.ensureQueryData(homeScheduleQuery),
+  ]),
   component: Home,
 });
 
 function Home() {
   const { data: stats } = useSuspenseQuery(statsQuery);
+  const { data: schedule } = useSuspenseQuery(homeScheduleQuery);
+  const scheduleWithStatus = schedule.map((event) => ({
+    event: event as ScheduleEvent,
+    status: getScheduleStatus(event),
+  }));
+  const currentEvent = scheduleWithStatus
+    .filter(({ status }) => status === "Ongoing")
+    .sort((a, b) => (b.event.end_date ?? "").localeCompare(a.event.end_date ?? ""))[0];
+  const nextDeadline = scheduleWithStatus
+    .filter(({ event, status }) => status === "Upcoming" && isPublishedDate(event.end_date) && Boolean(event.link))
+    .sort((a, b) => (a.event.end_date ?? "").localeCompare(b.event.end_date ?? ""))[0];
 
   const statCards = [
     {
@@ -161,6 +179,35 @@ function Home() {
             </ScrollReveal>
           ))}
         </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-12">
+        <ScrollReveal variant="fade-up">
+          <Card className="border-border/70">
+            <CardContent className="p-6 md:p-8">
+              <div className="flex items-center gap-2">
+                <CalendarDays className="h-5 w-5 text-aqua" />
+                <h2 className="text-2xl font-semibold text-foreground">Current CAP Status</h2>
+              </div>
+              <div className="mt-5 grid gap-5 md:grid-cols-2">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Current active event</p>
+                  <p className="mt-1 font-semibold text-foreground">{currentEvent?.event.activity ?? "No CAP round is currently ongoing."}</p>
+                  {currentEvent ? <p className="mt-1 text-sm text-muted-foreground">Ends {formatScheduleDate(currentEvent.event.end_date)}</p> : null}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Next upcoming verified deadline</p>
+                  <p className="mt-1 font-semibold text-foreground">{nextDeadline?.event.activity ?? "No upcoming verified deadlines."}</p>
+                  {nextDeadline ? <p className="mt-1 text-sm text-muted-foreground">Deadline {formatScheduleDate(nextDeadline.event.end_date)}</p> : null}
+                </div>
+              </div>
+              <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+                <Button asChild><Link to="/schedule"><CalendarDays className="h-4 w-4" />View full schedule</Link></Button>
+                <Button asChild variant="outline"><a href="https://fe2026.mahacet.org/StaticPages/HomePage" target="_blank" rel="noreferrer noopener"><ExternalLink className="h-4 w-4" />Official CET Cell source</a></Button>
+              </div>
+            </CardContent>
+          </Card>
+        </ScrollReveal>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-8">
