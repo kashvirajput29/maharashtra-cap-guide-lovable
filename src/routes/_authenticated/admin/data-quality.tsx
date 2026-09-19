@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const TITLE = "Data Quality (Admin) | Maharashtra CAP Guide";
 
-export const Route = createFileRoute("/_authenticated/data-quality")({
+export const Route = createFileRoute("/_authenticated/admin/data-quality")({
   head: () => ({
     meta: [
       { title: TITLE },
