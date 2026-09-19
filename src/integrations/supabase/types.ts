@@ -218,6 +218,7 @@ export type Database = {
           created_at: string | null
           end_date: string
           id: string
+          last_checked: string | null
           link: string
           round: string
           start_date: string
@@ -228,6 +229,7 @@ export type Database = {
           created_at?: string | null
           end_date: string
           id?: string
+          last_checked?: string | null
           link: string
           round: string
           start_date: string
@@ -238,6 +240,7 @@ export type Database = {
           created_at?: string | null
           end_date?: string
           id?: string
+          last_checked?: string | null
           link?: string
           round?: string
           start_date?: string
