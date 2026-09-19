@@ -21,12 +21,16 @@ export const getDataQualityReport = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const supabase = context.supabase;
 
-    const { data: isAdmin, error: roleError } = await supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
+    const { data: roleRows, error: roleError } = await supabase
+      .from("user_roles")
+      .select("id")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .limit(1);
     if (roleError) throw new Error(roleError.message);
-    if (!isAdmin) throw new Response("Forbidden", { status: 403 });
+    if (!roleRows || roleRows.length === 0) {
+      throw new Response("Forbidden", { status: 403 });
+    }
 
     const [collegesRes, cutoffsRes, datesRes] = await Promise.all([
       supabase
