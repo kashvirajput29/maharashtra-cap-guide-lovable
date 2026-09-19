@@ -94,10 +94,10 @@ function ImportantDatesPage() {
 
         <div className="mt-6 grid gap-3 rounded-xl border bg-card/90 p-4 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]">
           <label className="space-y-1.5 text-sm font-medium text-foreground">Status
-            <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as FilterStatus)}><SelectTrigger className="h-11"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="All">All statuses</SelectItem>{SCHEDULE_STATUSES.map((status) => <SelectItem key={status} value={status}>{status}</SelectItem>)}</SelectContent></Select>
+            <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as FilterStatus)}><SelectTrigger className="h-11"><SelectValue>{statusFilter === "All" ? "All statuses" : statusFilter}</SelectValue></SelectTrigger><SelectContent><SelectItem value="All">All statuses</SelectItem>{SCHEDULE_STATUSES.map((status) => <SelectItem key={status} value={status}>{status}</SelectItem>)}</SelectContent></Select>
           </label>
           <label className="space-y-1.5 text-sm font-medium text-foreground">CAP round
-            <Select value={roundFilter} onValueChange={setRoundFilter}><SelectTrigger className="h-11"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="All">All rounds</SelectItem>{rounds.map((round) => <SelectItem key={round} value={round}>{round}</SelectItem>)}</SelectContent></Select>
+            <Select value={roundFilter} onValueChange={setRoundFilter}><SelectTrigger className="h-11"><SelectValue>{roundFilter === "All" ? "All rounds" : roundFilter}</SelectValue></SelectTrigger><SelectContent><SelectItem value="All">All rounds</SelectItem>{rounds.map((round) => <SelectItem key={round} value={round}>{round}</SelectItem>)}</SelectContent></Select>
           </label>
           <Button type="button" variant="outline" className="h-11 self-end" onClick={clearFilters} disabled={statusFilter === "All" && roundFilter === "All"}><RotateCcw className="h-4 w-4" />Clear filters</Button>
         </div>
