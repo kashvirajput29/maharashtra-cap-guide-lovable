@@ -13,3 +13,4 @@
 - College/profile comparison uses one shared tray and the existing local-storage store so selection remains consistent across pages.
 - Branch choices extend the existing option list with a separate local-storage map; preserve college ordering and limits.
 - Outdated-information reports open a mail draft to VITE_COLLEGE_REPORT_EMAIL; never claim submission when no recipient is configured.
+- Keep cutoff explorer enrichment, filtering, comparisons, and CSV serialization in a browser-safe helper; never mutate official rows or infer admission chances.

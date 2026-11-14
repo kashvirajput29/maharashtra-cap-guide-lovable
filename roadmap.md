@@ -12,3 +12,7 @@
 - [x] Add report form
 - [ ] Enable report email delivery — waiting for receiving email address
 - [x] Test directory, profiles, comparison, branch integration, and mobile layout
+
+## Cutoff explorer
+- [x] Add combined filters, sorting, percentile comparison, explanations, and filtered CSV export
+- [x] Test cutoff rules, combined filters, duplicate prevention, export, and mobile layout
