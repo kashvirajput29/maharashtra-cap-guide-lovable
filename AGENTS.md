@@ -14,3 +14,4 @@
 - Branch choices extend the existing option list with a separate local-storage map; preserve college ordering and limits.
 - Outdated-information reports open a mail draft to VITE_COLLEGE_REPORT_EMAIL; never claim submission when no recipient is configured.
 - Keep cutoff explorer enrichment, filtering, comparisons, and CSV serialization in a browser-safe helper; never mutate official rows or infer admission chances.
+- Matchmaker uses a shared Zod schema on client and server and a pure matching helper; choose the newest sourced record per institute/branch and treat percentile bands only as historical differences.

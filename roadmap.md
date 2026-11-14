@@ -16,3 +16,8 @@
 ## Cutoff explorer
 - [x] Add combined filters, sorting, percentile comparison, explanations, and filtered CSV export
 - [x] Test cutoff rules, combined filters, duplicate prevention, export, and mobile layout
+
+## Matchmaker
+- [x] Add validated guided form and sourced, deduplicated historical results
+- [x] Connect comparison, branch options, local profile save, and reset
+- [x] Test high, medium, low, no-match searches and mobile layout
