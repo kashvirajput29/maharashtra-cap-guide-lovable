@@ -27,6 +27,7 @@ import {
   toggleOption,
   useOptionList,
 } from "@/lib/option-form-store";
+import { useOptionBranches } from "@/lib/option-branch-store";
 
 const collegesQuery = queryOptions({
   queryKey: ["colleges-official-2026"],
@@ -73,6 +74,7 @@ function branchLabel(college: College | undefined) {
 function OptionFormPage() {
   const { data: colleges } = useSuspenseQuery(collegesQuery);
   const selected = useOptionList();
+  const chosenBranches = useOptionBranches();
   const [search, setSearch] = useState("");
 
   const byName = useMemo(
@@ -223,6 +225,7 @@ function OptionFormPage() {
                             <p className="break-words text-sm font-medium text-foreground">
                               {name}
                             </p>
+                            {chosenBranches[name] && <p className="mt-1 break-words text-sm text-foreground">{chosenBranches[name]}</p>}
                             <p className="mt-0.5 text-xs text-muted-foreground">
                               {[college?.city, college?.district]
                                 .filter(Boolean)
@@ -318,7 +321,7 @@ function OptionFormPage() {
                     {c?.district ?? "—"}
                   </td>
                   <td className="border border-neutral-400 px-2 py-1">
-                    {branchLabel(c)}
+                    {chosenBranches[name] || branchLabel(c)}
                   </td>
                   <td className="break-all border border-neutral-400 px-2 py-1">
                     {c?.official_website_url ?? "Official website not verified yet"}

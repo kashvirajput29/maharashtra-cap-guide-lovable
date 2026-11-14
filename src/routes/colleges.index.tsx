@@ -12,7 +12,7 @@ import {
   ChevronRight,
   GitCompare,
 } from "lucide-react";
-import { collegeKey, getOfficialColleges } from "@/lib/cap.functions";
+import { collegeKey, getOfficialColleges, getOfficialCutoffs, getDirectoryClassifications } from "@/lib/cap.functions";
 import { CutoffNote } from "@/components/cutoff-note";
 import { ListPageSkeleton } from "@/components/skeletons";
 import { DataMeta } from "@/components/data-meta";
@@ -40,11 +40,15 @@ import pageHero from "@/assets/hero-library-reading-nook.asset.json";
 import pageBg from "@/assets/colleges-bg.asset.json";
 import {
   MAX_COMPARE,
-  clearCompare,
   toggleCompare,
   useCompareSelection,
 } from "@/lib/compare-store";
 
+import { filterDirectory, verifiedBranches, managementType } from "@/lib/college-directory";
+import { CollegeComparisonTray } from "@/components/college-comparison-tray";
+
+const branchesQuery = queryOptions({ queryKey: ["directory-verified-cutoffs"], queryFn: () => getOfficialCutoffs() });
+const classificationsQuery = queryOptions({ queryKey: ["directory-classifications"], queryFn: () => getDirectoryClassifications() });
 const PAGE_SIZE = 15;
 
 const collegesQuery = queryOptions({
@@ -61,6 +65,10 @@ export const Route = createFileRoute("/colleges/")({
         content:
           "A simple student-friendly guide to Maharashtra MHT-CET CAP counselling, with college details, CAP process steps, important dates, and FAQs for students and parents.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: pageHero.url },
+      { name: "twitter:image", content: pageHero.url },
       { property: "og:title", content: "Engineering Colleges — Maharashtra CAP Guide | MHT-CET Counselling Help" },
       {
         property: "og:description",
@@ -70,7 +78,7 @@ export const Route = createFileRoute("/colleges/")({
     ],
   }),
   loader: ({ context }) => {
-    context.queryClient.ensureQueryData(collegesQuery);
+    return Promise.all([context.queryClient.ensureQueryData(collegesQuery), context.queryClient.ensureQueryData(branchesQuery), context.queryClient.ensureQueryData(classificationsQuery)]);
   },
   component: CollegesPage,
   pendingMs: 200,
@@ -95,6 +103,14 @@ function pageWindow(current: number, total: number): (number | "gap")[] {
 
 function CollegesPage() {
   const { data: colleges } = useSuspenseQuery(collegesQuery);
+  const { data: branchRecords } = useSuspenseQuery(branchesQuery);
+  const { data: classifications } = useSuspenseQuery(classificationsQuery);
+  const [management, setManagement] = useState("all");
+  const enriched = useMemo(() => colleges.map((c) => ({ ...c, management_type: managementType(classifications.filter((r) => r.college_name === c.college_name)) })), [colleges, classifications]);
+  const managementOptions = useMemo(() => [...new Set(enriched.map((c) => c.management_type).filter((v): v is string => Boolean(v)))].sort(), [enriched]);
+  const [selectedBranches, setSelectedBranches] = useState<string[]>([]);
+  const [affiliation, setAffiliation] = useState("all");
+  const [sort, setSort] = useState("verified");
   const [search, setSearch] = useState("");
   const [city, setCity] = useState("all");
   const [district, setDistrict] = useState("all");
@@ -111,18 +127,9 @@ function CollegesPage() {
     [colleges],
   );
 
-  const filtered = useMemo(
-    () =>
-      colleges.filter((c) => {
-        const matchesSearch = c.college_name
-          .toLowerCase()
-          .includes(search.trim().toLowerCase());
-        const matchesCity = city === "all" || c.city === city;
-        const matchesDistrict = district === "all" || c.district === district;
-        return matchesSearch && matchesCity && matchesDistrict;
-      }),
-    [colleges, search, city, district],
-  );
+  const affiliations = useMemo(() => [...new Set(colleges.map((c) => c.university_affiliation).filter((v): v is string => Boolean(v?.trim())))].sort(), [colleges]);
+  const allBranches = useMemo(() => [...new Set(colleges.flatMap((c) => verifiedBranches(c, branchRecords)))].sort(), [colleges, branchRecords]);
+  const filtered = useMemo(() => filterDirectory(enriched, branchRecords, { search, city, district, affiliation, management, branches: selectedBranches, sort }), [enriched, branchRecords, search, city, district, affiliation, management, selectedBranches, sort]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -133,23 +140,26 @@ function CollegesPage() {
 
   useEffect(() => {
     setPage(1);
-  }, [search, city, district]);
+  }, [search, city, district, affiliation, management, selectedBranches, sort]);
 
   const goToPage = (next: number) => {
     setPage(Math.min(Math.max(1, next), totalPages));
     listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const hasFilters = search.trim() !== "" || city !== "all" || district !== "all";
+  const hasFilters = search.trim() !== "" || city !== "all" || district !== "all" || affiliation !== "all" || management !== "all" || selectedBranches.length > 0;
   const clearFilters = () => {
     setSearch("");
     setCity("all");
     setDistrict("all");
+    setAffiliation("all");
+    setManagement("all");
+    setSelectedBranches([]);
   };
 
   return (
     <TooltipProvider delayDuration={150}>
-      <div className="theme-accent-campus mx-auto max-w-6xl px-4 py-10 pb-28">
+      <div className="theme-accent-campus mx-auto max-w-6xl px-4 py-10 pb-72">
         <PageBackground image={pageBg.url} />
         <PageHero
           className="-mt-10 mb-8"
@@ -216,6 +226,22 @@ function CollegesPage() {
           </Select>
         </div>
 
+
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <Select value={affiliation} onValueChange={setAffiliation}><SelectTrigger aria-label="Filter by affiliation"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">All affiliations</SelectItem>{affiliations.map((v) => <SelectItem key={v} value={v}>{v}</SelectItem>)}</SelectContent></Select>
+          <Select value={sort} onValueChange={setSort}><SelectTrigger aria-label="Sort colleges"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="verified">Recently verified</SelectItem><SelectItem value="name">College name (A–Z)</SelectItem><SelectItem value="city">City (A–Z)</SelectItem><SelectItem value="district">District (A–Z)</SelectItem></SelectContent></Select>
+        </div>
+        <fieldset className="mt-4"><legend className="mb-2 text-sm font-medium">Branch</legend><div className="flex flex-wrap gap-2">{allBranches.map((b) => <label key={b} className="inline-flex min-h-11 max-w-full items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm"><Checkbox checked={selectedBranches.includes(b)} onCheckedChange={() => setSelectedBranches((previous) => previous.includes(b) ? previous.filter((v) => v !== b) : [...previous, b])} aria-label={`Branch: ${b}`} /><span className="break-words">{b}</span></label>)}</div>{allBranches.length === 0 && <p className="text-sm text-muted-foreground">Not published yet</p>}</fieldset>
+        {managementOptions.length > 0 ? <Select value={management} onValueChange={setManagement}><SelectTrigger className="mt-3" aria-label="Filter by institute type"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">All institute types / management</SelectItem>{managementOptions.map((v) => <SelectItem key={v} value={v}>{v}</SelectItem>)}<SelectItem value="Autonomous">Autonomous</SelectItem></SelectContent></Select> : <p className="mt-3 text-xs text-muted-foreground">Institute type filter unavailable until official data is provided.</p>}
+        {hasFilters && <div aria-label="Active filters" className="mt-3 flex flex-wrap gap-2">{[
+          ...(search.trim() ? [{ label: `Search: ${search}`, clear: () => setSearch("") }] : []),
+          ...(city !== "all" ? [{ label: `City: ${city}`, clear: () => setCity("all") }] : []),
+          ...(district !== "all" ? [{ label: `District: ${district}`, clear: () => setDistrict("all") }] : []),
+          ...(affiliation !== "all" ? [{ label: `Affiliation: ${affiliation}`, clear: () => setAffiliation("all") }] : []),
+          ...(management !== "all" ? [{ label: `Management: ${management}`, clear: () => setManagement("all") }] : []),
+          ...selectedBranches.map((b) => ({ label: b, clear: () => setSelectedBranches((v) => v.filter((x) => x !== b)) })),
+        ].map((chip) => <Button key={chip.label} size="sm" variant="secondary" className="h-auto min-h-9 max-w-full whitespace-normal" onClick={chip.clear}>{chip.label}<X className="ml-1 h-3 w-3 shrink-0" /></Button>)}</div>}
+
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-muted-foreground">
             Showing{" "}
@@ -230,7 +256,7 @@ function CollegesPage() {
             className="gap-1.5"
           >
             <X className="h-3.5 w-3.5" />
-            Clear filters
+            Clear all filters
           </Button>
         </div>
 
@@ -246,10 +272,7 @@ function CollegesPage() {
         ) : (
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {pageItems.map((c) => {
-              const branches = (c.branches_offered ?? "")
-                .split(/[,;|]/)
-                .map((b) => b.trim())
-                .filter(Boolean);
+              const branches = verifiedBranches(c, branchRecords);
               const identifier = collegeKey(c);
               const checked = selection.includes(identifier);
               const limitReached = !checked && selection.length >= MAX_COMPARE;
@@ -265,13 +288,15 @@ function CollegesPage() {
                     <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
                       <MapPin className="h-3.5 w-3.5 shrink-0" />
                       <span className="min-w-0 break-words">
-                        {c.city}, {c.district}
+                        {c.city?.trim() || "Not published yet"}, {c.district?.trim() || "Not published yet"}
                       </span>
                     </p>
                     <p className="mt-1 break-words text-xs uppercase tracking-wide text-muted-foreground">
-                      {c.university_affiliation}
+                      {c.university_affiliation?.trim() || "Not published yet"}
                     </p>
 
+                    <p className="mt-2 text-sm text-muted-foreground">Institute type / management: {c.management_type || "Not published yet"}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">Verified branches: {branches.length}</p>
                     {branches.length > 0 ? (
                       <div className="mt-3 flex flex-wrap gap-2">
                         {branches.map((b) => (
@@ -286,7 +311,7 @@ function CollegesPage() {
                     ) : null}
 
                     <div className="mt-4">
-                      {c.official_website_url ? (
+                      {c.official_website_url?.trim() ? (
                         <a
                           href={c.official_website_url}
                           target="_blank"
@@ -298,7 +323,7 @@ function CollegesPage() {
                         </a>
                       ) : (
                         <p className="text-sm text-muted-foreground">
-                          Official website not verified yet
+                          Not published yet
                         </p>
                       )}
                     </div>
@@ -307,7 +332,7 @@ function CollegesPage() {
                       className="mt-3"
                       instituteCode={c.institute_code}
                       status={c.data_status}
-                      lastVerified={c.last_verified}
+                      lastVerified={c.last_verified?.trim() || "Not published yet"}
                       sourceUrl={c.official_source_url}
                     />
 
@@ -321,21 +346,7 @@ function CollegesPage() {
                         View details <ArrowRight className="h-4 w-4" />
                       </Link>
 
-                      <label
-                        className={`inline-flex items-center gap-2 text-sm font-medium ${
-                          limitReached
-                            ? "cursor-not-allowed text-muted-foreground"
-                            : "cursor-pointer text-foreground"
-                        }`}
-                      >
-                        <Checkbox
-                          checked={checked}
-                          disabled={limitReached}
-                          onCheckedChange={() => toggleCompare(identifier)}
-                          aria-label={`Compare ${c.college_name}`}
-                        />
-                        Compare
-                      </label>
+                      <Button size="sm" variant={checked ? "secondary" : "outline"} disabled={limitReached} onClick={() => toggleCompare(identifier)} aria-label={`${checked ? "Remove" : "Add"} ${c.college_name} ${checked ? "from" : "to"} comparison`}><GitCompare className="mr-1 h-4 w-4" />{checked ? "Remove from Compare" : "Add to Compare"}</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -391,36 +402,7 @@ function CollegesPage() {
         <CutoffNote className="mt-8" />
       </div>
 
-      {selection.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border/70 bg-background/95 backdrop-blur">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-            <p className="text-sm font-medium text-foreground">
-              Compare Selected ({selection.length}/{MAX_COMPARE})
-              {selection.length < 2 ? (
-                <span className="ml-2 text-xs font-normal text-muted-foreground">
-                  Select at least 2 colleges
-                </span>
-              ) : null}
-            </p>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={clearCompare} className="gap-1.5">
-                <X className="h-3.5 w-3.5" /> Clear Comparison
-              </Button>
-              {selection.length < 2 ? (
-                <Button size="sm" disabled className="gap-1.5">
-                  <GitCompare className="h-4 w-4" /> Compare
-                </Button>
-              ) : (
-                <Button size="sm" asChild className="gap-1.5">
-                  <Link to="/compare">
-                    <GitCompare className="h-4 w-4" /> Compare
-                  </Link>
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <CollegeComparisonTray colleges={colleges} />
     </TooltipProvider>
   );
 }

@@ -152,6 +152,15 @@ export const getOfficialColleges = createServerFn({ method: "GET" }).handler(asy
   return dedupeBy(data ?? [], collegeKey);
 });
 
+export const getDirectoryClassifications = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = getPublicClient();
+  const { data, error } = await supabase.from("college_classifications_verified")
+    .select("college_name, official_indicator, indicator_value, source_url, last_verified")
+    .not("source_url", "is", null).not("last_verified", "is", null);
+  if (error) throw new Error(error.message);
+  return data ?? [];
+});
+
 export const getOfficialCollege = createServerFn({ method: "GET" })
   .inputValidator((input) => z.object({ collegeIdentifier: z.string().min(1) }).parse(input))
   .handler(async ({ data: input }) => {
@@ -170,7 +179,8 @@ export const getOfficialCollege = createServerFn({ method: "GET" })
       : await supabase
         .from("colleges_official_2026")
         .select(COLLEGE_COLUMNS)
-        .eq("college_name", identifier)
+        .ilike("college_name", identifier.replace(/[\\%_]/g, "\\$&"))
+        .or("institute_code.is.null,institute_code.eq.")
         .limit(1)
         .maybeSingle();
     if (collegeRes.error) throw new Error(collegeRes.error.message);

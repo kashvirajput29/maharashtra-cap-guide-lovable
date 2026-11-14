@@ -25,6 +25,10 @@ import {
 import { PageBackground } from "@/components/page-background";
 import pageBg from "@/assets/college-detail-bg.asset.json";
 import { collegeQuery } from "@/lib/college-query";
+import { collegeKey } from "@/lib/cap.functions";
+import { verifiedBranches, managementType } from "@/lib/college-directory";
+import { CollegeComparisonTray } from "@/components/college-comparison-tray";
+import { CollegeProfileActions } from "@/components/college-profile-actions";
 
 
 export const Route = createFileRoute("/colleges/$collegeName")({
@@ -32,6 +36,8 @@ export const Route = createFileRoute("/colleges/$collegeName")({
     const name = decodeURIComponent(params.collegeName);
     return {
       meta: [
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
         { title: `${name} — CAP Cutoffs | Maharashtra CAP Guide | MHT-CET Counselling Help` },
         {
           name: "description",
@@ -99,9 +105,9 @@ const NOT_PUBLISHED =
 function CollegeDetail() {
   const { collegeName } = Route.useParams();
   const { data } = useSuspenseQuery(collegeQuery(collegeName));
-  const college = data.college!;
+  const college = data.college;
   const cutoffs = data.cutoffs;
-  const classifications = data.classifications;
+  const classifications = data.classifications.filter((c) => c.source_url?.trim() && c.last_verified?.trim());
 
   const [branch, setBranch] = useState("all");
   const [category, setCategory] = useState("all");
@@ -144,13 +150,12 @@ function CollegeDetail() {
 
   const cutoffVerified = cutoffs.find((c) => c.last_verified)?.last_verified ?? null;
 
-  const branches = (college.branches_offered ?? "")
-    .split(/[,;|]/)
-    .map((b) => b.trim())
-    .filter(Boolean);
+  if (!college) return <CollegeNotFound />;
+  const branches = verifiedBranches(college, cutoffs);
+  const missing = (value: string | null | undefined) => value?.trim() || "Not published yet";
 
   return (
-    <div className="theme-accent-library mx-auto max-w-6xl px-4 py-8 sm:py-10">
+    <div className="theme-accent-library mx-auto max-w-6xl px-4 py-8 pb-72 sm:py-10 sm:pb-64">
       <PageBackground image={pageBg.url} />
       <Link
         to="/colleges"
@@ -166,89 +171,49 @@ function CollegeDetail() {
         <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
           <MapPin className="h-4 w-4 shrink-0" />
           <span className="min-w-0 break-words">
-            {college.city}, {college.district}
+            {missing(college.city)}, {missing(college.district)}, Maharashtra
           </span>
         </p>
         <DataMeta
           className="mt-3"
           instituteCode={college.institute_code}
           status={college.data_status}
-          lastVerified={college.last_verified}
+          lastVerified={missing(college.last_verified)}
           sourceUrl={college.official_source_url}
         />
 
       </div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
-        <Card className="border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md md:col-span-2">
-          <CardContent className="p-6">
-            <dl className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <dt className="text-xs uppercase tracking-wide text-muted-foreground">
-                  University affiliation
-                </dt>
-                <dd className="mt-1 text-sm text-foreground">
-                  {college.university_affiliation}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xs uppercase tracking-wide text-muted-foreground">
-                  District
-                </dt>
-                <dd className="mt-1 text-sm text-foreground">{college.district}</dd>
-              </div>
-            </dl>
-            <div className="mt-5">
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                Branches offered
-              </p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {branches.map((b) => (
-                  <span
-                    key={b}
-                    className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground"
-                  >
-                    {b}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border/70 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
-          <CardContent className="p-6">
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">
-              Official website
-            </p>
-            {college.official_website_url ? (
-              <a
-                href={college.official_website_url}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="mt-2 inline-flex items-center gap-1.5 break-all text-sm font-medium text-aqua hover:underline"
-              >
-                {college.official_website_url}
-                <ExternalLink className="h-3.5 w-3.5 shrink-0" />
-              </a>
-            ) : (
-              <p className="mt-2 text-sm text-muted-foreground">
-                Official website not verified yet
-              </p>
-            )}
-            {college.official_source_url ? (
-              <a
-                href={college.official_source_url}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-aqua hover:underline"
-              >
-                Official source <ExternalLink className="h-3 w-3 shrink-0" />
-              </a>
-            ) : null}
-          </CardContent>
-        </Card>
-      </div>
+      <CollegeProfileActions identifier={collegeKey(college)} name={college.college_name} branches={branches} />
+      <section className="mt-10" aria-labelledby="overview-title">
+        <h2 id="overview-title" className="text-2xl font-semibold text-foreground">Overview</h2>
+        <dl className="mt-4 grid gap-5 border-b border-border pb-6 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            ["Official college name", college.college_name],
+            ["Institute code", college.institute_code],
+            ["City", college.city],
+            ["District", college.district],
+            ["State", "Maharashtra"],
+            ["Institute type / management", managementType(classifications)],
+            ["University affiliation", college.university_affiliation],
+            ["Autonomous status", classifications.find((c) => /autonom/i.test(c.official_indicator ?? "") || /\bautonomous\b/i.test(c.indicator_value ?? ""))?.indicator_value],
+            ["Last verified", college.last_verified],
+          ].map(([label, value]) => <div key={label} className="min-w-0"><dt className="text-xs uppercase text-muted-foreground">{label}</dt><dd className="mt-1 break-words text-sm text-foreground">{missing(value)}</dd></div>)}
+        </dl>
+      </section>
+      <section className="mt-8" aria-labelledby="branches-title">
+        <h2 id="branches-title" className="text-2xl font-semibold text-foreground">Available branches</h2>
+        <div className="mt-3 flex flex-wrap gap-2">{branches.map((b) => <Badge key={b} variant="secondary" className="max-w-full whitespace-normal break-words">{b}</Badge>)}</div>
+        {!branches.length && <p className="mt-3 text-sm text-muted-foreground">Not published yet</p>}
+      </section>
+      <section className="mt-8" aria-labelledby="links-title">
+        <h2 id="links-title" className="text-2xl font-semibold text-foreground">Official links</h2>
+        <dl className="mt-3 grid gap-4 sm:grid-cols-2">{[["Official website", college.official_website_url], ["Official source", college.official_source_url]].map(([label, url]) => <div key={label} className="min-w-0"><dt className="text-xs uppercase text-muted-foreground">{label}</dt><dd className="mt-1 text-sm">{url?.trim() ? <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex max-w-full items-start gap-1 break-all text-aqua hover:underline">{url}<ExternalLink className="mt-1 h-3.5 w-3.5 shrink-0" /></a> : "Not published yet"}</dd></div>)}</dl>
+      </section>
+      <section className="mt-8" aria-labelledby="verification-title">
+        <h2 id="verification-title" className="text-2xl font-semibold text-foreground">Verification information</h2>
+        <DataMeta className="mt-3" instituteCode={college.institute_code} status={college.data_status} lastVerified={missing(college.last_verified)} sourceUrl={college.official_source_url} />
+      </section>
 
       {/* Classification */}
       <div className="mt-12">
@@ -258,7 +223,7 @@ function CollegeDetail() {
         {classifications.length === 0 ? (
           <Card className="mt-4 border-dashed">
             <CardContent className="p-6 text-sm text-muted-foreground">
-              Classification: No official tier classification found.
+              Not published yet
             </CardContent>
           </Card>
         ) : (
@@ -307,14 +272,14 @@ function CollegeDetail() {
       <div className="mt-12 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-            Official 2026 CAP cutoffs
+            Cutoffs
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Showing <span className="font-semibold text-foreground">{filtered.length}</span> of{" "}
             {cutoffs.length} official cutoff records
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            Official 2026 CAP data | Verified: {cutoffVerified ?? "not available"}
+            Official 2026 CAP data | Verified: {cutoffVerified ?? "Not published yet"}
           </p>
         </div>
         <Button
@@ -514,6 +479,7 @@ function CollegeDetail() {
       )}
 
       <CutoffNote className="mt-8" />
+      <CollegeComparisonTray colleges={[college]} />
     </div>
   );
 }
