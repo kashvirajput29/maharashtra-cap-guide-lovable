@@ -60,9 +60,23 @@ The platform avoids synthetic rankings or speculative tier lists, maintaining an
    git clone [https://github.com/your-username/maharashtra-cap-guide.git](https://github.com/your-username/maharashtra-cap-guide.git)
    cd maharashtra-cap-guide
 
-# Legal Disclaimer
+# Disclaimer
 
-**Maharashtra CAP Guide** is an independent, non-commercial, student-built reference platform created solely for educational and informational purposes.
+**Last Updated:** November 2026
+
+## 1. No Official Affiliation
+**Maharashtra CAP Guide** (`maharashtra-cap-guide.lovable.app`) is an independent, student-built educational project. It is **not** affiliated with, endorsed by, or officially connected to the State Common Entrance Test Cell (CET Cell), Government of Maharashtra, or the Directorate of Technical Education (DTE), Maharashtra.
+
+## 2. Accuracy of Cutoff & Seat Data
+All MHT-CET / JEE Main cutoff percentiles, DTE institute codes, branch intake capacities, and category-wise seat matrices displayed in this application are compiled from publicly available historical CAP round allotment records. 
+- Admission cutoffs fluctuate every academic year based on applicant volume, seat matrix revisions, and reservation policies.
+- While we strive to keep records accurate, **no guarantee is made regarding the completeness or real-time accuracy** of any data presented.
+
+## 3. AI-Generated Insights
+Any AI-assisted college comparisons, preference-list suggestions, or admission probability estimates are generated heuristically to help students explore options. They do **not** constitute guaranteed admission outcomes or formal academic counseling.
+
+## 4. Verification Responsibility
+Students and parents must verify all institute codes, fee structures, accreditation statuses, and official CAP round schedules directly on the official [Maharashtra State CET Cell Portal](https://cetcell.mahacet.org/) before locking option forms.
 
 ---
 
