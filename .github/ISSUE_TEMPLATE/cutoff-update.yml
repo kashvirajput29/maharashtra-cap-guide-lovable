@@ -1,0 +1,45 @@
+name: Report Outdated CAP Cutoff Data
+description: Submit a correction for college DTE codes, branch cutoffs, or seat matrices
+title: "[Data]: "
+labels: ["data-update"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help keep Maharashtra CAP Guide accurate for students! Please provide the exact details from the official State CET Cell CAP Round allotment list.
+  - type: input
+    id: college-name
+    attributes:
+      label: Institute Name & DTE Code
+      description: Example - Vidyalankar Institute of Technology, Mumbai (3139)
+      placeholder: "Institute Name (4-digit DTE Code)"
+    validations:
+      required: true
+  - type: input
+    id: branch
+    attributes:
+      label: Branch / Course Name
+      placeholder: "e.g., Electronics and Computer Science / Computer Engineering"
+    validations:
+      required: true
+  - type: dropdown
+    id: cap-round
+    attributes:
+      label: CAP Round
+      options:
+        - CAP Round I
+        - CAP Round II
+        - CAP Round III
+    validations:
+      required: true
+  - type: textarea
+    id: correction-details
+    attributes:
+      label: Current vs. Correct Percentile / Merit Rank
+      description: Mention the category (OPEN, OBC, EWS, TFWS, etc.) and the corrected percentile.
+      placeholder: |
+        - Category: OPEN (GOPENH)
+        - Shown in App: 94.12%
+        - Official CET Cell Value: 94.85%
+    validations:
+      required: true
