@@ -3,6 +3,11 @@
 An official-data-first, decision-focused web application designed to help first-year engineering (FE) aspirants navigate the Centralized Admission Process (CAP) in Maharashtra with clarity and confidence.
 
 ---
+<!-- INSERT AT THE TOP OF README.md (RIGHT BELOW YOUR # TITLE) -->
+[![Live App](https://img.shields.io/badge/Live_App-maharashtra--cap--guide.lovable.app-2ea44f?style=for-the-badge&logo=vercel&logoColor=white)](https://maharashtra-cap-guide.lovable.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](./LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=for-the-badge)](./CONTRIBUTING.md)
+[![Built For](https://img.shields.io/badge/MHT--CET-CAP_Admissions-orange?style=for-the-badge)](https://maharashtra-cap-guide.lovable.app)
 
 ## 📌 Problem Statement
 
@@ -73,3 +78,10 @@ The official portal for Maharashtra State CET admissions is located at [cetcell.
 
 ### 2. Information Accuracy & Limitation of Liability
 - **Reference Purpose Only:** The tools, cutoffs, institutional profiles, classifications, and scenario comparisons provided by this application are designed strictly
+
+- <!-- INSERT AT THE BOTTOM OF README.md -->
+---
+
+## Legal & Data Disclaimer
+
+Cutoff percentiles, seat matrices, and college recommendations provided by **Maharashtra CAP Guide** are for informational and planning purposes only. Please read the full [DISCLAIMER.md](./DISCLAIMER.md) before making official admission choices.
