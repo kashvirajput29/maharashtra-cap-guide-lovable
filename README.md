@@ -80,7 +80,7 @@ Students and parents must verify all institute codes, fee structures, accreditat
 
 ---
 
-### 1. Non-Affiliation
+### 5. Non-Affiliation
 This project is **not affiliated with, associated with, authorized by, endorsed by, or in any way officially connected** with:
 - The **State Common Entrance Test Cell, Maharashtra State** (CET Cell)
 - The **Directorate of Technical Education (DTE), Maharashtra**
@@ -90,7 +90,7 @@ The official portal for Maharashtra State CET admissions is located at [cetcell.
 
 ---
 
-### 2. Information Accuracy & Limitation of Liability
+### 6. Information Accuracy & Limitation of Liability
 - **Reference Purpose Only:** The tools, cutoffs, institutional profiles, classifications, and scenario comparisons provided by this application are designed strictly
 
 - <!-- INSERT AT THE BOTTOM OF README.md -->
