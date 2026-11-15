@@ -1,0 +1,32 @@
+name: Bug Report
+description: Report a UI glitch, broken filter, or unexpected AI response
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the issue clearly and include the page or filter you were using.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. Go to '...'
+        2. Enter percentile '...'
+        3. See error
+    validations:
+      required: true
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device Type
+      options:
+        - Desktop / Laptop
+        - Mobile Browser
+        - Tablet
+    validations:
+      required: true
