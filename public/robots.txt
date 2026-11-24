@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://maharashtra-cap-guide.lovable.app/sitemap.xml

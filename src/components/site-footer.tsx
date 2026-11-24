@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { useHydrated } from "@tanstack/react-router";
 import { statsQuery } from "@/lib/stats-query";
 
 export function SiteFooter() {
   const { data } = useQuery(statsQuery);
-  const collegeCount = data?.colleges;
+  const hydrated = useHydrated();
+  const collegeCount = hydrated ? data?.colleges : undefined;
 
   return (
     <footer className="mt-20 border-t border-border/70 bg-secondary/40">
