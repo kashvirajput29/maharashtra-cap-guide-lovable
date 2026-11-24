@@ -1,3 +1,4 @@
+import { useHydrated } from "@tanstack/react-router";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { statsQuery } from "@/lib/stats-query";
@@ -45,7 +46,8 @@ export const Route = createFileRoute("/about")({
 
 function AboutPage() {
   const { data: stats } = useQuery(statsQuery);
-  const collegeCount = stats?.colleges;
+  const hydrated = useHydrated();
+  const collegeCount = hydrated ? stats?.colleges : undefined;
 
   return (
 
