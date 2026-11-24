@@ -31,6 +31,7 @@ import { Route as CollegesCollegeNameRouteImport } from './routes/colleges.$coll
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as AuthenticatedAdminDataQualityRouteImport } from './routes/_authenticated/admin/data-quality'
+import { Route as ApiSbSplatRouteImport } from './routes/api/sb/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -145,6 +146,11 @@ const AuthenticatedAdminDataQualityRoute =
     path: '/admin/data-quality',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiSbSplatRoute = ApiSbSplatRouteImport.update({
+  id: '/api/sb/$',
+  path: '/api/sb/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -168,6 +174,7 @@ export interface FileRoutesByFullPath {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/data-quality': typeof AuthenticatedAdminDataQualityRoute
+  '/api/sb/$': typeof ApiSbSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -191,6 +198,7 @@ export interface FileRoutesByTo {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/data-quality': typeof AuthenticatedAdminDataQualityRoute
+  '/api/sb/$': typeof ApiSbSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -216,6 +224,7 @@ export interface FileRoutesById {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/admin/data-quality': typeof AuthenticatedAdminDataQualityRoute
+  '/api/sb/$': typeof ApiSbSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -241,6 +250,7 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/admin/data-quality'
+    | '/api/sb/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -264,6 +274,7 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/admin/data-quality'
+    | '/api/sb/$'
   id:
     | '__root__'
     | '/'
@@ -288,6 +299,7 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/admin/data-quality'
+    | '/api/sb/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -312,6 +324,7 @@ export interface RootRouteChildren {
   CollegesIndexRoute: typeof CollegesIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ApiSbSplatRoute: typeof ApiSbSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -470,6 +483,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminDataQualityRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/sb/$': {
+      id: '/api/sb/$'
+      path: '/api/sb/$'
+      fullPath: '/api/sb/$'
+      preLoaderRoute: typeof ApiSbSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -507,6 +527,7 @@ const rootRouteChildren: RootRouteChildren = {
   CollegesIndexRoute: CollegesIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ApiSbSplatRoute: ApiSbSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
