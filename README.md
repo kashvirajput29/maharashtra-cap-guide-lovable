@@ -99,3 +99,5 @@ The official portal for Maharashtra State CET admissions is located at [cetcell.
 ## Legal & Data Disclaimer
 
 Cutoff percentiles, seat matrices, and college recommendations provided by **Maharashtra CAP Guide** are for informational and planning purposes only. Please read the full [DISCLAIMER.md](./DISCLAIMER.md) before making official admission choices.
+
+Hey! I've applied for Off Campus, an evening for India's best student builders by GrowthX, sponsored by AWS. Mumbai, Thu, 10 Dec, Here's my off campus code: SSF44T
